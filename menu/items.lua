@@ -1,5 +1,22 @@
 ITEMS = {}
 ITEM_COUNTER = 0
+ITEM_IDS = {}
+
+local function getItemId(itemType, itemIndex)
+
+    if not ITEM_IDS[CURRENT_MENU] then
+        ITEM_IDS[CURRENT_MENU] = {}
+    end
+
+    local itemId = ITEM_IDS[CURRENT_MENU][itemIndex]
+
+    if not itemId then
+        itemId = generateId("item-" .. itemType, itemIndex)
+        ITEM_IDS[CURRENT_MENU][itemIndex] = itemId
+    end
+
+    return itemId
+end
 
 rlzMenu.Button = function(label, anchor, description, onSelect)
     assert(type(label) == "string", "Button label must be a string")
@@ -10,7 +27,7 @@ rlzMenu.Button = function(label, anchor, description, onSelect)
     local self = {}
     ITEM_COUNTER += 1
 
-    self.id = generateId("item-button", ITEM_COUNTER)
+    self.id = getItemId("button", ITEM_COUNTER)
     self.type = "button"
     self.label = label
     self.anchor = anchor or ""
@@ -26,7 +43,7 @@ rlzMenu.Label = function(label)
     local self = {}
     ITEM_COUNTER += 1
 
-    self.id = generateId("item-label", ITEM_COUNTER)
+    self.id = getItemId("label", ITEM_COUNTER)
     self.type = "label"
     self.label = label
 
@@ -37,12 +54,13 @@ rlzMenu.Separator = function()
     local self = {}
     ITEM_COUNTER += 1
 
-    self.id = generateId("item-separator", ITEM_COUNTER)
+    self.id = getItemId("separator", ITEM_COUNTER)
     self.type = "separator"
 
     table.insert(ITEMS, self)
 end
 
+CHECKBOX_STATES = {}
 rlzMenu.Checkbox = function(label, description, isChecked, onChange)
     assert(type(label) == "string", "Checkbox label must be a string")
     assert(description == nil or type(description) == "string", "Checkbox description must be a string or nil")
@@ -52,11 +70,19 @@ rlzMenu.Checkbox = function(label, description, isChecked, onChange)
     local self = {}
     ITEM_COUNTER += 1
 
-    self.id = generateId("item-checkbox", ITEM_COUNTER)
+    local itemId = getItemId("checkbox", ITEM_COUNTER)
+
+    self.id = itemId
+
+    if CHECKBOX_STATES[itemId] ~= nil then
+        self.isChecked = CHECKBOX_STATES[itemId]
+    else
+        self.isChecked = isChecked
+    end
+
     self.type = "checkbox"
     self.label = label
     self.description = description or ""
-    self.isChecked = isChecked
     self.onChange = onChange
 
     table.insert(ITEMS, self)

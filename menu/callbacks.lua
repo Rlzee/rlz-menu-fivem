@@ -28,6 +28,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
         if item.id == itemId and item.type == "checkbox" then
 
             item.isChecked = not item.isChecked
+            CHECKBOX_STATES[item.id] = item.isChecked
 
             TriggerNuiEvent("rlz_menu:setData", {
                 title = MENUS[CURRENT_MENU].title,
