@@ -1,15 +1,27 @@
 import { Check } from "lucide-react";
+import { cn } from "cn";
 
 type MenuItemProps = {
   label: string;
   isChecked?: boolean;
+  selected?: boolean;
+  onMouseEnter?: () => void;
 };
 
-export function MenuCheckbox({ label, isChecked = false }: MenuItemProps) {
+export function MenuCheckbox({
+  label,
+  isChecked = false,
+  selected,
+  onMouseEnter,
+}: MenuItemProps) {
   return (
     <div
       data-slot="menu-checkbox"
-      className="flex h-8 items-center justify-between rounded-xs bg-black/40 px-2 text-white"
+      className={cn(
+        "flex h-8 items-center justify-between rounded-xs px-2 text-white",
+        selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
+      )}
+      onMouseEnter={onMouseEnter}
     >
       <span>{label}</span>
       {isChecked ? (

@@ -15,10 +15,12 @@ const App = () => {
 
   useNuiEvent<MenuData>("rlz_menu:setData", setMenu);
 
-  if (!visible) return null;
+  if (!visible) {
+    return null;
+  }
 
   return (
-    <div className="flex min-h-screen flex-col p-4">
+    <div className="flex min-h-screen flex-col items-start p-4">
       <MenuView menu={menu} />
     </div>
   );

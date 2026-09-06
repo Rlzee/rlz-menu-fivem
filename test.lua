@@ -6,27 +6,27 @@ local testMenu = rlzMenu.CreateMenu(
 print("Menu créé :", testMenu)
 
 rlzMenu.SetItems(testMenu, function()
-    rlzMenu.Button("Button", nil, "Description", function(onSelected)
+    rlzMenu.Button("Button", nil, "Description button 1", function(onSelected)
         print("Button selected")
     end)
 
-    rlzMenu.Button("Button", nil, "Description", function(onSelected)
+    rlzMenu.Button("Button", nil, "Description button 2", function(onSelected)
         print("Button selected")
     end)
 
     rlzMenu.Separator()
 
-    rlzMenu.Checkbox("Checkbox", "Description", false, function(isChecked)
+    rlzMenu.Checkbox("Checkbox", "Description checkbox 1", false, function(isChecked)
         print("Checkbox changed:", isChecked)
     end)
 
-    rlzMenu.Checkbox("Checkbox", "Description", true, function(isChecked)
+    rlzMenu.Checkbox("Checkbox", "Description checkbox 2", true, function(isChecked)
         print("Checkbox changed:", isChecked)
     end)
 
     rlzMenu.Label("Label")
 
-    rlzMenu.Button("Button", nil, "Description", function(onSelected)
+    rlzMenu.Button("Button", nil, "Description button 3", function(onSelected)
         print("Button selected")
     end)
 end)

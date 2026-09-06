@@ -1,15 +1,30 @@
 import { ChevronRight } from "lucide-react";
+import { cn } from "cn";
 
 type MenuItemProps = {
   label: string;
   anchor?: string;
+  selected?: boolean;
+  onMouseEnter?: () => void;
 };
 
-export function MenuButton({ label, anchor }: MenuItemProps) {
+export function MenuButton({
+  label,
+  anchor,
+  selected,
+  onMouseEnter,
+}: MenuItemProps) {
   return (
-    <div data-slot="menu-item" className="flex h-8 items-center justify-between rounded-xs bg-black/40 px-2 text-white">
+    <div
+      data-slot="menu-item"
+      className={cn(
+        "flex h-8 items-center justify-between rounded-xs px-2 text-white",
+        selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
+      )}
+      onMouseEnter={onMouseEnter}
+    >
       <span>{label}</span>
       <span>{anchor || <ChevronRight className="h-4 w-4" />}</span>
     </div>
   );
-};
+}
