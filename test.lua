@@ -1,6 +1,8 @@
 local testMenu = rlzMenu.CreateMenu(
     "rlzMenu",
-    "Menu de test"
+    "Menu de test",
+    "toggleMenu",
+    "F1"
 )
 
 local optionsMenu = rlzMenu.CreateSubMenu(
@@ -51,8 +53,3 @@ rlzMenu.SetItems(optionsMenu, function()
         end
     )
 end)
-
-RegisterCommand("toggleMenu", function()
-    local isVisible = rlzMenu.IsVisible(testMenu)
-    rlzMenu.SetMenuVisible(testMenu, not isVisible)
-end, false)

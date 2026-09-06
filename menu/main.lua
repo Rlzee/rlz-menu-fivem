@@ -2,9 +2,11 @@ MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
 
-rlzMenu.CreateMenu = function(title, subtitle)
+rlzMenu.CreateMenu = function(title, subtitle, command, key)
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
+    assert(command == nil or type(command) == "string", "Menu command must be a string or nil")
+    assert(key == nil or type(key) == "string", "Menu key must be a string or nil")
 
     local self = {}
     MENU_COUNTER += 1
@@ -15,6 +17,11 @@ rlzMenu.CreateMenu = function(title, subtitle)
     self.visible = false
 
     MENUS[self.id] = self
+
+    self.command = command
+    self.key = key
+
+    RegisterMenuKey(self.id, command, key, "Toggle menu: " .. self.title)
 
     return self.id
 end
