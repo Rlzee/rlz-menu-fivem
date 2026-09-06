@@ -46,7 +46,6 @@ rlzMenu.CreateSubMenu = function(parentId, title, subtitle)
 end
 
 rlzMenu.SetItems = function(menuId, builder)
-
     assert(type(menuId) == "string", "Menu ID must be a string")
     assert(type(builder) == "function", "Items builder must be a function")
 

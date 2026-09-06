@@ -3,6 +3,9 @@ ITEM_COUNTER = 0
 ITEM_IDS = {}
 
 local function getItemId(itemType, itemIndex)
+    assert(type(itemType) == "string", "itemType must be a string")
+    assert(type(itemIndex) == "number", "itemIndex must be a number")
+    assert(CURRENT_MENU ~= nil, "CURRENT_MENU must be set")
 
     if not ITEM_IDS[CURRENT_MENU] then
         ITEM_IDS[CURRENT_MENU] = {}

@@ -1,21 +1,26 @@
-function playSound(type) 
-    assert(type == "select" or type == "back" or type == "navigate", "Invalid sound type: " .. tostring(type))
+function playSound(soundType)
 
-    if type == "select" then
+    assert(type(soundType) == "string", "soundType must be a string")
+    assert(
+        soundType == "select" or soundType == "back" or soundType == "navigate",
+        "Invalid sound type: " .. tostring(soundType)
+    )
+
+    if soundType == "select" then
         PlaySoundFrontend(
             -1,
             "SELECT",
             "HUD_FRONTEND_DEFAULT_SOUNDSET",
             true
         )
-    elseif type == "back" then
+    elseif soundType == "back" then
         PlaySoundFrontend(
             -1,
             "BACK",
             "HUD_FRONTEND_DEFAULT_SOUNDSET",
             true
         )
-    elseif type == "navigate" then
+    elseif soundType == "navigate" then
         PlaySoundFrontend(
             -1,
             "NAV_UP_DOWN",
