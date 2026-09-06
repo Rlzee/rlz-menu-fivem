@@ -73,7 +73,6 @@ rlzMenu.SetMenuVisible = function(menuId, state)
     menu.visible = state
     if state then
         CURRENT_MENU = menuId
-        rlzMenu.ManageFocus(true)
 
         ITEMS = {}
         if menu.items then
@@ -87,8 +86,10 @@ rlzMenu.SetMenuVisible = function(menuId, state)
         })
     else
         CURRENT_MENU = nil
-        rlzMenu.ManageFocus(false)
     end
+
+    SetNuiFocus(state, false)
+    SetNuiFocusKeepInput(state)
 
     TriggerNuiEvent("rlz_menu:setVisible", {
         state = state
