@@ -26,7 +26,12 @@ export function MenuCheckbox({
           <Check className="h-4 w-4 text-black" />
         </div>
       ) : (
-        <div className="h-4 w-4 rounded-xs bg-white/10" />
+        <div
+          className={cn(
+            "h-4 w-4 rounded-xs",
+            selected ? "bg-zinc-800/60" : "bg-white/10",
+          )}
+        />
       )}
     </div>
   );
