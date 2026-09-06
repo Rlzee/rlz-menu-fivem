@@ -7,12 +7,7 @@ RegisterNUICallback("rlz_menu:selectButton", function(data, cb)
         if item.id == itemId and item.type == "button" then
 
             if not item.submenu then
-                PlaySoundFrontend(
-                    -1,
-                    "SELECT",
-                    "HUD_FRONTEND_DEFAULT_SOUNDSET",
-                    true
-                )
+                playSound("select")
             end
 
             if item.onSelect then
@@ -56,12 +51,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
                 items = PrepareNuiItems(ITEMS),
             })
 
-            PlaySoundFrontend(
-                -1,
-                "SELECT",
-                "HUD_FRONTEND_DEFAULT_SOUNDSET",
-                true
-            )
+            playSound("select")
 
             if item.onChange then
                 item.onChange(item.isChecked)
@@ -82,11 +72,6 @@ RegisterNUICallback("rlz_menu:goBack", function(data, cb)
 end)
 
 RegisterNUICallback("rlz_menu:navigate", function(data, cb)
-    PlaySoundFrontend(
-        -1,
-        "NAV_UP_DOWN",
-        "HUD_FRONTEND_DEFAULT_SOUNDSET",
-        true
-    )
+    playSound("navigate")
     cb({ ok = true })
 end)

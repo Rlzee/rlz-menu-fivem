@@ -84,21 +84,10 @@ rlzMenu.SetMenuVisible = function(menuId, state)
             items = PrepareNuiItems(ITEMS),
         })
 
-        PlaySoundFrontend(
-            -1,
-            "SELECT",
-            "HUD_FRONTEND_DEFAULT_SOUNDSET",
-            true
-        )
+        playSound("select")
     else
         CURRENT_MENU = nil
-
-        PlaySoundFrontend(
-            -1,
-            "BACK",
-            "HUD_FRONTEND_DEFAULT_SOUNDSET",
-            true
-        )
+        playSound("back")
     end
 
     SetNuiFocus(state, false)
