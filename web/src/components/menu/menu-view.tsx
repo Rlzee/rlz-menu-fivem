@@ -125,6 +125,14 @@ export const MenuView = ({ menu }: MenuViewProps) => {
 
           break;
         }
+
+        case "Backspace": {
+          event.preventDefault();
+
+          fetchNui("rlz_menu:goBack");
+
+          break;
+        }
       }
     };
 

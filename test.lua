@@ -3,9 +3,19 @@ local testMenu = rlzMenu.CreateMenu(
     "Menu de test"
 )
 
-print("Menu créé :", testMenu)
+local optionsMenu = rlzMenu.CreateSubMenu(
+    testMenu,
+    "Options",
+    "Sous-menu d'options"
+)
 
 rlzMenu.SetItems(testMenu, function()
+    rlzMenu.Button("Options", nil, "Ouvrir les options", function(onSelected)
+        print("Options selected")
+    end,
+    optionsMenu
+    )
+
     rlzMenu.Button("Button", nil, "Description button 1", function(onSelected)
         print("Button selected")
     end)
@@ -29,6 +39,17 @@ rlzMenu.SetItems(testMenu, function()
     rlzMenu.Button("Button", nil, "Description button 3", function(onSelected)
         print("Button selected")
     end)
+end)
+
+rlzMenu.SetItems(optionsMenu, function()
+    rlzMenu.Button(
+        "Test",
+        nil,
+        "Test du submenu",
+        function()
+            print("Test")
+        end
+    )
 end)
 
 RegisterCommand("toggleMenu", function()

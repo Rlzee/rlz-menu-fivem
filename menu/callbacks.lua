@@ -10,6 +10,17 @@ RegisterNUICallback("rlz_menu:selectButton", function(data, cb)
                 item.onSelect()
             end
 
+            if item.submenu then
+
+                local submenu = MENUS[item.submenu]
+
+                if submenu then
+                    rlzMenu.SetMenuVisible(CURRENT_MENU, false)
+                    rlzMenu.SetMenuVisible(item.submenu, true)
+                end
+
+            end
+
             break
         end
 
@@ -47,4 +58,9 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
 
     cb({ ok = true })
 
+end)
+
+RegisterNUICallback("rlz_menu:goBack", function(data, cb)
+    rlzMenu.GoBack()
+    cb({ ok = true })
 end)
