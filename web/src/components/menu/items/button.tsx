@@ -5,9 +5,15 @@ type MenuItemProps = {
   label: string;
   anchor?: string;
   selected?: boolean;
+  submenu?: boolean;
 };
 
-export function MenuButton({ label, anchor, selected }: MenuItemProps) {
+export function MenuButton({
+  label,
+  anchor,
+  selected,
+  submenu,
+}: MenuItemProps) {
   return (
     <div
       data-slot="menu-item"
@@ -17,7 +23,7 @@ export function MenuButton({ label, anchor, selected }: MenuItemProps) {
       )}
     >
       <span>{label}</span>
-      <span>{anchor || <ChevronRight className="h-4 w-4" />}</span>
+      <span>{anchor || (submenu && <ChevronRight className="h-4 w-4" />)}</span>
     </div>
   );
 }

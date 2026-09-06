@@ -181,6 +181,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 label={item.label}
                 anchor={item.anchor}
                 selected={isSelected}
+                submenu={item.submenu}
               />
             );
           }
