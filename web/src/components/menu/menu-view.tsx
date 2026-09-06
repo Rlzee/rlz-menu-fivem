@@ -91,6 +91,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
               : currentPosition + 1;
 
           setSelectedIndex(selectableIndexes[nextPosition]);
+          fetchNui("rlz_menu:navigate");
           break;
         }
 
@@ -103,6 +104,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
               : currentPosition - 1;
 
           setSelectedIndex(selectableIndexes[previousPosition]);
+          fetchNui("rlz_menu:navigate");
           break;
         }
 
