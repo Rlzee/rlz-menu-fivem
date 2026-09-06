@@ -3,6 +3,7 @@ export type ButtonItem = {
   label: string;
   anchor?: string;
   description?: string;
+  onSelect?: () => void;
 };
 
 export type CheckboxItem = {
@@ -10,6 +11,7 @@ export type CheckboxItem = {
   label: string;
   description?: string;
   isChecked: boolean;
+  onChange?: (isChecked: boolean) => void;
 };
 
 export type LabelItem = {
@@ -21,8 +23,4 @@ export type SeparatorItem = {
   type: "separator";
 };
 
-export type MenuItem =
-  | ButtonItem
-  | CheckboxItem
-  | LabelItem
-  | SeparatorItem;
+export type MenuItem = ButtonItem | CheckboxItem | LabelItem | SeparatorItem;

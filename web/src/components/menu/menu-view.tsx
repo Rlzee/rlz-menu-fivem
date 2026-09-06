@@ -15,11 +15,14 @@ type MenuViewProps = {
 };
 
 export const MenuView = ({ menu }: MenuViewProps) => {
+  /**
+   * Index of the currently selected item.
+   * Selection is managed by React.
+   */
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   /**
-   * Only buttons and checkboxes are selectable.
-   * Labels and separators are ignored.
+   * Only buttons and checkboxes can be selected.
    */
   const selectableIndexes = useMemo(() => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
@@ -32,18 +35,28 @@ export const MenuView = ({ menu }: MenuViewProps) => {
   }, [menu.items]);
 
   /**
-   * Resets the selection when the menu changes.
+   * Initialize the selection when a new menu is opened.
+   *
+   * If the currently selected item still exists,
+   * keep the current selection.
    */
   useEffect(() => {
-    if (selectableIndexes.length > 0) {
-      setSelectedIndex(selectableIndexes[0]);
-    } else {
+    if (selectableIndexes.length === 0) {
       setSelectedIndex(0);
+      return;
     }
-  }, [menu.menuId, menu.title, menu.items, selectableIndexes]);
+
+    setSelectedIndex((currentIndex) => {
+      if (selectableIndexes.includes(currentIndex)) {
+        return currentIndex;
+      }
+
+      return selectableIndexes[0];
+    });
+  }, [menu.menuId, menu.title, menu.subtitle, selectableIndexes]);
 
   /**
-   * Checks that the selected item is still selectable.
+   * Ensure that the selected item remains valid.
    */
   useEffect(() => {
     if (selectableIndexes.length === 0) {
@@ -67,26 +80,46 @@ export const MenuView = ({ menu }: MenuViewProps) => {
 
       const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
-      if (event.key === "ArrowDown") {
-        event.preventDefault();
+      switch (event.key) {
+        case "ArrowDown": {
+          event.preventDefault();
 
-        const nextPosition =
-          currentPosition >= selectableIndexes.length - 1
-            ? 0
-            : currentPosition + 1;
+          const nextPosition =
+            currentPosition >= selectableIndexes.length - 1
+              ? 0
+              : currentPosition + 1;
 
-        setSelectedIndex(selectableIndexes[nextPosition]);
-      }
+          setSelectedIndex(selectableIndexes[nextPosition]);
+          break;
+        }
 
-      if (event.key === "ArrowUp") {
-        event.preventDefault();
+        case "ArrowUp": {
+          event.preventDefault();
 
-        const previousPosition =
-          currentPosition <= 0
-            ? selectableIndexes.length - 1
-            : currentPosition - 1;
+          const previousPosition =
+            currentPosition <= 0
+              ? selectableIndexes.length - 1
+              : currentPosition - 1;
 
-        setSelectedIndex(selectableIndexes[previousPosition]);
+          setSelectedIndex(selectableIndexes[previousPosition]);
+          break;
+        }
+
+        case "Enter": {
+          event.preventDefault();
+
+          const selectedItem = menu.items[selectedIndex];
+
+          if (selectedItem?.type === "button") {
+            selectedItem.onSelect?.();
+          }
+
+          if (selectedItem?.type === "checkbox") {
+            selectedItem.onChange?.(!selectedItem.isChecked);
+          }
+
+          break;
+        }
       }
     };
 
@@ -95,15 +128,15 @@ export const MenuView = ({ menu }: MenuViewProps) => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [selectedIndex, selectableIndexes]);
+  }, [menu.items, selectedIndex, selectableIndexes]);
 
   /**
-   * Retrieves the currently selected item.
+   * Currently selected item.
    */
   const selectedItem = menu.items[selectedIndex];
 
   /**
-   * The description displayed in the footer.
+   * Description displayed only in the footer.
    */
   const footerDescription =
     selectedItem?.type === "button" || selectedItem?.type === "checkbox"
@@ -111,7 +144,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
       : "";
 
   /**
-   * Position of the selected item in the selectable items.
+   * Position of the selected item among the selectable items.
    */
   const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
