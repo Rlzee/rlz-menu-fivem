@@ -1,4 +1,5 @@
 ITEMS = {}
+ITEM_COUNTER = 0
 
 rlzMenu.Button = function(label, anchor, description, onSelect)
     assert(type(label) == "string", "Button label must be a string")
@@ -7,6 +8,9 @@ rlzMenu.Button = function(label, anchor, description, onSelect)
     assert(onSelect == nil or type(onSelect) == "function", "Button onSelect must be a function or nil")
 
     local self = {}
+    ITEM_COUNTER += 1
+
+    self.id = generateId("item-button", ITEM_COUNTER)
     self.type = "button"
     self.label = label
     self.anchor = anchor or ""
@@ -20,6 +24,9 @@ rlzMenu.Label = function(label)
     assert(type(label) == "string", "Label label must be a string")
 
     local self = {}
+    ITEM_COUNTER += 1
+
+    self.id = generateId("item-label", ITEM_COUNTER)
     self.type = "label"
     self.label = label
 
@@ -28,6 +35,9 @@ end
 
 rlzMenu.Separator = function()
     local self = {}
+    ITEM_COUNTER += 1
+
+    self.id = generateId("item-separator", ITEM_COUNTER)
     self.type = "separator"
 
     table.insert(ITEMS, self)
@@ -40,6 +50,9 @@ rlzMenu.Checkbox = function(label, description, isChecked, onChange)
     assert(onChange == nil or type(onChange) == "function", "Checkbox onChange must be a function or nil")
 
     local self = {}
+    ITEM_COUNTER += 1
+
+    self.id = generateId("item-checkbox", ITEM_COUNTER)
     self.type = "checkbox"
     self.label = label
     self.description = description or ""

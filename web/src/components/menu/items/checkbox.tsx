@@ -5,14 +5,12 @@ type MenuItemProps = {
   label: string;
   isChecked?: boolean;
   selected?: boolean;
-  onMouseEnter?: () => void;
 };
 
 export function MenuCheckbox({
   label,
   isChecked = false,
   selected,
-  onMouseEnter,
 }: MenuItemProps) {
   return (
     <div
@@ -21,7 +19,6 @@ export function MenuCheckbox({
         "flex h-8 items-center justify-between rounded-xs px-2 text-white",
         selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
       )}
-      onMouseEnter={onMouseEnter}
     >
       <span>{label}</span>
       {isChecked ? (

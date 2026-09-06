@@ -5,15 +5,9 @@ type MenuItemProps = {
   label: string;
   anchor?: string;
   selected?: boolean;
-  onMouseEnter?: () => void;
 };
 
-export function MenuButton({
-  label,
-  anchor,
-  selected,
-  onMouseEnter,
-}: MenuItemProps) {
+export function MenuButton({ label, anchor, selected }: MenuItemProps) {
   return (
     <div
       data-slot="menu-item"
@@ -21,7 +15,6 @@ export function MenuButton({
         "flex h-8 items-center justify-between rounded-xs px-2 text-white",
         selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
       )}
-      onMouseEnter={onMouseEnter}
     >
       <span>{label}</span>
       <span>{anchor || <ChevronRight className="h-4 w-4" />}</span>

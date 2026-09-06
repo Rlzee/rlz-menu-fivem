@@ -19,5 +19,6 @@ client_scripts {
     'menu/main.lua',
     'menu/items.lua',
     'menu/functions.lua',
+    'menu/callbacks.lua',
     'test.lua',
 }

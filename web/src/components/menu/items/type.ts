@@ -1,4 +1,5 @@
 export type ButtonItem = {
+  id: string;
   type: "button";
   label: string;
   anchor?: string;
@@ -7,6 +8,7 @@ export type ButtonItem = {
 };
 
 export type CheckboxItem = {
+  id: string;
   type: "checkbox";
   label: string;
   description?: string;
@@ -15,11 +17,13 @@ export type CheckboxItem = {
 };
 
 export type LabelItem = {
+  id: string;
   type: "label";
   label: string;
 };
 
 export type SeparatorItem = {
+  id: string;
   type: "separator";
 };
 

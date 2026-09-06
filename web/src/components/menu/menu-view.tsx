@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { fetchNui } from "../../utils/fetchNui";
 
 import { Menu } from "./exports";
 import type { MenuItem } from "./items/type";
@@ -111,11 +112,15 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           const selectedItem = menu.items[selectedIndex];
 
           if (selectedItem?.type === "button") {
-            selectedItem.onSelect?.();
+            fetchNui("rlz_menu:selectButton", {
+              itemId: selectedItem.id,
+            });
           }
 
           if (selectedItem?.type === "checkbox") {
-            selectedItem.onChange?.(!selectedItem.isChecked);
+            fetchNui("rlz_menu:toggleCheckbox", {
+              itemId: selectedItem.id,
+            });
           }
 
           break;
@@ -164,13 +169,10 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           if (item.type === "button") {
             return (
               <Menu.Item.Button
-                key={index}
+                key={item.id}
                 label={item.label}
                 anchor={item.anchor}
                 selected={isSelected}
-                onMouseEnter={() => {
-                  setSelectedIndex(index);
-                }}
               />
             );
           }
@@ -178,23 +180,20 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           if (item.type === "checkbox") {
             return (
               <Menu.Item.Checkbox
-                key={index}
+                key={item.id}
                 label={item.label}
                 isChecked={item.isChecked}
                 selected={isSelected}
-                onMouseEnter={() => {
-                  setSelectedIndex(index);
-                }}
               />
             );
           }
 
           if (item.type === "label") {
-            return <Menu.Item.Label key={index} label={item.label} />;
+            return <Menu.Item.Label key={item.id} label={item.label} />;
           }
 
           if (item.type === "separator") {
-            return <Menu.Item.Separator key={index} />;
+            return <Menu.Item.Separator key={item.id} />;
           }
 
           return null;

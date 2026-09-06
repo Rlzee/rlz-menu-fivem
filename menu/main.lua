@@ -7,14 +7,9 @@ rlzMenu.CreateMenu = function(title, subtitle)
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
 
     local self = {}
-
-    self.id = ("rlzMenu:Identifier:%s/%s"):format(
-        MENU_COUNTER,
-        math.random()
-    )
-
     MENU_COUNTER += 1
 
+    self.id = generateId("menu", MENU_COUNTER)
     self.title = title or ""
     self.subtitle = subtitle or ""
     self.visible = false
@@ -30,13 +25,9 @@ rlzMenu.CreateSubMenu = function(parentId, title, subtitle)
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
 
     local self = {}
-    self.id = ("rlzMenu:Identifier:%s/%s"):format(
-        MENU_COUNTER,
-        math.random()
-    )
-
     MENU_COUNTER += 1
 
+    self.id = generateId("submenu", MENU_COUNTER)
     self.parent = parentId
     self.title = title or ""
     self.subtitle = subtitle or ""
@@ -75,6 +66,7 @@ rlzMenu.SetMenuVisible = function(menuId, state)
         CURRENT_MENU = menuId
 
         ITEMS = {}
+        ITEM_COUNTER = 0
         if menu.items then
             menu.items()
         end
