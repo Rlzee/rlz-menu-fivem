@@ -8,13 +8,3 @@ rlzMenu.IsVisible = function(id)
 
     return MENUS[id].visible
 end
-
-rlzMenu.ManageFocus = function(state)
-    if state then
-        SetNuiFocus(true, false)
-        SetNuiFocusKeepInput(true)
-    else
-        SetNuiFocus(false, false)
-        SetNuiFocusKeepInput(false)
-    end
-end
