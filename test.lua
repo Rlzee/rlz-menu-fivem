@@ -1,4 +1,4 @@
-local testMenu = rlzMenu.CreateMenu(
+local testMenu = rlzMenu.Create(
     "rlzMenu",
     "Menu de test",
     "toggleMenu",
@@ -85,7 +85,7 @@ rlzMenu.SetItems(testMenu, function()
         },
         1,
         function(index, value)
-            rlzMenu.SetMenuPosition(testMenu, value:lower())
+            rlzMenu.SetPosition(testMenu, value:lower())
         end,
         false
     )

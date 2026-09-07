@@ -195,7 +195,9 @@ export const MenuView = ({ menu }: MenuViewProps) => {
    * Description displayed only in the footer.
    */
   const footerDescription =
-    selectedItem?.type === "button" || selectedItem?.type === "checkbox"
+    selectedItem?.type === "button" ||
+    selectedItem?.type === "checkbox" ||
+    selectedItem?.type === "list"
       ? (selectedItem.description ?? "")
       : "";
 

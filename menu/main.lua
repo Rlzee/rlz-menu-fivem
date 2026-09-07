@@ -2,7 +2,7 @@ MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
 
-rlzMenu.CreateMenu = function(title, subtitle, command, key, position)
+rlzMenu.Create = function(title, subtitle, command, key, position)
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
     assert(command == nil or type(command) == "string", "Menu command must be a string or nil")
@@ -66,7 +66,7 @@ rlzMenu.SetItems = function(menuId, builder)
     menu.items = builder
 end
 
-rlzMenu.SetMenuVisible = function(menuId, state)
+rlzMenu.SetVisible = function(menuId, state)
     assert(type(menuId) == "string", "Menu ID must be a string")
     assert(type(state) == "boolean", "State must be a boolean")
 

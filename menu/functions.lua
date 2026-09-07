@@ -9,7 +9,7 @@ rlzMenu.IsVisible = function(id)
     return MENUS[id].visible
 end
 
-rlzMenu.SetMenuPosition = function(menuId, position)
+rlzMenu.SetPosition = function(menuId, position)
     assert(type(menuId) == "string", "menuId must be a string")
     assert(position == "left" or position == "right", "Menu position must be 'left' or 'right'")
 
@@ -24,7 +24,7 @@ rlzMenu.SetMenuPosition = function(menuId, position)
     for _, childMenu in pairs(MENUS) do
 
         if childMenu.parent == menuId and not childMenu.positionForced then
-            rlzMenu.SetMenuPosition(childMenu.id, position)
+            rlzMenu.SetPosition(childMenu.id, position)
         end
 
     end
@@ -52,18 +52,18 @@ rlzMenu.GoBack = function()
     local parentId = currentMenu.parent
 
     if not parentId then
-        rlzMenu.SetMenuVisible(CURRENT_MENU, false)
+        rlzMenu.SetVisible(CURRENT_MENU, false)
         return
     end
 
     local parentMenu = MENUS[parentId]
 
     if not parentMenu then
-        rlzMenu.SetMenuVisible(CURRENT_MENU, false)
+        rlzMenu.SetVisible(CURRENT_MENU, false)
         return
     end
 
-    rlzMenu.SetMenuVisible(CURRENT_MENU, false)
-    rlzMenu.SetMenuVisible(parentId, true)
+    rlzMenu.SetVisible(CURRENT_MENU, false)
+    rlzMenu.SetVisible(parentId, true)
 
 end
