@@ -140,33 +140,33 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
 end)
 
-RegisterNUICallback("rlz_menu:selectList", function(data, cb)
+-- RegisterNUICallback("rlz_menu:selectList", function(data, cb)
 
-    local itemId = data.itemId
+--     local itemId = data.itemId
 
-    for _, item in ipairs(ITEMS) do
+--     for _, item in ipairs(ITEMS) do
 
-        if item.id == itemId and item.type == "list" then
+--         if item.id == itemId and item.type == "list" then
 
-            if item.disabled then
-                cb({ ok = false, disabled = true })
-                return
-            end
+--             if item.disabled then
+--                 cb({ ok = false, disabled = true })
+--                 return
+--             end
 
-            playSound("select")
+--             playSound("select")
 
-            if item.onChange then
-                item.onChange(item.index, item.value)
-            end
+--             if item.onChange then
+--                 item.onChange(item.index, item.value)
+--             end
 
-            break
-        end
+--             break
+--         end
 
-    end
+--     end
 
-    cb({ ok = true })
+--     cb({ ok = true })
 
-end)
+-- end)
 
 RegisterNUICallback("rlz_menu:goBack", function(data, cb)
     rlzMenu.GoBack()
