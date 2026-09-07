@@ -17,6 +17,7 @@ rlzMenu.CreateMenu = function(title, subtitle, command, key, position)
     self.subtitle = subtitle or ""
     self.visible = false
     self.position = position or "left"
+    self.positionForced = position ~= nil
 
     MENUS[self.id] = self
 
@@ -44,6 +45,7 @@ rlzMenu.CreateSubMenu = function(parentId, title, subtitle, position)
     self.subtitle = subtitle or ""
     self.visible = false
     self.position = position or parent.position or "left"
+    self.positionForced = position ~= nil
     self.parent = parentId
 
     MENUS[self.id] = self

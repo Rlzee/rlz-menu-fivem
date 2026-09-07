@@ -2,7 +2,7 @@ local testMenu = rlzMenu.CreateMenu(
     "rlzMenu",
     "Menu de test",
     "toggleMenu",
-    "F1",
+    "F1"
 )
 
 local optionsMenu = rlzMenu.CreateSubMenu(
@@ -74,6 +74,20 @@ rlzMenu.SetItems(testMenu, function()
             print("Mode sélectionné :", index, value)
         end,
         true -- disabled
+    )
+
+    rlzMenu.List(
+        "Position du menu",
+        "Choix actuellement indisponible",
+        {
+            "left",
+            "right"
+        },
+        1,
+        function(index, value)
+            rlzMenu.SetMenuPosition(testMenu, value:lower())
+        end,
+        false
     )
 end)
 

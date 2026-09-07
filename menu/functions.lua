@@ -21,6 +21,14 @@ rlzMenu.SetMenuPosition = function(menuId, position)
 
     menu.position = position
 
+    for _, childMenu in pairs(MENUS) do
+
+        if childMenu.parent == menuId and not childMenu.positionForced then
+            rlzMenu.SetMenuPosition(childMenu.id, position)
+        end
+
+    end
+
     if CURRENT_MENU == menuId and menu.visible then
         TriggerNuiEvent("rlz_menu:setData", {
             title = menu.title,
