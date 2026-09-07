@@ -50,6 +50,31 @@ rlzMenu.SetItems(testMenu, function()
     rlzMenu.List("List", "Description list", {"Option 1", "Option 2", "Option 3"}, 1, function(selectedIndex)
         print("List selected index:", selectedIndex)
     end)
+
+    rlzMenu.Checkbox(
+        "Mode admin",
+        "Option actuellement indisponible",
+        false,
+        function(isChecked)
+            print("Mode admin :", isChecked)
+        end,
+        true -- disabled
+    )
+
+    rlzMenu.List(
+        "Mode de jeu",
+        "Choix actuellement indisponible",
+        {
+            "Normal",
+            "Hardcore",
+            "Sandbox"
+        },
+        1,
+        function(index, value)
+            print("Mode sélectionné :", index, value)
+        end,
+        true -- disabled
+    )
 end)
 
 rlzMenu.SetItems(optionsMenu, function()

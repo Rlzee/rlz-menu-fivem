@@ -16,6 +16,7 @@ export type CheckboxItem = {
   description?: string;
   isChecked: boolean;
   onChange?: (isChecked: boolean) => void;
+  disabled?: boolean;
 };
 
 export type LabelItem = {
@@ -37,6 +38,8 @@ export type ListItem = {
   values: string[];
   index: number;
   value: string;
+  onChange?: (selectedIndex: number, selectedValue: string) => void;
+  disabled?: boolean;
 };
 
 export type MenuItem = ButtonItem | CheckboxItem | LabelItem | SeparatorItem | ListItem;

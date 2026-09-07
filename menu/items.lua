@@ -68,11 +68,12 @@ rlzMenu.Separator = function()
 end
 
 CHECKBOX_STATES = {}
-rlzMenu.Checkbox = function(label, description, isChecked, onChange)
+rlzMenu.Checkbox = function(label, description, isChecked, onChange, disabled)
     assert(type(label) == "string", "Checkbox label must be a string")
     assert(description == nil or type(description) == "string", "Checkbox description must be a string or nil")
     assert(type(isChecked) == "boolean", "Checkbox isChecked must be a boolean")
     assert(onChange == nil or type(onChange) == "function", "Checkbox onChange must be a function or nil")
+    assert(disabled == nil or type(disabled) == "boolean", "Checkbox disabled must be a boolean or nil")
 
     local self = {}
     ITEM_COUNTER += 1
@@ -91,17 +92,19 @@ rlzMenu.Checkbox = function(label, description, isChecked, onChange)
     self.label = label
     self.description = description or ""
     self.onChange = onChange
+    self.disabled = disabled or false
 
     table.insert(ITEMS, self)
 end
 
 LIST_STATES = {}
-rlzMenu.List = function(label, description, values, selectedIndex, onChange)
+rlzMenu.List = function(label, description, values, selectedIndex, onChange, disabled)
     assert(type(label) == "string", "List label must be a string")
     assert(description == nil or type(description) == "string", "Checkbox description must be a string or nil")
     assert(#values > 0, "List values must not be empty")
     assert(selectedIndex == nil or type(selectedIndex) == "number", "List selectedIndex must be a number or nil")
     assert(onChange == nil or type(onChange) == "function", "List onChange must be a function or nil")
+    assert(disabled == nil or type(disabled) == "boolean", "List disabled must be a boolean or nil")
 
     local self = {}
     ITEM_COUNTER += 1
@@ -127,6 +130,7 @@ rlzMenu.List = function(label, description, values, selectedIndex, onChange)
     self.index = currentIndex
     self.value = values[currentIndex]
     self.onChange = onChange
+    self.disabled = disabled or false
 
     table.insert(ITEMS, self)
 end

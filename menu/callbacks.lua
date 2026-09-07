@@ -47,6 +47,11 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
 
         if item.id == itemId and item.type == "checkbox" then
 
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
+
             item.isChecked = not item.isChecked
             CHECKBOX_STATES[item.id] = item.isChecked
 
@@ -84,6 +89,11 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
     for _, item in ipairs(ITEMS) do
 
         if item.id == itemId and item.type == "list" then
+
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
 
             local nextIndex = item.index
 
@@ -135,6 +145,11 @@ RegisterNUICallback("rlz_menu:selectList", function(data, cb)
     for _, item in ipairs(ITEMS) do
 
         if item.id == itemId and item.type == "list" then
+
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
 
             playSound("select")
 

@@ -29,8 +29,8 @@ export const MenuView = ({ menu }: MenuViewProps) => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
       if (
         (item.type === "button" && !item.disabled) ||
-        item.type === "checkbox" ||
-        item.type === "list"
+        (item.type === "checkbox" && !item.disabled) ||
+        (item.type === "list" && !item.disabled)
       ) {
         indexes.push(index);
       }
@@ -236,6 +236,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 label={item.label}
                 isChecked={item.isChecked}
                 selected={isSelected}
+                disabled={item.disabled}
               />
             );
           }
@@ -257,6 +258,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 index={item.index}
                 value={item.value}
                 selected={isSelected}
+                disabled={item.disabled}
               />
             );
           }
