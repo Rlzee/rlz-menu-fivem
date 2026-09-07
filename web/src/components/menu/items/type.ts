@@ -29,4 +29,14 @@ export type SeparatorItem = {
   type: "separator";
 };
 
-export type MenuItem = ButtonItem | CheckboxItem | LabelItem | SeparatorItem;
+export type ListItem = {
+  id: string;
+  type: "list";
+  label: string;
+  description?: string;
+  values: string[];
+  index: number;
+  value: string;
+};
+
+export type MenuItem = ButtonItem | CheckboxItem | LabelItem | SeparatorItem | ListItem;

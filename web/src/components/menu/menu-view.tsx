@@ -29,7 +29,8 @@ export const MenuView = ({ menu }: MenuViewProps) => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
       if (
         (item.type === "button" && !item.disabled) ||
-        item.type === "checkbox"
+        item.type === "checkbox" ||
+        item.type === "list"
       ) {
         indexes.push(index);
       }
@@ -111,6 +112,36 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           break;
         }
 
+        case "ArrowLeft": {
+          event.preventDefault();
+
+          const selectedItem = menu.items[selectedIndex];
+
+          if (selectedItem?.type === "list") {
+            fetchNui("rlz_menu:changeList", {
+              itemId: selectedItem.id,
+              direction: "left",
+            });
+          }
+
+          break;
+        }
+
+        case "ArrowRight": {
+          event.preventDefault();
+
+          const selectedItem = menu.items[selectedIndex];
+
+          if (selectedItem?.type === "list") {
+            fetchNui("rlz_menu:changeList", {
+              itemId: selectedItem.id,
+              direction: "right",
+            });
+          }
+
+          break;
+        }
+
         case "Enter": {
           event.preventDefault();
 
@@ -124,6 +155,12 @@ export const MenuView = ({ menu }: MenuViewProps) => {
 
           if (selectedItem?.type === "checkbox") {
             fetchNui("rlz_menu:toggleCheckbox", {
+              itemId: selectedItem.id,
+            });
+          }
+
+          if (selectedItem?.type === "list") {
+            fetchNui("rlz_menu:selectList", {
               itemId: selectedItem.id,
             });
           }
@@ -209,6 +246,19 @@ export const MenuView = ({ menu }: MenuViewProps) => {
 
           if (item.type === "separator") {
             return <Menu.Item.Separator key={item.id} />;
+          }
+
+          if (item.type === "list") {
+            return (
+              <Menu.Item.List
+                key={item.id}
+                label={item.label}
+                values={item.values}
+                index={item.index}
+                value={item.value}
+                selected={isSelected}
+              />
+            );
           }
 
           return null;

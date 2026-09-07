@@ -1,7 +1,7 @@
 import { ChevronRight, Lock } from "lucide-react";
 import { cn } from "cn";
 
-type MenuItemProps = {
+type MenuButtonProps = {
   label: string;
   anchor?: string;
   selected?: boolean;
@@ -15,7 +15,7 @@ export function MenuButton({
   selected,
   submenu,
   disabled,
-}: MenuItemProps) {
+}: MenuButtonProps) {
   return (
     <div
       data-slot="menu-item"

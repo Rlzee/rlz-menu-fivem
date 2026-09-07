@@ -42,10 +42,14 @@ rlzMenu.SetItems(testMenu, function()
         print("Button selected")
     end)
 
-    rlzMenu.Button("Bouton désactivé", nil, "Cette action est indisponible",
+    rlzMenu.Button("Bouton désactivé", nil, nil,
     function()
         print("Ne sera pas exécuté")
     end, nil, true)
+
+    rlzMenu.List("List", "Description list", {"Option 1", "Option 2", "Option 3"}, 1, function(selectedIndex)
+        print("List selected index:", selectedIndex)
+    end)
 end)
 
 rlzMenu.SetItems(optionsMenu, function()

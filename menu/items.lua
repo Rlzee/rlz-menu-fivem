@@ -40,7 +40,7 @@ rlzMenu.Button = function(label, anchor, description, onSelect, submenu, disable
     self.onSelect = onSelect
     self.submenu = submenu
     self.disabled = disabled or false
-    
+
     table.insert(ITEMS, self)
 end
 
@@ -95,21 +95,39 @@ rlzMenu.Checkbox = function(label, description, isChecked, onChange)
     table.insert(ITEMS, self)
 end
 
--- rlzMenu.List = function(label, description, options, selectedIndex, onChange)
---     assert(type(label) == "string", "List label must be a string")
---     assert(description == nil or type(description) == "string", "List description must be a string or nil")
---     assert(type(options) == "table", "List options must be a table")
---     assert(type(selectedIndex) == "number", "List selectedIndex must be a number")
---     assert(onChange == nil or type(onChange) == "function", "List onChange must be a function or nil")
+LIST_STATES = {}
+rlzMenu.List = function(label, description, values, selectedIndex, onChange)
+    assert(type(label) == "string", "List label must be a string")
+    assert(description == nil or type(description) == "string", "Checkbox description must be a string or nil")
+    assert(#values > 0, "List values must not be empty")
+    assert(selectedIndex == nil or type(selectedIndex) == "number", "List selectedIndex must be a number or nil")
+    assert(onChange == nil or type(onChange) == "function", "List onChange must be a function or nil")
 
---     local self = {}
---     self.type = "list"
---     self.label = label
---     self.description = description or ""
---     self.options = options
---     self.selectedIndex = selectedIndex
---     self.onChange = onChange
+    local self = {}
+    ITEM_COUNTER += 1
 
---     table.insert(ITEMS, self)
--- end
+    local itemId = getItemId("list", ITEM_COUNTER)
+    local currentIndex = LIST_STATES[itemId] or selectedIndex or 1
+
+    if currentIndex < 1 then
+        currentIndex = 1
+    end
+
+    if currentIndex > #values then
+        currentIndex = #values
+    end
+
+    LIST_STATES[itemId] = currentIndex
+
+    self.id = itemId
+    self.type = "list"
+    self.label = label
+    self.description = description or ""
+    self.values = values
+    self.index = currentIndex
+    self.value = values[currentIndex]
+    self.onChange = onChange
+
+    table.insert(ITEMS, self)
+end
 

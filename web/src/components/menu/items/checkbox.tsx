@@ -1,7 +1,7 @@
 import { Check } from "lucide-react";
 import { cn } from "cn";
 
-type MenuItemProps = {
+type MenuCheckboxProps = {
   label: string;
   isChecked?: boolean;
   selected?: boolean;
@@ -11,7 +11,7 @@ export function MenuCheckbox({
   label,
   isChecked = false,
   selected,
-}: MenuItemProps) {
+}: MenuCheckboxProps) {
   return (
     <div
       data-slot="menu-checkbox"
