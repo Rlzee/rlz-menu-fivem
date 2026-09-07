@@ -6,6 +6,11 @@ RegisterNUICallback("rlz_menu:selectButton", function(data, cb)
 
         if item.id == itemId and item.type == "button" then
 
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
+
             if not item.submenu then
                 playSound("select")
             end

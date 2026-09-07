@@ -21,12 +21,13 @@ local function getItemId(itemType, itemIndex)
     return itemId
 end
 
-rlzMenu.Button = function(label, anchor, description, onSelect, submenu)
+rlzMenu.Button = function(label, anchor, description, onSelect, submenu, disabled)
     assert(type(label) == "string", "Button label must be a string")
     assert(anchor == nil or type(anchor) == "string", "Button anchor must be a string or nil")
     assert(description == nil or type(description) == "string", "Button description must be a string or nil")
     assert(onSelect == nil or type(onSelect) == "function", "Button onSelect must be a function or nil")
     assert(submenu == nil or type(submenu) == "string", "Button submenu must be a string or nil")
+    assert(disabled == nil or type(disabled) == "boolean", "Button disabled must be a boolean or nil")
 
     local self = {}
     ITEM_COUNTER += 1
@@ -38,7 +39,8 @@ rlzMenu.Button = function(label, anchor, description, onSelect, submenu)
     self.description = description or ""
     self.onSelect = onSelect
     self.submenu = submenu
-
+    self.disabled = disabled or false
+    
     table.insert(ITEMS, self)
 end
 

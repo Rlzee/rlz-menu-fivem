@@ -6,6 +6,7 @@ export type ButtonItem = {
   description?: string;
   onSelect?: () => void;
   submenu?: boolean;
+  disabled?: boolean;
 };
 
 export type CheckboxItem = {

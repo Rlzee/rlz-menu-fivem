@@ -27,7 +27,10 @@ export const MenuView = ({ menu }: MenuViewProps) => {
    */
   const selectableIndexes = useMemo(() => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
-      if (item.type === "button" || item.type === "checkbox") {
+      if (
+        (item.type === "button" && !item.disabled) ||
+        item.type === "checkbox"
+      ) {
         indexes.push(index);
       }
 
@@ -184,6 +187,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 anchor={item.anchor}
                 selected={isSelected}
                 submenu={item.submenu}
+                disabled={item.disabled}
               />
             );
           }
@@ -211,7 +215,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
         })}
       </Menu.Content>
 
-      <Menu.Footer description={footerDescription} />
+      {footerDescription && <Menu.Footer description={footerDescription} />}
     </div>
   );
 };
