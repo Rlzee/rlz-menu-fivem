@@ -1,3 +1,16 @@
+local function RefreshCurrentMenu(menu)
+    if CURRENT_MENU ~= menu.id or not menu.visible then
+        return
+    end
+
+    TriggerNuiEvent("rlz_menu:setData", {
+        title = menu.title,
+        subtitle = menu.subtitle,
+        position = menu.position,
+        items = PrepareNuiItems(ITEMS),
+    })
+end
+
 rlzMenu.GetCurrentMenu = function()
     return CURRENT_MENU
 end
@@ -7,6 +20,18 @@ rlzMenu.IsVisible = function(id)
     assert(MENUS[id], "rlzMenu.IsVisible: The menu with ID '" .. id .. "' does not exist")
 
     return MENUS[id].visible
+end
+
+rlzMenu.GetPosition = function(menuId)
+    assert(type(menuId) == "string", "rlzMenu.GetPosition: The menu ID must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    return menu.position
 end
 
 rlzMenu.SetPosition = function(menuId, position)
@@ -22,27 +47,69 @@ rlzMenu.SetPosition = function(menuId, position)
     menu.position = position
 
     for _, childMenu in pairs(MENUS) do
-
         if childMenu.parent == menuId and not childMenu.positionForced then
             rlzMenu.SetPosition(childMenu.id, position)
         end
-
     end
 
-    if CURRENT_MENU == menuId and menu.visible then
-        TriggerNuiEvent("rlz_menu:setData", {
-            title = menu.title,
-            subtitle = menu.subtitle,
-            position = menu.position,
-            items = PrepareNuiItems(ITEMS),
-        })
-    end
+    RefreshCurrentMenu(menu)
 
     return true
 end
 
-rlzMenu.GoBack = function()
+rlzMenu.SetTitle = function(menuId, title)
+    assert(type(menuId) == "string", "rlzMenu.SetTitle: The menu ID must be a string")
+    assert(type(title) == "string", "rlzMenu.SetTitle: The title must be a string")
 
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    menu.title = title
+
+    RefreshCurrentMenu(menu)
+
+    return true
+end
+
+rlzMenu.SetSubtitle = function(menuId, subtitle)
+    assert(type(menuId) == "string", "rlzMenu.SetSubtitle: The menu ID must be a string")
+    assert(type(subtitle) == "string", "rlzMenu.SetSubtitle: The subtitle must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    menu.subtitle = subtitle
+
+    RefreshCurrentMenu(menu)
+
+    return true
+end
+
+rlzMenu.GetParent = function(menuId)
+    assert(type(menuId) == "string", "rlzMenu.GetParent: The menu ID must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    return menu.parent
+end
+
+rlzMenu.Exists = function(menuId)
+    assert(type(menuId) == "string", "rlzMenu.Exists: The menu ID must be a string")
+
+    return MENUS[menuId] ~= nil
+end
+
+rlzMenu.GoBack = function()
     local currentMenu = MENUS[CURRENT_MENU]
 
     if not currentMenu then
@@ -65,5 +132,4 @@ rlzMenu.GoBack = function()
 
     rlzMenu.SetVisible(CURRENT_MENU, false)
     rlzMenu.SetVisible(parentId, true)
-
 end

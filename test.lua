@@ -18,12 +18,12 @@ rlzMenu.SetItems(testMenu, function()
     optionsMenu
     )
 
-    rlzMenu.Button("Button", nil, "Description button 1", function()
-        print("Button selected")
+    rlzMenu.Button("SetTitle", nil, "Changer le titre du menu", function()
+        rlzMenu.SetTitle(testMenu, "Nouveau titre")
     end)
 
-    rlzMenu.Button("Button", nil, "Description button 2", function()
-        print("Button selected")
+    rlzMenu.Button("SetSubtitle", nil, "Changer le sous-titre du menu", function()
+        rlzMenu.SetSubtitle(testMenu, "Nouveau sous-titre")
     end)
 
     rlzMenu.Separator()
