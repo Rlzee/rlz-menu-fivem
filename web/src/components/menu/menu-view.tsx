@@ -8,6 +8,7 @@ export type MenuData = {
   menuId?: string;
   title: string;
   subtitle: string;
+  position: "left" | "right";
   items: MenuItem[];
 };
 
@@ -204,7 +205,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
   const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
   return (
-    <div id="menu" className="w-[20vw]">
+    <div id={menu.menuId} className="w-[20vw]">
       <Menu.Header
         title={menu.title}
         subtitle={menu.subtitle}

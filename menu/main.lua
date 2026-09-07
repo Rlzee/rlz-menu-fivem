@@ -2,11 +2,12 @@ MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
 
-rlzMenu.CreateMenu = function(title, subtitle, command, key)
+rlzMenu.CreateMenu = function(title, subtitle, command, key, position)
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
     assert(command == nil or type(command) == "string", "Menu command must be a string or nil")
     assert(key == nil or type(key) == "string", "Menu key must be a string or nil")
+    assert(position == nil or position == "left" or position == "right", "Menu position must be 'left', 'right' or nil")
 
     local self = {}
     MENU_COUNTER += 1
@@ -15,6 +16,7 @@ rlzMenu.CreateMenu = function(title, subtitle, command, key)
     self.title = title or ""
     self.subtitle = subtitle or ""
     self.visible = false
+    self.position = position or "left"
 
     MENUS[self.id] = self
 
@@ -26,19 +28,23 @@ rlzMenu.CreateMenu = function(title, subtitle, command, key)
     return self.id
 end
 
-rlzMenu.CreateSubMenu = function(parentId, title, subtitle)
+rlzMenu.CreateSubMenu = function(parentId, title, subtitle, position)
     assert(MENUS[parentId] ~= nil, "Submenu parent ID doesn't exists")
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
+    assert(position == nil or position == "left" or position == "right", "Menu position must be 'left', 'right' or nil")
+
+    local parent = MENUS[parentId]
 
     local self = {}
     MENU_COUNTER += 1
 
     self.id = generateId("submenu", MENU_COUNTER)
-    self.parent = parentId
     self.title = title or ""
     self.subtitle = subtitle or ""
     self.visible = false
+    self.position = position or parent.position or "left"
+    self.parent = parentId
 
     MENUS[self.id] = self
 
@@ -80,6 +86,7 @@ rlzMenu.SetMenuVisible = function(menuId, state)
         TriggerNuiEvent("rlz_menu:setData", {
             title = menu.title,
             subtitle = menu.subtitle,
+            position = menu.position,
             items = PrepareNuiItems(ITEMS),
         })
 

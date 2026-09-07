@@ -2,7 +2,7 @@ local testMenu = rlzMenu.CreateMenu(
     "rlzMenu",
     "Menu de test",
     "toggleMenu",
-    "F1"
+    "F1",
 )
 
 local optionsMenu = rlzMenu.CreateSubMenu(

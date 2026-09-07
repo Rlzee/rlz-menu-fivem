@@ -58,6 +58,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
             TriggerNuiEvent("rlz_menu:setData", {
                 title = MENUS[CURRENT_MENU].title,
                 subtitle = MENUS[CURRENT_MENU].subtitle,
+                position = MENUS[CURRENT_MENU].position,
                 items = PrepareNuiItems(ITEMS),
             })
 
@@ -119,6 +120,7 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
             TriggerNuiEvent("rlz_menu:setData", {
                 title = MENUS[CURRENT_MENU].title,
                 subtitle = MENUS[CURRENT_MENU].subtitle,
+                position = MENUS[CURRENT_MENU].position,
                 items = PrepareNuiItems(ITEMS),
             })
 
