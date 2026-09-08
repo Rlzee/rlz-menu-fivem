@@ -57,7 +57,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
   const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
   return (
-    <div id={menu.menuId} className="w-[20vw]">
+    <div id={menu.menuId} className="w-(--menu-width) grid gap-(--menu-gap)">
       <Menu.Header
         title={menu.title}
         subtitle={menu.subtitle}

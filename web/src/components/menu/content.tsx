@@ -4,10 +4,8 @@ type MenuContentProps = {
 
 export function MenuContent({ children }: MenuContentProps) {
   return (
-    <div data-slot="menu-content" className="mt-0.5 bg-black/60">
-      <div className="flex flex-col gap-1 p-2">
-        {children}
-      </div>
+    <div data-slot="menu-content" className="bg-background-menu">
+      <div className="flex flex-col gap-1 p-(--menu-padding)">{children}</div>
     </div>
   );
-};
+}

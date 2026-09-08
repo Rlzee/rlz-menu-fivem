@@ -1,1 +1,20 @@
 @import "tailwindcss";
+
+@theme {
+  --radius-menu: 2px;
+  --radius-item: 2px;
+  --radius-checkbox: 2px;
+
+  --menu-gap: 2px;
+  --menu-padding: 8px;
+  --menu-width: 20vw;
+
+  --color-background-menu: rgb(0 0 0 / 60%);
+  --color-menu: rgb(16 185 129 / 80%);
+
+  --color-item-menu-background: rgb(0 0 0 / 40%);
+  --color-item-menu-background-hover: rgb(16 185 129 / 40%);
+  
+  --color-checkbox: rgb(255 255 255 / 10%);
+  --color-checkbox-selected: rgb(39 39 42 / 60%);
+}

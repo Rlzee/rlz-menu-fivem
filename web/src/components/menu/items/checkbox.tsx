@@ -19,14 +19,14 @@ export function MenuCheckbox({
     <Item selected={selected} disabled={disabled}>
       <span>{label}</span>
       {isChecked && !disabled ? (
-        <div className="h-4 w-4 rounded-xs bg-white">
+        <div className="h-4 w-4 rounded-checkbox bg-white">
           <Check className="h-4 w-4 text-black" />
         </div>
       ) : !isChecked && !disabled ? (
         <div
           className={cn(
-            "h-4 w-4 rounded-xs",
-            selected ? "bg-zinc-800/60" : "bg-white/10",
+            "h-4 w-4 rounded-checkbox",
+            selected ? "bg-checkbox-selected" : "bg-checkbox",
           )}
         />
       ) : (

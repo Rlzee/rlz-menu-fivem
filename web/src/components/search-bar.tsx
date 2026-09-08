@@ -31,7 +31,7 @@ export function SearchBar({
 }: SearchBarProps) {
   return (
     <SearchBarViewport>
-      <div className="relative bg-black/60 rounded-xs grid gap-1 p-2 max-w-xl w-full">
+      <div className="relative bg-black/60 rounded-menu grid gap-1 p-2 max-w-xl w-full">
         <span className="text-white text-sm">{label}</span>
         <input
           autoFocus
