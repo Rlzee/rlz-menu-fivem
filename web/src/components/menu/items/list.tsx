@@ -1,5 +1,5 @@
+import { Item } from "../../item";
 import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
-import { cn } from "cn";
 
 type MenuListProps = {
   label: string;
@@ -12,14 +12,7 @@ type MenuListProps = {
 
 export function MenuList({ label, value, selected, disabled }: MenuListProps) {
   return (
-    <div
-      data-slot="menu-item"
-      className={cn(
-        "flex h-8 items-center justify-between rounded-xs px-2 text-white",
-        selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
-        disabled && "opacity-50 cursor-not-allowed",
-      )}
-    >
+    <Item selected={selected} disabled={disabled}>
       <span>{label}</span>
       {!disabled ? (
         <div className="flex items-center gap-2">
@@ -30,6 +23,6 @@ export function MenuList({ label, value, selected, disabled }: MenuListProps) {
       ) : (
         <Lock className="h-4 w-4" />
       )}
-    </div>
+    </Item>
   );
 }

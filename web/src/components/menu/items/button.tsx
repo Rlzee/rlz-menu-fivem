@@ -1,5 +1,5 @@
+import { Item } from "../../item";
 import { ChevronRight, Lock } from "lucide-react";
-import { cn } from "cn";
 
 type MenuButtonProps = {
   label: string;
@@ -17,20 +17,13 @@ export function MenuButton({
   disabled,
 }: MenuButtonProps) {
   return (
-    <div
-      data-slot="menu-item"
-      className={cn(
-        "flex h-8 items-center justify-between rounded-xs px-2 text-white",
-        selected ? "bg-[rgb(16_185_129_/_40%)]" : "bg-black/40",
-        disabled && "opacity-50 cursor-not-allowed",
-      )}
-    >
+    <Item selected={selected} disabled={disabled}>
       <span>{label}</span>
       <span>
         {anchor ||
           (submenu && <ChevronRight className="h-4 w-4" />) ||
           (disabled && <Lock className="h-4 w-4" />)}
       </span>
-    </div>
+    </Item>
   );
 }
