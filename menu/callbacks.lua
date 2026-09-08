@@ -58,6 +58,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
             TriggerNuiEvent("rlz_menu:setData", {
                 title = MENUS[CURRENT_MENU].title,
                 subtitle = MENUS[CURRENT_MENU].subtitle,
+                color = MENUS[CURRENT_MENU].color,
                 position = MENUS[CURRENT_MENU].position,
                 items = PrepareNuiItems(ITEMS),
             })
@@ -120,6 +121,7 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
             TriggerNuiEvent("rlz_menu:setData", {
                 title = MENUS[CURRENT_MENU].title,
                 subtitle = MENUS[CURRENT_MENU].subtitle,
+                color = MENUS[CURRENT_MENU].color,
                 position = MENUS[CURRENT_MENU].position,
                 items = PrepareNuiItems(ITEMS),
             })
@@ -139,34 +141,6 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
     cb({ ok = false })
 
 end)
-
--- RegisterNUICallback("rlz_menu:selectList", function(data, cb)
-
---     local itemId = data.itemId
-
---     for _, item in ipairs(ITEMS) do
-
---         if item.id == itemId and item.type == "list" then
-
---             if item.disabled then
---                 cb({ ok = false, disabled = true })
---                 return
---             end
-
---             playSound("select")
-
---             if item.onChange then
---                 item.onChange(item.index, item.value)
---             end
-
---             break
---         end
-
---     end
-
---     cb({ ok = true })
-
--- end)
 
 RegisterNUICallback("rlz_menu:goBack", function(data, cb)
     rlzMenu.GoBack()

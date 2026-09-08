@@ -7,6 +7,7 @@ type MenuButtonProps = {
   selected?: boolean;
   submenu?: boolean;
   disabled?: boolean;
+  color?: string;
 };
 
 export function MenuButton({
@@ -15,9 +16,10 @@ export function MenuButton({
   selected,
   submenu,
   disabled,
+  color,
 }: MenuButtonProps) {
   return (
-    <Item selected={selected} disabled={disabled}>
+    <Item selected={selected} disabled={disabled} color={color}>
       <span>{label}</span>
       <span>
         {anchor ||

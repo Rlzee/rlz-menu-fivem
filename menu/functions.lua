@@ -6,6 +6,7 @@ local function RefreshCurrentMenu(menu)
     TriggerNuiEvent("rlz_menu:setData", {
         title = menu.title,
         subtitle = menu.subtitle,
+        color = menu.color,
         position = menu.position,
         items = PrepareNuiItems(ITEMS),
     })
@@ -49,6 +50,29 @@ rlzMenu.SetPosition = function(menuId, position)
     for _, childMenu in pairs(MENUS) do
         if childMenu.parent == menuId and not childMenu.positionForced then
             rlzMenu.SetPosition(childMenu.id, position)
+        end
+    end
+
+    RefreshCurrentMenu(menu)
+
+    return true
+end
+
+rlzMenu.SetColor = function(menuId, color)
+    assert(type(menuId) == "string", "menuId must be a string")
+    assert(type(color) == "string", "Menu color must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    menu.color = color
+
+    for _, childMenu in pairs(MENUS) do
+        if childMenu.parent == menuId and not childMenu.colorForced then
+            rlzMenu.SetColor(childMenu.id, color)
         end
     end
 

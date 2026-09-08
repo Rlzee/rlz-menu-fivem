@@ -2,11 +2,12 @@ MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
 
-rlzMenu.Create = function(title, subtitle, command, key, position)
+rlzMenu.Create = function(title, subtitle, command, key, color, position)
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
     assert(command == nil or type(command) == "string", "Menu command must be a string or nil")
     assert(key == nil or type(key) == "string", "Menu key must be a string or nil")
+    assert(color == nil or type(color) == "string", "Menu color must be a string or nil")
     assert(position == nil or position == "left" or position == "right", "Menu position must be 'left', 'right' or nil")
 
     local self = {}
@@ -16,6 +17,7 @@ rlzMenu.Create = function(title, subtitle, command, key, position)
     self.title = title or ""
     self.subtitle = subtitle or ""
     self.visible = false
+    self.color = color or "default"
     self.position = position or "left"
     self.positionForced = position ~= nil
 
@@ -29,11 +31,12 @@ rlzMenu.Create = function(title, subtitle, command, key, position)
     return self.id
 end
 
-rlzMenu.CreateSubMenu = function(parentId, title, subtitle, position)
+rlzMenu.CreateSubMenu = function(parentId, title, subtitle, position, color)
     assert(MENUS[parentId] ~= nil, "Submenu parent ID doesn't exists")
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")
     assert(subtitle == nil or type(subtitle) == "string", "Menu subtitle must be a string or nil")
     assert(position == nil or position == "left" or position == "right", "Menu position must be 'left', 'right' or nil")
+    assert(color == nil or type(color) == "string", "Menu color must be a string or nil")
 
     local parent = MENUS[parentId]
 
@@ -44,6 +47,8 @@ rlzMenu.CreateSubMenu = function(parentId, title, subtitle, position)
     self.title = title or ""
     self.subtitle = subtitle or ""
     self.visible = false
+    self.color = color or parent.color or "default"
+    self.colorForced = color ~= nil
     self.position = position or parent.position or "left"
     self.positionForced = position ~= nil
     self.parent = parentId
@@ -88,6 +93,7 @@ rlzMenu.SetVisible = function(menuId, state)
         TriggerNuiEvent("rlz_menu:setData", {
             title = menu.title,
             subtitle = menu.subtitle,
+            color = menu.color,
             position = menu.position,
             items = PrepareNuiItems(ITEMS),
         })

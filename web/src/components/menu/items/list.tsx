@@ -8,11 +8,12 @@ type MenuListProps = {
   value: string;
   selected?: boolean;
   disabled?: boolean;
+  color?: string;
 };
 
-export function MenuList({ label, value, selected, disabled }: MenuListProps) {
+export function MenuList({ label, value, selected, disabled, color }: MenuListProps) {
   return (
-    <Item selected={selected} disabled={disabled}>
+    <Item selected={selected} disabled={disabled} color={color}>
       <span>{label}</span>
       {!disabled ? (
         <div className="flex items-center gap-2">

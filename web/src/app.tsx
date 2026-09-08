@@ -12,6 +12,7 @@ const App = () => {
   const [menu, setMenu] = useState<MenuData>({
     title: "",
     subtitle: "",
+    color: "default",
     position: "left",
     items: [],
   });

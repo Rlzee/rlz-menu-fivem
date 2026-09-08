@@ -10,6 +10,7 @@ export type MenuData = {
   menuId?: string;
   title: string;
   subtitle: string;
+  color?: string;
   position: "left" | "right";
   items: MenuItem[];
 };
@@ -63,6 +64,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
         subtitle={menu.subtitle}
         current={currentPosition >= 0 ? currentPosition + 1 : 0}
         total={selectableIndexes.length}
+        color={menu.color}
       />
 
       <Menu.Content>
@@ -78,6 +80,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 selected={isSelected}
                 submenu={item.submenu}
                 disabled={item.disabled}
+                color={menu.color}
               />
             );
           }
@@ -90,6 +93,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 isChecked={item.isChecked}
                 selected={isSelected}
                 disabled={item.disabled}
+                color={menu.color}
               />
             );
           }
@@ -112,6 +116,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 value={item.value}
                 selected={isSelected}
                 disabled={item.disabled}
+                color={menu.color}
               />
             );
           }
