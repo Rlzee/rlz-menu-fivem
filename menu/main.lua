@@ -1,6 +1,7 @@
 MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
+SEARCH_BAR = nil
 
 rlzMenu.Create = function(title, subtitle, command, key, color, position)
     assert(title == nil or type(title) == "string", "Menu title must be a string or nil")

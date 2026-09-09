@@ -1,55 +1,50 @@
-export type SearchBarData = {
-  visible: boolean;
-  label?: string;
-  placeholder?: string;
-};
+import { useEffect, useRef, useState } from "react";
+import { fetchNui } from "../utils/fetchNui";
 
 type SearchBarProps = {
   label: string;
-  value: string;
-  placeholder?: string;
-  onChange: (value: string) => void;
-  onSubmit: () => void;
-  onCancel: () => void;
 };
 
-function SearchBarViewport({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="fixed inset-0 z-50 grid grid-rows-[1fr_auto_2fr] justify-items-center p-4">
-      {children}
-    </div>
-  );
-}
+export const SearchBar = ({ label }: SearchBarProps) => {
+  const [value, setValue] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
-export function SearchBar({
-  label,
-  value,
-  placeholder,
-  onChange,
-  onSubmit,
-  onCancel,
-}: SearchBarProps) {
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const submit = () => {
+    fetchNui("rlz_menu:submitSearch", { value });
+  };
+
   return (
-    <SearchBarViewport>
-      <div className="relative bg-black/60 rounded-menu grid gap-1 p-2 max-w-xl w-full">
-        <span className="text-white text-sm">{label}</span>
+    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-2 pt-[35vh]">
+      <form
+        className="w-full max-w-xl rounded-menu bg-background-menu p-2"
+        onSubmit={(event) => {
+          event.preventDefault();
+          submit();
+        }}
+      >
+        <label className="mb-1 block text-sm text-white" htmlFor="rlz-search">
+          {label}
+        </label>
         <input
-          autoFocus
-          type="text"
+          ref={inputRef}
+          id="rlz-search"
+          className="w-full bg-black px-1 py-1 text-white outline-none"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              onSubmit();
-            }
-            if (e.key === "Escape") {
-              onCancel();
+          onChange={(event) => setValue(event.target.value)}
+          onKeyDown={(event) => {
+            event.stopPropagation();
+
+            if (event.key === "Escape") {
+              event.preventDefault();
+              fetchNui("rlz_menu:cancelSearch");
             }
           }}
-          className="bg-black text-white text-sm rounded-xs p-1 w-lg outline-none"
-          placeholder={placeholder}
         />
-      </div>
-    </SearchBarViewport>
+      </form>
+    </div>
   );
-}
+};

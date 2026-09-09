@@ -151,3 +151,33 @@ RegisterNUICallback("rlz_menu:navigate", function(data, cb)
     playSound("navigate")
     cb({ ok = true })
 end)
+
+RegisterNUICallback("rlz_menu:submitSearch", function(data, cb)
+    local searchBar = SEARCH_BAR
+    SEARCH_BAR = nil
+
+    SetNuiFocus(CURRENT_MENU ~= nil, false)
+    SetNuiFocusKeepInput(CURRENT_MENU ~= nil)
+    TriggerNuiEvent("rlz_menu:closeSearch")
+
+    if searchBar and searchBar.onSubmit then
+        searchBar.onSubmit(type(data.value) == "string" and data.value or "")
+    end
+
+    cb({ ok = true })
+end)
+
+RegisterNUICallback("rlz_menu:cancelSearch", function(data, cb)
+    local searchBar = SEARCH_BAR
+    SEARCH_BAR = nil
+
+    SetNuiFocus(CURRENT_MENU ~= nil, false)
+    SetNuiFocusKeepInput(CURRENT_MENU ~= nil)
+    TriggerNuiEvent("rlz_menu:closeSearch")
+
+    if searchBar and searchBar.onCancel then
+        searchBar.onCancel()
+    end
+
+    cb({ ok = true })
+end)

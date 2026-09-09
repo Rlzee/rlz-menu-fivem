@@ -38,8 +38,15 @@ rlzMenu.SetItems(testMenu, function()
 
     rlzMenu.Label("Label")
 
-    rlzMenu.Button("Button", nil, "Description button 3", function()
-        print("Button selected")
+    rlzMenu.Button("Search", nil, nil, function()
+        rlzMenu.OpenSearchBar("Search:",
+            function(value)
+                print("Recherche :", value)
+            end,
+            function()
+                print("Recherche annulée")
+            end
+)
     end)
 
     rlzMenu.Button("Bouton désactivé", nil, nil,
