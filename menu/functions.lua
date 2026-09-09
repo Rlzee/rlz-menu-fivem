@@ -1,3 +1,5 @@
+SEARCH_BAR = nil
+
 local function RefreshCurrentMenu(menu)
     if CURRENT_MENU ~= menu.id or not menu.visible then
         return
@@ -10,6 +12,122 @@ local function RefreshCurrentMenu(menu)
         position = menu.position,
         items = PrepareNuiItems(ITEMS),
     })
+end
+
+local ITEM_PROPERTY_TYPES = {
+    button = {
+        label = "string",
+        anchor = "string",
+        description = "string",
+        onSelect = "function",
+        submenu = "string",
+        disabled = "boolean",
+    },
+
+    label = {
+        label = "string",
+    },
+
+    separator = {},
+
+    checkbox = {
+        label = "string",
+        description = "string",
+        isChecked = "boolean",
+        onChange = "function",
+        disabled = "boolean",
+    },
+
+    list = {
+        label = "string",
+        description = "string",
+        values = "table",
+        index = "number",
+        value = "string",
+        onChange = "function",
+        disabled = "boolean",
+    },
+}
+
+local function findItemById(itemId)
+    for _, item in ipairs(ITEMS) do
+        if item.id == itemId then
+            return item
+        end
+    end
+
+    return nil
+end
+
+rlzMenu.SetItemProperty = function(itemId, property, value)
+    assert(type(itemId) == "string", "rlzMenu.SetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.SetItemProperty: property must be a string")
+
+    local item = findItemById(itemId)
+
+    if not item then
+        error(("Item with ID '%s' does not exist"):format(itemId))
+    end
+
+    local allowedProperties = ITEM_PROPERTY_TYPES[item.type]
+    local expectedType = allowedProperties and allowedProperties[property]
+
+    if expectedType == nil then
+        error((
+            "Property '%s' is not supported for item type '%s'"
+        ):format(property, item.type))
+    end
+
+    if type(value) ~= expectedType then
+        error((
+            "Property '%s' must be a %s, got %s"
+        ):format(property, expectedType, type(value)))
+    end
+
+    if item.type == "list" and property == "index" then
+        if value < 1 or value > #item.values then
+            error((
+                "List index must be between 1 and %s"
+            ):format(#item.values))
+        end
+
+        item.index = value
+        item.value = item.values[value]
+        LIST_STATES[item.id] = value
+    elseif item.type == "list" and property == "values" then
+        if #value == 0 then
+            error("List values must not be empty")
+        end
+
+        item.values = value
+
+        if item.index > #value then
+            item.index = #value
+        end
+
+        if item.index < 1 then
+            item.index = 1
+        end
+
+        item.value = item.values[item.index]
+        LIST_STATES[item.id] = item.index
+    else
+        item[property] = value
+
+        if item.type == "button" and property == "anchor" then
+            BUTTON_STATES[item.id] = value
+        elseif item.type == "checkbox" and property == "isChecked" then
+            CHECKBOX_STATES[item.id] = value
+        end
+    end
+
+    local currentMenu = MENUS[CURRENT_MENU]
+
+    if currentMenu then
+        RefreshCurrentMenu(currentMenu)
+    end
+
+    return true
 end
 
 rlzMenu.GetCurrentMenu = function()

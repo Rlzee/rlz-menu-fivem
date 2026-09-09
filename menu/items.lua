@@ -21,6 +21,7 @@ local function getItemId(itemType, itemIndex)
     return itemId
 end
 
+BUTTON_STATES = {}
 rlzMenu.Button = function(label, anchor, description, onSelect, submenu, disabled)
     assert(type(label) == "string", "Button label must be a string")
     assert(anchor == nil or type(anchor) == "string", "Button anchor must be a string or nil")
@@ -33,15 +34,19 @@ rlzMenu.Button = function(label, anchor, description, onSelect, submenu, disable
     ITEM_COUNTER += 1
 
     self.id = getItemId("button", ITEM_COUNTER)
+    local currentAnchor = BUTTON_STATES[self.id] or anchor or ""
+
     self.type = "button"
     self.label = label
-    self.anchor = anchor or ""
+    self.anchor = currentAnchor
     self.description = description or ""
     self.onSelect = onSelect
     self.submenu = submenu
     self.disabled = disabled or false
 
     table.insert(ITEMS, self)
+
+    return self.id
 end
 
 rlzMenu.Label = function(label)

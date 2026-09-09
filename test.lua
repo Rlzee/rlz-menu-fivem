@@ -38,16 +38,49 @@ rlzMenu.SetItems(testMenu, function()
 
     rlzMenu.Label("Label")
 
-    rlzMenu.Button("Search", nil, nil, function()
-        rlzMenu.OpenSearchBar("Search:",
-            function(value)
-                print("Recherche :", value)
-            end,
-            function()
-                print("Recherche annulée")
-            end
-)
-    end)
+    local density = ""
+    local densityButtonId
+    rlzMenu.Button(
+        "Density",
+        "0.0",
+        nil,
+        function()
+            rlzMenu.OpenSearchBar(
+                "Search:",
+                function(value)
+                    local numericValue
+
+                    if value == "" then
+                        numericValue = 0.0
+                    else
+                        numericValue = tonumber(value)
+                    end
+
+                    if numericValue == nil then
+                        print("La valeur doit être un nombre")
+                        return
+                    end
+
+                    if numericValue < 0 or numericValue > 1 then
+                        print("La valeur doit être comprise entre 0 et 1")
+                        return
+                    end
+
+                    density = tostring(numericValue)
+
+                    rlzMenu.SetItemProperty(
+                        densityButtonId,
+                        "anchor",
+                        density
+                    )
+                end,
+                function()
+                    print("Search Cancelled")
+                end
+            )
+        end
+    )
+    densityButtonId = ITEMS[#ITEMS].id
 
     rlzMenu.Button("Bouton désactivé", nil, nil,
     function()
