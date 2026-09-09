@@ -2,10 +2,10 @@ fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
 
-author 'rlz'
-description ''
-repository ''
-version '2.0.0'
+author 'Rlzee'
+description 'A menu system for FiveM'
+repository 'https://github.com/Rlzee/rlz-menu'
+version '1.0.0'
 
 files {
     'web/dist/**/*',
