@@ -1,8 +1,16 @@
 SEARCH_BAR = nil
 
-function RefreshCurrentMenu(menu)
+rlzMenu.Refresh = function(menuId)
+    assert(type(menuId) == "string", "Menu ID must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
     if CURRENT_MENU ~= menu.id or not menu.visible then
-        return
+        return false
     end
 
     TriggerNuiEvent("rlz_menu:setData", {
@@ -12,6 +20,8 @@ function RefreshCurrentMenu(menu)
         position = menu.position,
         items = PrepareNuiItems(ITEMS),
     })
+
+    return true
 end
 
 local ITEM_PROPERTY_TYPES = {
@@ -124,7 +134,7 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
     local currentMenu = MENUS[CURRENT_MENU]
 
     if currentMenu then
-        RefreshCurrentMenu(currentMenu)
+        rlzMenu.Refresh(currentMenu.id)
     end
 
     return true
@@ -184,7 +194,7 @@ rlzMenu.SetPosition = function(menuId, position)
         end
     end
 
-    RefreshCurrentMenu(menu)
+    rlzMenu.Refresh(menu.id)
 
     return true
 end
@@ -207,7 +217,7 @@ rlzMenu.SetColor = function(menuId, color)
         end
     end
 
-    RefreshCurrentMenu(menu)
+    rlzMenu.Refresh(menu.id)
 
     return true
 end
@@ -231,7 +241,7 @@ rlzMenu.SetTitle = function(menuId, title)
 
     menu.title = title
 
-    RefreshCurrentMenu(menu)
+    rlzMenu.Refresh(menu.id)
 
     return true
 end
@@ -255,7 +265,7 @@ rlzMenu.SetSubtitle = function(menuId, subtitle)
 
     menu.subtitle = subtitle
 
-    RefreshCurrentMenu(menu)
+    rlzMenu.Refresh(menu.id)
 
     return true
 end
