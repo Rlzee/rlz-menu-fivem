@@ -323,6 +323,24 @@ rlzMenu.OpenSearchBar = function(label, onSubmit, onCancel)
     })
 end
 
+rlzMenu.GoTo = function(menuId)
+    assert(type(menuId) == "string", "Menu ID must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    if CURRENT_MENU and MENUS[CURRENT_MENU] then
+        MENUS[CURRENT_MENU].visible = false
+    end
+
+    rlzMenu.SetVisible(menuId, true)
+
+    return true
+end
+
 rlzMenu.GoBack = function()
     local currentMenu = MENUS[CURRENT_MENU]
 
