@@ -39,6 +39,7 @@ RegisterNUICallback("rlz_menu:selectButton", function(data, cb)
 
 end)
 
+
 RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
 
     local itemId = data.itemId
@@ -53,15 +54,8 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
             end
 
             item.isChecked = not item.isChecked
-            CHECKBOX_STATES[item.id] = item.isChecked
 
-            TriggerNuiEvent("rlz_menu:setData", {
-                title = MENUS[CURRENT_MENU].title,
-                subtitle = MENUS[CURRENT_MENU].subtitle,
-                color = MENUS[CURRENT_MENU].color,
-                position = MENUS[CURRENT_MENU].position,
-                items = PrepareNuiItems(ITEMS),
-            })
+            RefreshCurrentMenu(MENUS[CURRENT_MENU])
 
             playSound("select")
 
@@ -69,14 +63,16 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
                 item.onChange(item.isChecked)
             end
 
-            break
+            cb({ ok = true })
+            return
         end
 
     end
 
-    cb({ ok = true })
+    cb({ ok = false })
 
 end)
+
 
 RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
@@ -101,30 +97,20 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
             if direction == "left" then
                 nextIndex -= 1
-            elseif direction == "right" then
+            else
                 nextIndex += 1
             end
 
             if nextIndex < 1 then
                 nextIndex = #item.values
-            end
-
-            if nextIndex > #item.values then
+            elseif nextIndex > #item.values then
                 nextIndex = 1
             end
 
             item.index = nextIndex
             item.value = item.values[nextIndex]
 
-            LIST_STATES[item.id] = nextIndex
-
-            TriggerNuiEvent("rlz_menu:setData", {
-                title = MENUS[CURRENT_MENU].title,
-                subtitle = MENUS[CURRENT_MENU].subtitle,
-                color = MENUS[CURRENT_MENU].color,
-                position = MENUS[CURRENT_MENU].position,
-                items = PrepareNuiItems(ITEMS),
-            })
+            RefreshCurrentMenu(MENUS[CURRENT_MENU])
 
             playSound("navigate")
 
@@ -142,37 +128,50 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
 end)
 
+
 RegisterNUICallback("rlz_menu:goBack", function(data, cb)
     rlzMenu.GoBack()
     cb({ ok = true })
 end)
+
 
 RegisterNUICallback("rlz_menu:navigate", function(data, cb)
     playSound("navigate")
     cb({ ok = true })
 end)
 
+
 RegisterNUICallback("rlz_menu:submitSearch", function(data, cb)
+
     local searchBar = SEARCH_BAR
+
     SEARCH_BAR = nil
 
     SetNuiFocus(CURRENT_MENU ~= nil, false)
     SetNuiFocusKeepInput(CURRENT_MENU ~= nil)
+
     TriggerNuiEvent("rlz_menu:closeSearch")
 
     if searchBar and searchBar.onSubmit then
-        searchBar.onSubmit(type(data.value) == "string" and data.value or "")
+        searchBar.onSubmit(
+            type(data.value) == "string" and data.value or ""
+        )
     end
 
     cb({ ok = true })
+
 end)
 
+
 RegisterNUICallback("rlz_menu:cancelSearch", function(data, cb)
+
     local searchBar = SEARCH_BAR
+
     SEARCH_BAR = nil
 
     SetNuiFocus(CURRENT_MENU ~= nil, false)
     SetNuiFocusKeepInput(CURRENT_MENU ~= nil)
+
     TriggerNuiEvent("rlz_menu:closeSearch")
 
     if searchBar and searchBar.onCancel then
@@ -180,4 +179,5 @@ RegisterNUICallback("rlz_menu:cancelSearch", function(data, cb)
     end
 
     cb({ ok = true })
+
 end)
