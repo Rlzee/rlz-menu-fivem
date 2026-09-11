@@ -1,31 +1,28 @@
 -- test.lua
 
-local testMenu = rlzMenu.Create(
-    "rlzMenu",
-    "Test Menu",
-    "toggleMenu",
-    "F1",
-    "#10b981",
-    "left"
-)
+local testMenu = rlzMenu.Create({
+    title = "rlzMenu",
+    subtitle = "Test Menu",
+    command = "toggleMenu",
+    key = "F1",
+    color = "#10b981",
+    position = "left",
+})
 
-local optionsMenu = rlzMenu.CreateSubMenu(
-    testMenu,
-    "Options",
-    "Test menu properties"
-)
+local optionsMenu = rlzMenu.CreateSubMenu(testMenu, {
+    title = "Options",
+    subtitle = "Test menu properties",
+})
 
-local itemsMenu = rlzMenu.CreateSubMenu(
-    testMenu,
-    "Items",
-    "Test different item types"
-)
+local itemsMenu = rlzMenu.CreateSubMenu(testMenu, {
+    title = "Items",
+    subtitle = "Test different item types",
+})
 
-local dynamicMenu = rlzMenu.CreateSubMenu(
-    testMenu,
-    "Dynamic",
-    "Test SetItemProperty"
-)
+local dynamicMenu = rlzMenu.CreateSubMenu(testMenu, {
+    title = "Dynamic",
+    subtitle = "Test SetItemProperty",
+})
 
 -- =========================================================
 -- Developer-managed state
@@ -41,63 +38,59 @@ local density = "Normal"
 -- =========================================================
 
 rlzMenu.SetItems(testMenu, function()
+    rlzMenu.Button({
+        label = "Options",
+        description = "Modify menu properties",
+        submenu = optionsMenu,
+    })
 
-    rlzMenu.Button(
-        "Options",
-        nil,
-        "Modify menu properties",
-        nil,
-        optionsMenu
-    )
+    rlzMenu.Button({
+        label = "Items",
+        description = "Test different item types",
+        submenu = itemsMenu,
+    })
 
-    rlzMenu.Button(
-        "Items",
-        nil,
-        "Test different item types",
-        nil,
-        itemsMenu
-    )
-
-    rlzMenu.Button(
-        "Dynamic",
-        nil,
-        "Test item modification",
-        nil,
-        dynamicMenu
-    )
+    rlzMenu.Button({
+        label = "Dynamic",
+        description = "Test item modification",
+        submenu = dynamicMenu,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Checkbox(
-        "God Mode",
-        "Enable or disable god mode",
-        godMode,
-        function(value)
-            godMode = value
-            print("[rlzMenu] God Mode :", value)
-        end
-    )
+    rlzMenu.Checkbox({
+        label = "God Mode",
+        description = "Enable or disable god mode",
+        isChecked = godMode,
 
-    rlzMenu.Checkbox(
-        "Visibility",
-        "Make the player visible",
-        playerVisible,
-        function(value)
+        onChange = function(value)
+            godMode = value
+            print("[rlzMenu] God Mode:", value)
+        end,
+    })
+
+    rlzMenu.Checkbox({
+        label = "Visibility",
+        description = "Make the player visible",
+        isChecked = playerVisible,
+
+        onChange = function(value)
             playerVisible = value
             print("[rlzMenu] Visibility:", value)
-        end
-    )
+        end,
+    })
 
-    rlzMenu.List(
-        "Game mode",
-        "Choose the game mode",
-        {
+    rlzMenu.List({
+        label = "Game mode",
+        description = "Choose the game mode",
+        values = {
             "Normal",
             "Hardcore",
-            "Sandbox"
+            "Sandbox",
         },
-        selectedMode,
-        function(index, value)
+        index = selectedMode,
+
+        onChange = function(index, value)
             selectedMode = index
 
             print(
@@ -105,30 +98,31 @@ rlzMenu.SetItems(testMenu, function()
                 index,
                 value
             )
-        end
-    )
+        end,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Action",
-        "→",
-        "Test button",
-        function()
-            print("[rlzMenu] Action executed")
-        end
-    )
+    rlzMenu.Button({
+        label = "Action",
+        anchor = "→",
+        description = "Test button",
 
-    rlzMenu.Button(
-        "Disabled button",
-        nil,
-        "This button cannot be used",
-        function()
+        onSelect = function()
+            print("[rlzMenu] Action executed")
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Disabled button",
+        description = "This button cannot be used",
+
+        onSelect = function()
             print("This should never appear")
         end,
-        nil,
-        true
-    )
+
+        disabled = true,
+    })
 
     rlzMenu.Label("rlzMenu - Test Menu")
 end)
@@ -138,36 +132,35 @@ end)
 -- =========================================================
 
 rlzMenu.SetItems(optionsMenu, function()
+    rlzMenu.Button({
+        label = "Change title",
+        description = "Modify the main menu title",
 
-    rlzMenu.Button(
-        "Change title",
-        nil,
-        "Modify the main menu title",
-        function()
+        onSelect = function()
             rlzMenu.SetTitle(
                 testMenu,
                 "New title"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Change subtitle",
-        nil,
-        "Modify the main menu subtitle",
-        function()
+    rlzMenu.Button({
+        label = "Change subtitle",
+        description = "Modify the main menu subtitle",
+
+        onSelect = function()
             rlzMenu.SetSubtitle(
                 testMenu,
                 "Subtitle changed"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Original title",
-        nil,
-        "Restore the original title",
-        function()
+    rlzMenu.Button({
+        label = "Original title",
+        description = "Restore the original title",
+
+        onSelect = function()
             rlzMenu.SetTitle(
                 testMenu,
                 "rlzMenu"
@@ -177,92 +170,92 @@ rlzMenu.SetItems(optionsMenu, function()
                 testMenu,
                 "Test Menu"
             )
-        end
-    )
+        end,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Left position",
-        nil,
-        "Place the menu on the left",
-        function()
+    rlzMenu.Button({
+        label = "Left position",
+        description = "Place the menu on the left",
+
+        onSelect = function()
             rlzMenu.SetPosition(
                 testMenu,
                 "left"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Right position",
-        nil,
-        "Place the menu on the right",
-        function()
+    rlzMenu.Button({
+        label = "Right position",
+        description = "Place the menu on the right",
+
+        onSelect = function()
             rlzMenu.SetPosition(
                 testMenu,
                 "right"
             )
-        end
-    )
+        end,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Green color",
-        nil,
-        "Change the menu color",
-        function()
+    rlzMenu.Button({
+        label = "Green color",
+        description = "Change the menu color",
+
+        onSelect = function()
             rlzMenu.SetColor(
                 testMenu,
                 "#10b981"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Red color",
-        nil,
-        "Change the menu color",
-        function()
+    rlzMenu.Button({
+        label = "Red color",
+        description = "Change the menu color",
+
+        onSelect = function()
             rlzMenu.SetColor(
                 testMenu,
                 "#ef4444"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Blue color",
-        nil,
-        "Change the menu color",
-        function()
+    rlzMenu.Button({
+        label = "Blue color",
+        description = "Change the menu color",
+
+        onSelect = function()
             rlzMenu.SetColor(
                 testMenu,
                 "#3b82f6"
             )
-        end
-    )
+        end,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Show parent",
-        nil,
-        "Show the parent menu ID",
-        function()
+    rlzMenu.Button({
+        label = "Show parent",
+        description = "Show the parent menu ID",
+
+        onSelect = function()
             print(
                 "[rlzMenu] Parent:",
                 rlzMenu.GetParent(optionsMenu)
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Test Exists",
-        nil,
-        "Check whether a menu exists",
-        function()
+    rlzMenu.Button({
+        label = "Test Exists",
+        description = "Check whether a menu exists",
+
+        onSelect = function()
             print(
                 "[rlzMenu] testMenu exists:",
                 rlzMenu.Exists(testMenu)
@@ -272,8 +265,8 @@ rlzMenu.SetItems(optionsMenu, function()
                 "[rlzMenu] optionsMenu exists:",
                 rlzMenu.Exists(optionsMenu)
             )
-        end
-    )
+        end,
+    })
 end)
 
 -- =========================================================
@@ -281,97 +274,101 @@ end)
 -- =========================================================
 
 rlzMenu.SetItems(itemsMenu, function()
-
     rlzMenu.Label("Item types")
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Button",
-        "TEST",
-        "Button example",
-        function()
-            print("[rlzMenu] Button selected")
-        end
-    )
+    rlzMenu.Button({
+        label = "Button",
+        anchor = "TEST",
+        description = "Button example",
 
-    rlzMenu.Label(
-        "This is a label"
-    )
+        onSelect = function()
+            print("[rlzMenu] Button selected")
+        end,
+    })
+
+    rlzMenu.Label("This is a label")
 
     rlzMenu.Separator()
 
-    rlzMenu.Checkbox(
-        "Checkbox",
-        "Checkbox example",
-        false,
-        function(value)
+    rlzMenu.Checkbox({
+        label = "Checkbox",
+        description = "Checkbox example",
+        isChecked = false,
+
+        onChange = function(value)
             print(
-                "[rlzMenu] Checkbox :",
+                "[rlzMenu] Checkbox:",
                 value
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Checkbox(
-        "Disabled checkbox",
-        "This checkbox is disabled",
-        false,
-        function(value)
+    rlzMenu.Checkbox({
+        label = "Disabled checkbox",
+        description = "This checkbox is disabled",
+        isChecked = false,
+
+        onChange = function(value)
             print("This should never be executed")
         end,
-        true
-    )
+
+        disabled = true,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.List(
-        "List",
-        "List example",
-        {
+    rlzMenu.List({
+        label = "List",
+        description = "List example",
+        values = {
             "Option 1",
             "Option 2",
             "Option 3",
-            "Option 4"
+            "Option 4",
         },
-        1,
-        function(index, value)
+        index = 1,
+
+        onChange = function(index, value)
             print(
                 "[rlzMenu] List:",
                 index,
                 value
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.List(
-        "Disabled list",
-        "This list is disabled",
-        {
+    rlzMenu.List({
+        label = "Disabled list",
+        description = "This list is disabled",
+        values = {
             "Option A",
             "Option B",
-            "Option C"
+            "Option C",
         },
-        1,
-        function(index, value)
+        index = 1,
+
+        onChange = function(index, value)
             print("This should never be executed")
         end,
-        true
-    )
+
+        disabled = true,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Close",
-        nil,
-        "Close the menu",
-        function()
+    rlzMenu.Button({
+        label = "Close",
+        description = "Close the menu",
+
+        onSelect = function()
             rlzMenu.SetVisible(
                 testMenu,
                 false
             )
-        end
-    )
+        end,
+    })
 end)
 
 -- =========================================================
@@ -379,156 +376,154 @@ end)
 -- =========================================================
 
 rlzMenu.SetItems(dynamicMenu, function()
-
-    rlzMenu.Label(
-        "SetItemProperty"
-    )
+    rlzMenu.Label("SetItemProperty")
 
     rlzMenu.Separator()
 
     local buttonId
 
-    buttonId = rlzMenu.Button(
-        "Dynamic button",
-        "Initial",
-        "Its anchor can be modified",
-        function()
+    buttonId = rlzMenu.Button({
+        label = "Dynamic button",
+        anchor = "Initial",
+        description = "Its anchor can be modified",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 buttonId,
                 "anchor",
                 "Modified"
             )
 
-            print(
-                "[rlzMenu] Anchor modified"
-            )
-        end
-    )
+            print("[rlzMenu] Anchor modified")
+        end,
+    })
 
     local checkboxId
 
-    checkboxId = rlzMenu.Checkbox(
-        "Dynamic checkbox",
-        "Its state can be modified",
-        false,
-        function(value)
+    checkboxId = rlzMenu.Checkbox({
+        label = "Dynamic checkbox",
+        description = "Its state can be modified",
+        isChecked = false,
+
+        onChange = function(value)
             print(
-                "[rlzMenu] Checkbox :",
+                "[rlzMenu] Checkbox:",
                 value
             )
-        end
-    )
+        end,
+    })
 
     local listId
 
-    listId = rlzMenu.List(
-        "Dynamic list",
-        "Its index can be modified",
-        {
+    listId = rlzMenu.List({
+        label = "Dynamic list",
+        description = "Its index can be modified",
+        values = {
             "Normal",
             "Hardcore",
-            "Sandbox"
+            "Sandbox",
         },
-        1,
-        function(index, value)
+        index = 1,
+
+        onChange = function(index, value)
             print(
                 "[rlzMenu] List:",
                 index,
                 value
             )
-        end
-    )
+        end,
+    })
 
     rlzMenu.Separator()
 
-    rlzMenu.Button(
-        "Change anchor",
-        nil,
-        "Modify the button anchor",
-        function()
+    rlzMenu.Button({
+        label = "Change anchor",
+        description = "Modify the button anchor",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 buttonId,
                 "anchor",
                 "NEW"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Change label",
-        nil,
-        "Modify the button label",
-        function()
+    rlzMenu.Button({
+        label = "Change label",
+        description = "Modify the button label",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 buttonId,
                 "label",
                 "Modified button"
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Enable checkbox",
-        nil,
-        "Force the checkbox to true",
-        function()
+    rlzMenu.Button({
+        label = "Enable checkbox",
+        description = "Force the checkbox to true",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 checkboxId,
                 "isChecked",
                 true
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Disable checkbox",
-        nil,
-        "Force the checkbox to false",
-        function()
+    rlzMenu.Button({
+        label = "Disable checkbox",
+        description = "Force the checkbox to false",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 checkboxId,
                 "isChecked",
                 false
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Select Hardcore",
-        nil,
-        "Change the list index",
-        function()
+    rlzMenu.Button({
+        label = "Select Hardcore",
+        description = "Change the list index",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 listId,
                 "index",
                 2
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Disable button",
-        nil,
-        "Disable the dynamic button",
-        function()
+    rlzMenu.Button({
+        label = "Disable button",
+        description = "Disable the dynamic button",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 buttonId,
                 "disabled",
                 true
             )
-        end
-    )
+        end,
+    })
 
-    rlzMenu.Button(
-        "Enable button",
-        nil,
-        "Enable the dynamic button",
-        function()
+    rlzMenu.Button({
+        label = "Enable button",
+        description = "Enable the dynamic button",
+
+        onSelect = function()
             rlzMenu.SetItemProperty(
                 buttonId,
                 "disabled",
                 false
             )
-        end
-    )
+        end,
+    })
 end)

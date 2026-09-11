@@ -69,15 +69,8 @@ local function findItemById(itemId)
 end
 
 rlzMenu.SetItemProperty = function(itemId, property, value)
-    assert(
-        type(itemId) == "string",
-        "rlzMenu.SetItemProperty: itemId must be a string"
-    )
-
-    assert(
-        type(property) == "string",
-        "rlzMenu.SetItemProperty: property must be a string"
-    )
+    assert(type(itemId) == "string", "rlzMenu.SetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.SetItemProperty: property must be a string")
 
     local item = findItemById(itemId)
 
@@ -145,24 +138,14 @@ rlzMenu.GetCurrentMenu = function()
 end
 
 rlzMenu.IsVisible = function(id)
-    assert(
-        type(id) == "string",
-        "rlzMenu.IsVisible: The menu ID must be a string"
-    )
-
-    assert(
-        MENUS[id],
-        "rlzMenu.IsVisible: The menu with ID '" .. id .. "' does not exist"
-    )
+    assert(type(id) == "string", "rlzMenu.IsVisible: The menu ID must be a string")
+    assert(MENUS[id], "rlzMenu.IsVisible: The menu with ID '" .. id .. "' does not exist")
 
     return MENUS[id].visible
 end
 
 rlzMenu.GetPosition = function(menuId)
-    assert(
-        type(menuId) == "string",
-        "rlzMenu.GetPosition: The menu ID must be a string"
-    )
+    assert(type(menuId) == "string", "rlzMenu.GetPosition: The menu ID must be a string")
 
     local menu = MENUS[menuId]
 
@@ -175,10 +158,7 @@ end
 
 rlzMenu.SetPosition = function(menuId, position)
     assert(type(menuId) == "string", "menuId must be a string")
-    assert(
-        position == "left" or position == "right",
-        "Menu position must be 'left' or 'right'"
-    )
+    assert(position == "left" or position == "right", "Menu position must be 'left' or 'right'")
 
     local menu = MENUS[menuId]
 
@@ -223,15 +203,8 @@ rlzMenu.SetColor = function(menuId, color)
 end
 
 rlzMenu.SetTitle = function(menuId, title)
-    assert(
-        type(menuId) == "string",
-        "rlzMenu.SetTitle: The menu ID must be a string"
-    )
-
-    assert(
-        type(title) == "string",
-        "rlzMenu.SetTitle: The title must be a string"
-    )
+    assert(type(menuId) == "string", "rlzMenu.SetTitle: The menu ID must be a string")
+    assert(type(title) == "string", "rlzMenu.SetTitle: The title must be a string")
 
     local menu = MENUS[menuId]
 
@@ -247,15 +220,8 @@ rlzMenu.SetTitle = function(menuId, title)
 end
 
 rlzMenu.SetSubtitle = function(menuId, subtitle)
-    assert(
-        type(menuId) == "string",
-        "rlzMenu.SetSubtitle: The menu ID must be a string"
-    )
-
-    assert(
-        type(subtitle) == "string",
-        "rlzMenu.SetSubtitle: The subtitle must be a string"
-    )
+    assert(type(menuId) == "string", "rlzMenu.SetSubtitle: The menu ID must be a string")
+    assert(type(subtitle) == "string", "rlzMenu.SetSubtitle: The subtitle must be a string")
 
     local menu = MENUS[menuId]
 
@@ -271,10 +237,7 @@ rlzMenu.SetSubtitle = function(menuId, subtitle)
 end
 
 rlzMenu.GetParent = function(menuId)
-    assert(
-        type(menuId) == "string",
-        "rlzMenu.GetParent: The menu ID must be a string"
-    )
+    assert(type(menuId) == "string", "rlzMenu.GetParent: The menu ID must be a string")
 
     local menu = MENUS[menuId]
 
@@ -286,29 +249,15 @@ rlzMenu.GetParent = function(menuId)
 end
 
 rlzMenu.Exists = function(menuId)
-    assert(
-        type(menuId) == "string",
-        "rlzMenu.Exists: The menu ID must be a string"
-    )
+    assert(type(menuId) == "string", "rlzMenu.Exists: The menu ID must be a string")
 
     return MENUS[menuId] ~= nil
 end
 
 rlzMenu.OpenSearchBar = function(label, onSubmit, onCancel)
-    assert(
-        type(label) == "string",
-        "rlzMenu.OpenSearchBar: label must be a string"
-    )
-
-    assert(
-        type(onSubmit) == "function",
-        "rlzMenu.OpenSearchBar: onSubmit must be a function"
-    )
-
-    assert(
-        type(onCancel) == "function",
-        "rlzMenu.OpenSearchBar: onCancel must be a function"
-    )
+    assert(type(label) == "string", "rlzMenu.OpenSearchBar: label must be a string")
+    assert(type(onSubmit) == "function", "rlzMenu.OpenSearchBar: onSubmit must be a function")
+    assert(type(onCancel) == "function", "rlzMenu.OpenSearchBar: onCancel must be a function")
 
     SEARCH_BAR = {
         onSubmit = onSubmit,

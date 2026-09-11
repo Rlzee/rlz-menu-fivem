@@ -55,7 +55,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
 
             item.isChecked = not item.isChecked
 
-            rlzMenu.Refresh(MENUS[CURRENT_MENU])
+            rlzMenu.Refresh(CURRENT_MENU)
 
             playSound("select")
 
@@ -110,7 +110,7 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
             item.index = nextIndex
             item.value = item.values[nextIndex]
 
-            rlzMenu.Refresh(MENUS[CURRENT_MENU])
+            rlzMenu.Refresh(CURRENT_MENU)
 
             playSound("navigate")
 
