@@ -108,6 +108,14 @@ rlzMenu.SetItems(testMenu, function()
         anchor = "→",
         description = "Test button",
 
+        onHover = function()
+            print("[rlzMenu] Action hovered")
+        end,
+
+        onLeave = function()
+            print("[rlzMenu] Action left")
+        end,
+
         onSelect = function()
             print("[rlzMenu] Action executed")
         end,

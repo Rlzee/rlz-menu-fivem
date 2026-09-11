@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { fetchNui } from "../utils/fetchNui";
+import { isSelectableItem } from "../components/menu/items/isSelectableItem";
 import type { MenuItem } from "../components/menu/items/type";
 
 type UseMenuNavigationProps = {
@@ -16,6 +17,29 @@ export function useMenuNavigation({
   selectableIndexes,
 }: UseMenuNavigationProps) {
   useEffect(() => {
+    const changeSelection = (nextIndex: number) => {
+      if (nextIndex === selectedIndex) {
+        return;
+      }
+
+      const previousItem = items[selectedIndex];
+      const nextItem = items[nextIndex];
+
+      if (previousItem && isSelectableItem(previousItem)) {
+        fetchNui("rlz_menu:leaveItem", {
+          itemId: previousItem.id,
+        });
+      }
+
+      setSelectedIndex(nextIndex);
+
+      if (nextItem && isSelectableItem(nextItem)) {
+        fetchNui("rlz_menu:hoverItem", {
+          itemId: nextItem.id,
+        });
+      }
+    };
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (selectableIndexes.length === 0) {
         return;
@@ -32,7 +56,8 @@ export function useMenuNavigation({
               ? 0
               : currentPosition + 1;
 
-          setSelectedIndex(selectableIndexes[nextPosition]);
+          changeSelection(selectableIndexes[nextPosition]);
+
           fetchNui("rlz_menu:navigate");
 
           break;
@@ -46,7 +71,8 @@ export function useMenuNavigation({
               ? selectableIndexes.length - 1
               : currentPosition - 1;
 
-          setSelectedIndex(selectableIndexes[previousPosition]);
+          changeSelection(selectableIndexes[previousPosition]);
+
           fetchNui("rlz_menu:navigate");
 
           break;
@@ -61,7 +87,10 @@ export function useMenuNavigation({
           if (selectedItem?.type === "list") {
             fetchNui("rlz_menu:changeList", {
               itemId: selectedItem.id,
-              direction: event.key === "ArrowLeft" ? "left" : "right",
+              direction:
+                event.key === "ArrowLeft"
+                  ? "left"
+                  : "right",
             });
           }
 
@@ -107,5 +136,10 @@ export function useMenuNavigation({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [items, selectedIndex, selectableIndexes, setSelectedIndex]);
+  }, [
+    items,
+    selectedIndex,
+    selectableIndexes,
+    setSelectedIndex,
+  ]);
 }

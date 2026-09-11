@@ -128,6 +128,65 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
 end)
 
+RegisterNUICallback("rlz_menu:hoverItem", function(data, cb)
+    local itemId = data.itemId
+
+    if type(itemId) ~= "string" then
+        cb({ ok = false })
+        return
+    end
+
+    for _, item in ipairs(ITEMS) do
+        if item.id == itemId then
+            if item.disabled then
+                cb({
+                    ok = false,
+                    disabled = true,
+                })
+                return
+            end
+
+            if item.onHover then
+                item.onHover()
+            end
+
+            cb({ ok = true })
+            return
+        end
+    end
+
+    cb({ ok = false })
+end)
+
+RegisterNUICallback("rlz_menu:leaveItem", function(data, cb)
+    local itemId = data.itemId
+
+    if type(itemId) ~= "string" then
+        cb({ ok = false })
+        return
+    end
+
+    for _, item in ipairs(ITEMS) do
+        if item.id == itemId then
+            if item.disabled then
+                cb({
+                    ok = false,
+                    disabled = true,
+                })
+                return
+            end
+
+            if item.onLeave then
+                item.onLeave()
+            end
+
+            cb({ ok = true })
+            return
+        end
+    end
+
+    cb({ ok = false })
+end)
 
 RegisterNUICallback("rlz_menu:goBack", function(data, cb)
     rlzMenu.GoBack()
