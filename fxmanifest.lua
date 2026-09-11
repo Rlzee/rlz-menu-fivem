@@ -14,7 +14,7 @@ files {
 ui_page 'web/dist/index.html'
 
 client_scripts {
-    'class.lua',
+    'common.lua',
     'utils/*.lua',
     'menu/main.lua',
     'menu/items.lua',
