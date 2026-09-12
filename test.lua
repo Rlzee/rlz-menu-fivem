@@ -210,6 +210,23 @@ rlzMenu.SetItems(optionsMenu, function()
     rlzMenu.Separator()
 
     rlzMenu.Button({
+        label = "Search bar",
+        description = "Open the search input",
+
+        onSelect = function()
+            rlzMenu.OpenSearchBar(
+                "Search",
+                function(value)
+                    print("[rlzMenu] Search:", value)
+                end,
+                function()
+                    print("[rlzMenu] Search cancelled")
+                end
+            )
+        end,
+    })
+
+    rlzMenu.Button({
         label = "Green color",
         description = "Change the menu color",
 
