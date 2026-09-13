@@ -14,11 +14,17 @@ files {
 ui_page 'web/dist/index.html'
 
 client_scripts {
-    'common.lua',
+    'config.lua',
     'utils/*.lua',
+
+    -- Core
     'menu/main.lua',
     'menu/items.lua',
     'menu/functions.lua',
     'menu/callbacks.lua',
+
+    -- Context
+    'context/main.lua',
+
     'test.lua',
 }
