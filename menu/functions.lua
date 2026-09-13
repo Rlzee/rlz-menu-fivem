@@ -6,7 +6,8 @@ rlzMenu.Refresh = function(menuId)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     if CURRENT_MENU ~= menu.id or not menu.visible then
@@ -75,7 +76,8 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
     local item = findItemById(itemId)
 
     if not item then
-        error(("Item with ID '%s' does not exist"):format(itemId))
+        print(("[rlzMenu] Item with ID '%s' does not exist"):format(itemId))
+        return false
     end
 
     local allowedProperties = ITEM_PROPERTY_TYPES[item.type]
@@ -139,7 +141,11 @@ end
 
 rlzMenu.IsVisible = function(id)
     assert(type(id) == "string", "rlzMenu.IsVisible: The menu ID must be a string")
-    assert(MENUS[id], "rlzMenu.IsVisible: The menu with ID '" .. id .. "' does not exist")
+
+    if not MENUS[id] then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(id))
+        return false
+    end
 
     return MENUS[id].visible
 end
@@ -150,7 +156,8 @@ rlzMenu.GetPosition = function(menuId)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return nil
     end
 
     return menu.position
@@ -163,7 +170,8 @@ rlzMenu.SetPosition = function(menuId, position)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     menu.position = position
@@ -186,7 +194,8 @@ rlzMenu.SetColor = function(menuId, color)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     menu.color = color
@@ -209,7 +218,8 @@ rlzMenu.SetTitle = function(menuId, title)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     menu.title = title
@@ -226,12 +236,32 @@ rlzMenu.SetSubtitle = function(menuId, subtitle)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return nil
     end
 
     menu.subtitle = subtitle
 
     rlzMenu.Refresh(menu.id)
+
+    return true
+end
+
+rlzMenu.SetEnabled = function(menuId, state)
+    assert(type(menuId) == "string", "rlzMenu.SetEnabled: menuId must be a string")
+    assert(type(state) == "boolean", "rlzMenu.SetEnabled: state must be a boolean")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        error(("Menu with ID '%s' does not exist"):format(menuId))
+    end
+
+    menu.enabled = state
+
+    if not state and menu.visible then
+        rlzMenu.SetVisible(menuId, false)
+    end
 
     return true
 end
@@ -242,7 +272,8 @@ rlzMenu.GetParent = function(menuId)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     return menu.parent
@@ -278,7 +309,8 @@ rlzMenu.GoTo = function(menuId)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     if CURRENT_MENU and MENUS[CURRENT_MENU] then

@@ -11,6 +11,7 @@ MENU_COUNTER = 0
 ---@field options.key? string Key used to toggle the menu.
 ---@field options.color? string Menu color.
 ---@field options.position? "left"|"right" Menu position.
+---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --
 rlzMenu.Create = function(options)
@@ -21,6 +22,7 @@ rlzMenu.Create = function(options)
     assert(options.key == nil or type(options.key) == "string", "rlzMenu.Create: key must be a string or nil")
     assert(options.color == nil or type(options.color) == "string", "rlzMenu.Create: color must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
+    assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
     local self = {}
     MENU_COUNTER += 1
@@ -34,6 +36,7 @@ rlzMenu.Create = function(options)
     self.positionForced = options.position ~= nil
     self.command = options.command
     self.key = options.key
+    self.enabled = options.enabled ~= false
 
     MENUS[self.id] = self
 
@@ -55,6 +58,7 @@ end
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
 ---@field options.color? string Submenu color. Inherits the parent color if not specified.
+---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --
 rlzMenu.CreateSubMenu = function(parentId, options)
@@ -65,6 +69,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.CreateSubMenu: subtitle must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
     assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
+    assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
     local parent = MENUS[parentId]
 
@@ -80,6 +85,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     self.position = options.position or parent.position or "left"
     self.positionForced = options.position ~= nil
     self.parent = parentId
+    self.enabled = options.enabled ~= false
 
     MENUS[self.id] = self
 
@@ -93,7 +99,8 @@ rlzMenu.SetItems = function(menuId, builder)
     local menu = MENUS[menuId]
 
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
     end
 
     menu.items = builder
@@ -105,7 +112,13 @@ rlzMenu.SetVisible = function(menuId, state)
 
     local menu = MENUS[menuId]
     if not menu then
-        error(("Menu with ID '%s' does not exist"):format(menuId))
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    if state and not menu.enabled then
+        print(("[rlzMenu] Menu with ID '%s' is disabled and cannot be opened"):format(menuId))
+        return false
     end
 
     menu.visible = state

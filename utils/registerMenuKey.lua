@@ -7,7 +7,16 @@ function RegisterMenuKey(menuId, command, key, description)
     if not key then return end
 
     RegisterCommand(command, function()
-        rlzMenu.SetVisible(menuId, not rlzMenu.IsVisible(menuId))
+        if not rlzMenu.Exists(menuId) then return end
+        
+        local menu = MENUS[menuId]
+
+        if not menu.enabled then
+            print(("[rlzMenu] Menu with ID '%s' is disabled and cannot be toggled"):format(menuId))
+            return
+        end
+
+        rlzMenu.SetVisible(menuId, not menu.visible)
     end, false)
 
     RegisterKeyMapping(command, description or "Toggle menu", "keyboard", key)
