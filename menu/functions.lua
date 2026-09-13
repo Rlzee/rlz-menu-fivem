@@ -247,6 +247,19 @@ rlzMenu.SetSubtitle = function(menuId, subtitle)
     return true
 end
 
+rlzMenu.isEnabled = function(menuId)
+    assert(type(menuId) == "string", "rlzMenu.isEnabled: menuId must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    return menu.enabled
+end
+
 rlzMenu.SetEnabled = function(menuId, state)
     assert(type(menuId) == "string", "rlzMenu.SetEnabled: menuId must be a string")
     assert(type(state) == "boolean", "rlzMenu.SetEnabled: state must be a boolean")
