@@ -3,13 +3,16 @@ import { useState } from "react";
 import { useVisibility } from "./components/visibility";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { MenuView, type MenuData } from "./components/menu/menu-view";
+import { ContextMenuView, type ContextMenuData } from "./components/context/context-view";
 import { SearchBar } from "./components/search-bar";
 
 import { cn } from "cn";
 
 const App = () => {
-  const { visible } = useVisibility();
+  const { visible, contextVisible } = useVisibility();
   const [searchLabel, setSearchLabel] = useState<string | null>(null);
+
+  const [contextMenu, setContextMenu] = useState<ContextMenuData | null>(null);
 
   const [menu, setMenu] = useState<MenuData>({
     title: "",
@@ -24,8 +27,9 @@ const App = () => {
     setSearchLabel(label);
   });
   useNuiEvent("rlz_menu:closeSearch", () => setSearchLabel(null));
+  useNuiEvent<ContextMenuData>("rlz_context:setData", setContextMenu);
 
-  if (!visible) {
+  if (!visible || !contextVisible) {
     return null;
   }
 
@@ -37,7 +41,10 @@ const App = () => {
       )}
     >
       <MenuView menu={menu} />
+
       {searchLabel && <SearchBar label={searchLabel} />}
+
+      {contextMenu && <ContextMenuView context={contextMenu} />}
     </div>
   );
 };
