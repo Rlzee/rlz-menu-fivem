@@ -30,6 +30,7 @@ end
 ---@field options.onSelect? function Function called when the button is selected.
 ---@field options.submenu? string Submenu ID opened when the button is selected.
 ---@field options.disabled? boolean Whether the button is disabled.
+---@field options.color? string Button color or "rainbow" for an animated color.
 ---@field options.onHover? function Function called when the button is hovered.
 ---@field options.onLeave? function Function called when the cursor leaves the button.
 ---@return string itemId
@@ -42,6 +43,7 @@ rlzMenu.Button = function(options)
     assert(options.onSelect == nil or type(options.onSelect) == "function", "rlzMenu.Button: onSelect must be a function or nil")
     assert(options.submenu == nil or type(options.submenu) == "string", "rlzMenu.Button: submenu must be a string or nil")
     assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Button: disabled must be a boolean or nil")
+    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Button: color must be a string or nil")
     assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Button: onHover must be a function or nil")
     assert(options.onLeave == nil or type(options.onLeave) == "function", "rlzMenu.Button: onLeave must be a function or nil")
 
@@ -56,6 +58,7 @@ rlzMenu.Button = function(options)
     self.onSelect = options.onSelect
     self.submenu = options.submenu
     self.disabled = options.disabled or false
+    self.color = options.color
     self.onHover = options.onHover
     self.onLeave = options.onLeave
 
@@ -106,6 +109,7 @@ end
 ---@field options.label string Checkbox label.
 ---@field options.description? string Checkbox description.
 ---@field options.isChecked boolean Whether the checkbox is checked.
+---@field options.color? string Checkbox color or "rainbow" for an animated color.
 ---@field options.onChange? function Function called when the checkbox state changes.
 ---@field options.disabled? boolean Whether the checkbox is disabled.
 ---@field options.onHover? function Function called when the checkbox is hovered.
@@ -117,6 +121,7 @@ rlzMenu.Checkbox = function(options)
     assert(type(options.label) == "string", "rlzMenu.Checkbox: label must be a string")
     assert(options.description == nil or type(options.description) == "string","rlzMenu.Checkbox: description must be a string or nil")
     assert(type(options.isChecked) == "boolean", "rlzMenu.Checkbox: isChecked must be a boolean")
+    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Checkbox: color must be a string or nil")
     assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.Checkbox: onChange must be a function or nil")
     assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Checkbox: disabled must be a boolean or nil")
     assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Checkbox: onHover must be a function or nil")
@@ -130,6 +135,7 @@ rlzMenu.Checkbox = function(options)
     self.label = options.label
     self.description = options.description or ""
     self.isChecked = options.isChecked
+    self.color = options.color
     self.onChange = options.onChange
     self.disabled = options.disabled or false
     self.onHover = options.onHover
@@ -147,6 +153,7 @@ end
 ---@field options.description? string List description.
 ---@field options.values table List values.
 ---@field options.index? number Selected value index.
+---@field options.color? string List color or "rainbow" for an animated color.
 ---@field options.onChange? function Function called when the selected value changes.
 ---@field options.disabled? boolean Whether the list is disabled.
 ---@field options.onHover? function Function called when the list is hovered.
@@ -160,6 +167,7 @@ rlzMenu.List = function(options)
     assert(type(options.values) == "table", "rlzMenu.List: values must be a table")
     assert(#options.values > 0, "rlzMenu.List: values must not be empty")
     assert(options.index == nil or type(options.index) == "number", "rlzMenu.List: index must be a number or nil")
+    assert(options.color == nil or type(options.color) == "string", "rlzMenu.List: color must be a string or nil")
     assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.List: onChange must be a function or nil")
     assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.List: disabled must be a boolean or nil")
     assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.List: onHover must be a function or nil")
@@ -185,6 +193,7 @@ rlzMenu.List = function(options)
     self.values = options.values
     self.index = currentIndex
     self.value = options.values[currentIndex]
+    self.color = options.color
     self.onChange = options.onChange
     self.disabled = options.disabled or false
     self.onHover = options.onHover

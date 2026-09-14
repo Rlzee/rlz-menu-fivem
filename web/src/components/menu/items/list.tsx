@@ -1,3 +1,4 @@
+import { useRainbowColor } from "../../../hooks/useRainbowColor";
 import { Item } from "../../item";
 import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
 
@@ -8,12 +9,20 @@ type MenuListProps = {
   value: string;
   selected?: boolean;
   disabled?: boolean;
-  color?: string;
+  itemColor?: string;
+  menuColor?: string;
 };
 
-export function MenuList({ label, value, selected, disabled, color }: MenuListProps) {
+export function MenuList({ label, value, selected, disabled, itemColor, menuColor }: MenuListProps) {
+  const color = useRainbowColor(itemColor, menuColor);
+
   return (
-    <Item selected={selected} disabled={disabled} color={color}>
+    <Item
+      selected={selected}
+      disabled={disabled}
+      color={color}
+      alwaysColor={Boolean(itemColor)}
+    >
       <span>{label}</span>
       {!disabled ? (
         <div className="flex items-center gap-2">

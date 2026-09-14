@@ -9,7 +9,7 @@ MENU_COUNTER = 0
 ---@field options.subtitle? string Menu subtitle.
 ---@field options.command? string Command used to toggle the menu.
 ---@field options.key? string Key used to toggle the menu.
----@field options.color? string Menu color.
+---@field options.color? string Menu color or "rainbow" for an animated color.
 ---@field options.position? "left"|"right" Menu position.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
@@ -57,7 +57,7 @@ end
 ---@field options.title? string Submenu title.
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
----@field options.color? string Submenu color. Inherits the parent color if not specified.
+---@field options.color? string Submenu color or "rainbow" for an animated color. Inherits the parent color if not specified.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --

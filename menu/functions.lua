@@ -33,6 +33,7 @@ local ITEM_PROPERTY_TYPES = {
         onSelect = "function",
         submenu = "string",
         disabled = "boolean",
+        color = "string",
     },
 
     label = {
@@ -47,6 +48,7 @@ local ITEM_PROPERTY_TYPES = {
         isChecked = "boolean",
         onChange = "function",
         disabled = "boolean",
+        color = "string",
     },
 
     list = {
@@ -56,6 +58,7 @@ local ITEM_PROPERTY_TYPES = {
         index = "number",
         onChange = "function",
         disabled = "boolean",
+        color = "string",
     },
 }
 

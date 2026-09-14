@@ -7,6 +7,7 @@ type itemProps = {
   selected?: boolean;
   disabled?: boolean;
   color?: string;
+  alwaysColor?: boolean;
 };
 
 export function Item({
@@ -15,9 +16,10 @@ export function Item({
   selected,
   disabled,
   color,
+  alwaysColor,
 }: itemProps) {
   const hasCustomColor = color && color !== "default";
-  const selectedStyle = hasCustomColor
+  const customColorStyle = hasCustomColor
     ? { backgroundColor: withOpacity(color, 0.4) }
     : undefined;
 
@@ -28,14 +30,14 @@ export function Item({
       className={cn(
         "flex h-8 items-center justify-between rounded-item px-2 text-white",
         selected
-          ? hasCustomColor
+          ? hasCustomColor && !alwaysColor
             ? "bg-transparent"
             : "bg-item-menu-background-hover"
           : "bg-item-menu-background",
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      style={selected ? selectedStyle : undefined}
+      style={alwaysColor ? (selected ? undefined : customColorStyle) : selected ? customColorStyle : undefined}
     >
       {children}
     </div>
