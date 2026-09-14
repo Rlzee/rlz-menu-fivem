@@ -5,7 +5,7 @@ local testMenu = rlzMenu.Create({
     subtitle = "Test Menu",
     command = "toggleMenu",
     key = "F1",
-    color = "rainbow",
+    -- color = "rainbow",
     position = "left",
 })
 
@@ -130,6 +130,19 @@ rlzMenu.SetItems(testMenu, function()
         end,
 
         disabled = true,
+    })
+
+    rlzMenu.Button({
+        label = "Anchor test",
+        description = "Test button with anchor",
+        anchor = "TEST",
+        anchorColor = "#facc15",
+    })
+    rlzMenu.Button({
+        label = "Anchor test",
+        description = "Test button with anchor",
+        anchor = "TEST",
+        anchorColor = "rainbow",
     })
 end)
 

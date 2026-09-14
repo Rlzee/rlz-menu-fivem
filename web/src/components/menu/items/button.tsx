@@ -5,6 +5,7 @@ import { ChevronRight, Lock } from "lucide-react";
 type MenuButtonProps = {
   label: string;
   anchor?: string;
+  anchorColor?: string;
   selected?: boolean;
   submenu?: boolean;
   disabled?: boolean;
@@ -15,6 +16,7 @@ type MenuButtonProps = {
 export function MenuButton({
   label,
   anchor,
+  anchorColor,
   selected,
   submenu,
   disabled,
@@ -22,6 +24,7 @@ export function MenuButton({
   menuColor,
 }: MenuButtonProps) {
   const effectiveColor = useRainbowColor(buttonColor, menuColor);
+  const effectiveAnchorColor = useRainbowColor(anchorColor);
 
   return (
     <Item
@@ -31,7 +34,7 @@ export function MenuButton({
       alwaysColor={Boolean(buttonColor)}
     >
       <span>{label}</span>
-      <span>
+      <span style={effectiveAnchorColor ? { color: effectiveAnchorColor } : undefined}>
         {anchor ||
           (submenu && <ChevronRight className="h-4 w-4" />) ||
           (disabled && <Lock className="h-4 w-4" />)}

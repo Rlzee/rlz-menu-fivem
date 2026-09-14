@@ -26,6 +26,7 @@ end
 ---@param options table
 ---@field options.label string Button label.
 ---@field options.anchor? string Button anchor.
+---@field options.anchorColor? string Button anchor color or "rainbow" for an animated color.
 ---@field options.description? string Button description.
 ---@field options.onSelect? function Function called when the button is selected.
 ---@field options.submenu? string Submenu ID opened when the button is selected.
@@ -39,6 +40,7 @@ rlzMenu.Button = function(options)
     assert(type(options) == "table", "rlzMenu.Button: options must be a table")
     assert(type(options.label) == "string", "rlzMenu.Button: label must be a string")
     assert(options.anchor == nil or type(options.anchor) == "string", "rlzMenu.Button: anchor must be a string or nil")
+    assert(options.anchorColor == nil or type(options.anchorColor) == "string", "rlzMenu.Button: anchorColor must be a string or nil")
     assert(options.description == nil or type(options.description) == "string", "rlzMenu.Button: description must be a string or nil")
     assert(options.onSelect == nil or type(options.onSelect) == "function", "rlzMenu.Button: onSelect must be a function or nil")
     assert(options.submenu == nil or type(options.submenu) == "string", "rlzMenu.Button: submenu must be a string or nil")
@@ -54,6 +56,7 @@ rlzMenu.Button = function(options)
     self.type = "button"
     self.label = options.label
     self.anchor = options.anchor or ""
+    self.anchorColor = options.anchorColor
     self.description = options.description or ""
     self.onSelect = options.onSelect
     self.submenu = options.submenu

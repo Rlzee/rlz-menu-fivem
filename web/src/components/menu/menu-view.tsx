@@ -106,6 +106,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 key={item.id}
                 label={item.label}
                 anchor={item.anchor}
+                anchorColor={item.anchorColor}
                 selected={isSelected}
                 submenu={item.submenu}
                 disabled={item.disabled}
