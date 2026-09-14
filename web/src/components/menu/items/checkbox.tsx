@@ -1,3 +1,4 @@
+import { useRainbowColor } from "../../../hooks/useRainbowColor";
 import { Item } from "../../item";
 import { Check, Lock } from "lucide-react";
 import { cn } from "cn";
@@ -7,7 +8,8 @@ type MenuCheckboxProps = {
   isChecked?: boolean;
   selected?: boolean;
   disabled?: boolean;
-  color?: string;
+  itemColor?: string;
+  menuColor?: string;
 };
 
 export function MenuCheckbox({
@@ -15,10 +17,18 @@ export function MenuCheckbox({
   isChecked = false,
   selected,
   disabled,
-  color,
+  itemColor,
+  menuColor,
 }: MenuCheckboxProps) {
+  const color = useRainbowColor(itemColor, menuColor);
+
   return (
-    <Item selected={selected} disabled={disabled} color={color}>
+    <Item
+      selected={selected}
+      disabled={disabled}
+      color={color}
+      alwaysColor={Boolean(itemColor)}
+    >
       <span>{label}</span>
       {isChecked && !disabled ? (
         <div className="h-4 w-4 rounded-checkbox bg-white">

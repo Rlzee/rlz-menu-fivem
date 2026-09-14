@@ -8,6 +8,7 @@
   --menu-gap: 2px;
   --menu-padding: 8px;
   --menu-width: 20vw;
+  --menu-height: 519px;
 
   --color-background-menu: rgb(0 0 0 / 60%);
   --color-menu: rgb(16 185 129 / 80%);
@@ -17,4 +18,14 @@
   
   --color-checkbox: rgb(255 255 255 / 10%);
   --color-checkbox-selected: rgb(39 39 42 / 60%);
+}
+
+.menu-scrollbar-hidden {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-padding-block: var(--menu-padding);
+}
+
+.menu-scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }

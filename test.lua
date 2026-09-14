@@ -5,7 +5,7 @@ local testMenu = rlzMenu.Create({
     subtitle = "Test Menu",
     command = "toggleMenu",
     key = "F1",
-    color = "#10b981",
+    color = "rainbow",
     position = "left",
 })
 
@@ -101,7 +101,7 @@ rlzMenu.SetItems(testMenu, function()
         end,
     })
 
-    rlzMenu.Separator()
+    rlzMenu.Label("Test label")
 
     rlzMenu.Button({
         label = "Action",
@@ -131,8 +131,6 @@ rlzMenu.SetItems(testMenu, function()
 
         disabled = true,
     })
-
-    rlzMenu.Label("rlzMenu - Test Menu")
 end)
 
 -- =========================================================
@@ -225,6 +223,19 @@ rlzMenu.SetItems(optionsMenu, function()
             )
         end,
     })
+
+    rlzMenu.Button({
+        label = "Rainbow color",
+        description = "Change the menu color",
+
+        onSelect = function()
+            rlzMenu.SetColor(
+                testMenu,
+                "rainbow"
+            )
+        end,
+    })
+
 
     rlzMenu.Button({
         label = "Green color",
