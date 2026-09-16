@@ -155,8 +155,9 @@ rlzMenu.SetItems(optionsMenu, function()
         description = "Modify the main menu title",
 
         onSelect = function()
-            rlzMenu.SetTitle(
+            rlzMenu.SetMenuProperty(
                 testMenu,
+                "title",
                 "New title"
             )
         end,
@@ -167,8 +168,9 @@ rlzMenu.SetItems(optionsMenu, function()
         description = "Modify the main menu subtitle",
 
         onSelect = function()
-            rlzMenu.SetSubtitle(
+            rlzMenu.SetMenuProperty(
                 testMenu,
+                "subtitle",
                 "Subtitle changed"
             )
         end,
@@ -179,14 +181,72 @@ rlzMenu.SetItems(optionsMenu, function()
         description = "Restore the original title",
 
         onSelect = function()
-            rlzMenu.SetTitle(
+            rlzMenu.SetMenuProperty(
                 testMenu,
+                "title",
                 "rlzMenu"
             )
 
-            rlzMenu.SetSubtitle(
+            rlzMenu.SetMenuProperty(
                 testMenu,
+                "subtitle",
                 "Test Menu"
+            )
+        end,
+    })
+
+    rlzMenu.Label("Submenu options")
+
+    rlzMenu.Button({
+        label = "Change submenu title",
+        description = "Modify only the options submenu title",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                optionsMenu,
+                "title",
+                "Submenu options"
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Change submenu subtitle",
+        description = "Modify only the options submenu subtitle",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                optionsMenu,
+                "subtitle",
+                "Submenu-only settings"
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Submenu left",
+        description = "Move only the options submenu to the left",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                optionsMenu,
+                "position",
+                "left",
+                false
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Submenu right",
+        description = "Move only the options submenu to the right",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                optionsMenu,
+                "position",
+                "right",
+                false
             )
         end,
     })
@@ -195,24 +255,100 @@ rlzMenu.SetItems(optionsMenu, function()
 
     rlzMenu.Button({
         label = "Left position",
-        description = "Place the menu on the left",
+        description = "Place the main menu and all submenus on the left",
 
         onSelect = function()
-            rlzMenu.SetPosition(
+            rlzMenu.SetMenuProperty(
                 testMenu,
-                "left"
+                "position",
+                "left",
+                true
             )
         end,
     })
 
     rlzMenu.Button({
-        label = "Right position",
-        description = "Place the menu on the right",
+        label = "Right position: menu + submenus",
+        description = "Place the main menu and all submenus on the right",
 
         onSelect = function()
-            rlzMenu.SetPosition(
+            rlzMenu.SetMenuProperty(
                 testMenu,
-                "right"
+                "position",
+                "right",
+                true
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Right position: menu only",
+        description = "Place only the main menu on the right",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "position",
+                "right",
+                false
+            )
+        end,
+    })
+
+    rlzMenu.Label("Menu scope")
+
+    rlzMenu.Button({
+        label = "Green: menu + submenus",
+        description = "Apply the color to this menu and every submenu",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "color",
+                "#10b981",
+                true
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Red: menu only",
+        description = "Apply the color only to the main menu",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "color",
+                "#ef4444",
+                false
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Blue: options submenu only",
+        description = "Apply the color only to this submenu",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                optionsMenu,
+                "color",
+                "#3b82f6",
+                false
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Rainbow: menu + submenus",
+        description = "Apply the animated color to all menus",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "color",
+                "rainbow",
+                true
             )
         end,
     })
@@ -235,57 +371,6 @@ rlzMenu.SetItems(optionsMenu, function()
             )
         end,
     })
-
-    rlzMenu.Button({
-        label = "Rainbow color",
-        description = "Change the menu color",
-
-        onSelect = function()
-            rlzMenu.SetColor(
-                testMenu,
-                "rainbow"
-            )
-        end,
-    })
-
-
-    rlzMenu.Button({
-        label = "Green color",
-        description = "Change the menu color",
-
-        onSelect = function()
-            rlzMenu.SetColor(
-                testMenu,
-                "#10b981"
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Red color",
-        description = "Change the menu color",
-
-        onSelect = function()
-            rlzMenu.SetColor(
-                testMenu,
-                "#ef4444"
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Blue color",
-        description = "Change the menu color",
-
-        onSelect = function()
-            rlzMenu.SetColor(
-                testMenu,
-                "#3b82f6"
-            )
-        end,
-    })
-
-    rlzMenu.Separator()
 
     rlzMenu.Button({
         label = "Show parent",
@@ -324,8 +409,6 @@ end)
 rlzMenu.SetItems(itemsMenu, function()
     rlzMenu.Label("Item types")
 
-    rlzMenu.Separator()
-
     rlzMenu.Button({
         label = "Button",
         anchor = "TEST",
@@ -337,8 +420,6 @@ rlzMenu.SetItems(itemsMenu, function()
     })
 
     rlzMenu.Label("This is a label")
-
-    rlzMenu.Separator()
 
     rlzMenu.Checkbox({
         label = "Checkbox",
@@ -426,10 +507,7 @@ end)
 rlzMenu.SetItems(dynamicMenu, function()
     rlzMenu.Label("SetItemProperty")
 
-    rlzMenu.Separator()
-
     local buttonId
-
     buttonId = rlzMenu.Button({
         label = "Dynamic button",
         anchor = "Initial",

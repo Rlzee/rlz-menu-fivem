@@ -2,6 +2,21 @@ MENUS = {}
 CURRENT_MENU = nil
 MENU_COUNTER = 0
 
+local MENU_PROPERTY_TYPES = {
+    title = "string",
+    subtitle = "string",
+    position = "string",
+    color = "string",
+    hoverColor = "string",
+    enabled = "boolean",
+}
+
+local INHERITED_MENU_PROPERTIES = {
+    position = "positionForced",
+    color = "colorForced",
+    hoverColor = "hoverColorForced",
+}
+
 --- Creates a new menu.
 ---
 ---@param options table
@@ -74,7 +89,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
     assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
     assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.CreateSubMenu: hoverColor must be a string or nil")
-    assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
+    assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.CreateSubMenu: enabled must be a boolean or nil")
 
     local parent = MENUS[parentId]
 
@@ -100,8 +115,8 @@ rlzMenu.CreateSubMenu = function(parentId, options)
 end
 
 rlzMenu.SetItems = function(menuId, builder)
-    assert(type(menuId) == "string", "Menu ID must be a string")
-    assert(type(builder) == "function", "Items builder must be a function")
+    assert(type(menuId) == "string", "rlzMenu.SetItems: menuId must be a string")
+    assert(type(builder) == "function", "rlzMenu.SetItems: builder must be a function")
 
     local menu = MENUS[menuId]
 
@@ -111,6 +126,8 @@ rlzMenu.SetItems = function(menuId, builder)
     end
 
     menu.items = builder
+
+    return true
 end
 
 rlzMenu.SetVisible = function(menuId, state)
@@ -159,4 +176,78 @@ rlzMenu.SetVisible = function(menuId, state)
     TriggerNuiEvent("rlz_menu:setVisible", {
         state = state
     })
+
+    return true
+end
+
+rlzMenu.GetMenuProperty = function(menuId, property)
+    assert(type(menuId) == "string", "rlzMenu.GetMenuProperty: menuId must be a string")
+    assert(type(property) == "string", "rlzMenu.GetMenuProperty: property must be a string")
+
+    if MENU_PROPERTY_TYPES[property] == nil then
+        error(("Property '%s' is not supported for menus"):format(property))
+    end
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return nil
+    end
+
+    return menu[property]
+end
+
+local function setMenuProperty(menuId, property, value, forced)
+    local menu = MENUS[menuId]
+
+    if not menu then
+        return false
+    end
+
+    menu[property] = value
+
+    local forcedProperty = INHERITED_MENU_PROPERTIES[property]
+
+    if forcedProperty and forced then
+        menu[forcedProperty] = true
+
+        for _, childMenu in pairs(MENUS) do
+            if childMenu.parent == menuId and not childMenu[forcedProperty] then
+                setMenuProperty(childMenu.id, property, value, false)
+            end
+        end
+    end
+
+    if property == "enabled" and not value and menu.visible then
+        rlzMenu.SetVisible(menuId, false)
+    else
+        rlzMenu.Refresh(menu.id)
+    end
+
+    return true
+end
+
+---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true.
+rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
+    assert(type(menuId) == "string", "rlzMenu.SetMenuProperty: menuId must be a string")
+    assert(type(property) == "string", "rlzMenu.SetMenuProperty: property must be a string")
+    assert(applyToSubmenus == nil or type(applyToSubmenus) == "boolean", "rlzMenu.SetMenuProperty: applyToSubmenus must be a boolean or nil")
+
+    local expectedType = MENU_PROPERTY_TYPES[property]
+    if expectedType == nil then
+        error(("Property '%s' is not supported for menus"):format(property))
+    end
+
+    if type(value) ~= expectedType then
+        error((
+            "Property '%s' must be a %s, got %s"
+        ):format(property, expectedType, type(value)))
+    end
+
+    if property == "position" and value ~= "left" and value ~= "right" then
+        error("Menu position must be 'left' or 'right'")
+    end
+
+    return setMenuProperty(menuId, property, value, applyToSubmenus ~= false)
 end

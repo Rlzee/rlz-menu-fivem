@@ -2,6 +2,49 @@ ITEMS = {}
 ITEM_COUNTER = 0
 ITEM_IDS = {}
 
+local ITEM_PROPERTY_TYPES = {
+    button = {
+        label = "string",
+        anchor = "string",
+        description = "string",
+        onSelect = "function",
+        submenu = "string",
+        disabled = "boolean",
+        color = "string",
+        onHover = "function",
+        onLeave = "function",
+    },
+
+    label = {
+        label = "string",
+    },
+
+    separator = {},
+
+    checkbox = {
+        label = "string",
+        description = "string",
+        isChecked = "boolean",
+        onChange = "function",
+        disabled = "boolean",
+        color = "string",
+        onHover = "function",
+        onLeave = "function",
+    },
+
+    list = {
+        label = "string",
+        description = "string",
+        values = "table",
+        index = "number",
+        onChange = "function",
+        disabled = "boolean",
+        color = "string",
+        onHover = "function",
+        onLeave = "function",
+    },
+}
+
 local function getItemId(itemType, itemIndex)
     assert(type(itemType) == "string", "itemType must be a string")
     assert(type(itemIndex) == "number", "itemIndex must be a number")
@@ -19,6 +62,103 @@ local function getItemId(itemType, itemIndex)
     end
 
     return itemId
+end
+
+local function findItemById(itemId)
+    for _, item in ipairs(ITEMS) do
+        if item.id == itemId then
+            return item
+        end
+    end
+
+    return nil
+end
+
+rlzMenu.GetItemProperty = function(itemId, property)
+    assert(type(itemId) == "string", "rlzMenu.GetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.GetItemProperty: property must be a string")
+
+    local item = findItemById(itemId)
+
+    if not item then
+        print(("[rlzMenu] Item with ID '%s' does not exist"):format(itemId))
+        return nil
+    end
+
+    local allowedProperties = ITEM_PROPERTY_TYPES[item.type]
+    if allowedProperties == nil or allowedProperties[property] == nil then
+        error((
+            "Property '%s' is not supported for item type '%s'"
+        ):format(property, item.type))
+    end
+
+    return item[property]
+end
+
+rlzMenu.SetItemProperty = function(itemId, property, value)
+    assert(type(itemId) == "string", "rlzMenu.SetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.SetItemProperty: property must be a string")
+
+    local item = findItemById(itemId)
+
+    if not item then
+        print(("[rlzMenu] Item with ID '%s' does not exist"):format(itemId))
+        return false
+    end
+
+    local allowedProperties = ITEM_PROPERTY_TYPES[item.type]
+    local expectedType = allowedProperties and allowedProperties[property]
+
+    if expectedType == nil then
+        error((
+            "Property '%s' is not supported for item type '%s'"
+        ):format(property, item.type))
+    end
+
+    if type(value) ~= expectedType then
+        error((
+            "Property '%s' must be a %s, got %s"
+        ):format(property, expectedType, type(value)))
+    end
+
+    if item.type == "list" and property == "index" then
+        if value < 1 or value > #item.values then
+            error((
+                "List index must be between 1 and %s"
+            ):format(#item.values))
+        end
+
+        item.index = value
+        item.value = item.values[value]
+
+    elseif item.type == "list" and property == "values" then
+        if #value == 0 then
+            error("List values must not be empty")
+        end
+
+        item.values = value
+
+        if item.index > #item.values then
+            item.index = #item.values
+        end
+
+        if item.index < 1 then
+            item.index = 1
+        end
+
+        item.value = item.values[item.index]
+
+    else
+        item[property] = value
+    end
+
+    local currentMenu = MENUS[CURRENT_MENU]
+
+    if currentMenu then
+        rlzMenu.Refresh(currentMenu.id)
+    end
+
+    return true
 end
 
 --- Add a button item.
