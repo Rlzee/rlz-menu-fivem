@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { getRainbowColor } from "../../utils/color";
 import { useMenuNavigation } from "../../hooks/useMenuNavigation";
 import { useMenuSelection } from "../../hooks/useMenuSelection";
+import { useRainbowColor } from "../../hooks/useRainbowColor";
 
 import { isSelectableItem } from "./items/isSelectableItem";
 import { Menu } from "./exports";
@@ -12,6 +12,7 @@ export type MenuData = {
   title: string;
   subtitle: string;
   color?: string;
+  hoverColor?: string;
   position: "left" | "right";
   items: MenuItem[];
 };
@@ -22,22 +23,10 @@ type MenuViewProps = {
 
 export const MenuView = ({ menu }: MenuViewProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [rainbowHue, setRainbowHue] = useState(0);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (menu.color !== "rainbow") return;
-
-    const interval = window.setInterval(() => {
-      setRainbowHue((hue) => (hue + 3) % 360);
-    }, 30);
-
-    return () => window.clearInterval(interval);
-  }, [menu.color]);
-
-  const menuColor = menu.color === "rainbow"
-    ? getRainbowColor(rainbowHue)
-    : menu.color;
+  const menuColor = useRainbowColor(menu.color);
+  const hoverColor = useRainbowColor(menu.hoverColor);
 
   const selectableIndexes = useMemo(() => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
@@ -106,11 +95,13 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 key={item.id}
                 label={item.label}
                 anchor={item.anchor}
+                anchorColor={item.anchorColor}
                 selected={isSelected}
                 submenu={item.submenu}
                 disabled={item.disabled}
                 buttonColor={item.color}
                 menuColor={menuColor}
+                hoverColor={hoverColor}
               />
             );
           }
@@ -125,6 +116,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 disabled={item.disabled}
                 itemColor={item.color}
                 menuColor={menuColor}
+                hoverColor={hoverColor}
               />
             );
           }
@@ -149,6 +141,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
                 disabled={item.disabled}
                 itemColor={item.color}
                 menuColor={menuColor}
+                hoverColor={hoverColor}
               />
             );
           }

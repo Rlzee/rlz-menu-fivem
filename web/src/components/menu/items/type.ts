@@ -3,6 +3,7 @@ export type ButtonItem = {
   type: "button";
   label: string;
   anchor?: string;
+  anchorColor?: string;
   description?: string;
   onSelect?: () => void;
   submenu?: boolean;

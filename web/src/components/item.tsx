@@ -7,6 +7,7 @@ type itemProps = {
   selected?: boolean;
   disabled?: boolean;
   color?: string;
+  hoverColor?: string;
   alwaysColor?: boolean;
 };
 
@@ -16,11 +17,15 @@ export function Item({
   selected,
   disabled,
   color,
+  hoverColor,
   alwaysColor,
 }: itemProps) {
   const hasCustomColor = color && color !== "default";
   const customColorStyle = hasCustomColor
     ? { backgroundColor: withOpacity(color, 0.4) }
+    : undefined;
+  const hoverColorStyle = hoverColor
+    ? { backgroundColor: withOpacity(hoverColor, 0.4) }
     : undefined;
 
   return (
@@ -37,7 +42,9 @@ export function Item({
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      style={alwaysColor ? (selected ? undefined : customColorStyle) : selected ? customColorStyle : undefined}
+      style={alwaysColor
+        ? (selected ? hoverColorStyle : customColorStyle)
+        : (selected ? hoverColorStyle ?? customColorStyle : undefined)}
     >
       {children}
     </div>
