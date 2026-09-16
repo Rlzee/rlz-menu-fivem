@@ -11,9 +11,10 @@ type MenuListProps = {
   disabled?: boolean;
   itemColor?: string;
   menuColor?: string;
+  hoverColor?: string;
 };
 
-export function MenuList({ label, value, selected, disabled, itemColor, menuColor }: MenuListProps) {
+export function MenuList({ label, value, selected, disabled, itemColor, menuColor, hoverColor }: MenuListProps) {
   const color = useRainbowColor(itemColor, menuColor);
 
   return (
@@ -22,6 +23,7 @@ export function MenuList({ label, value, selected, disabled, itemColor, menuColo
       disabled={disabled}
       color={color}
       alwaysColor={Boolean(itemColor)}
+      hoverColor={hoverColor}
     >
       <span>{label}</span>
       {!disabled ? (

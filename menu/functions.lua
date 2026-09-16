@@ -18,6 +18,7 @@ rlzMenu.Refresh = function(menuId)
         title = menu.title,
         subtitle = menu.subtitle,
         color = menu.color,
+        hoverColor = menu.hoverColor,
         position = menu.position,
         items = PrepareNuiItems(ITEMS),
     })
@@ -206,6 +207,30 @@ rlzMenu.SetColor = function(menuId, color)
     for _, childMenu in pairs(MENUS) do
         if childMenu.parent == menuId and not childMenu.colorForced then
             rlzMenu.SetColor(childMenu.id, color)
+        end
+    end
+
+    rlzMenu.Refresh(menu.id)
+
+    return true
+end
+
+rlzMenu.SetHoverColor = function(menuId, hoverColor)
+    assert(type(menuId) == "string", "menuId must be a string")
+    assert(type(hoverColor) == "string", "Menu hover color must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    menu.hoverColor = hoverColor
+
+    for _, childMenu in pairs(MENUS) do
+        if childMenu.parent == menuId and not childMenu.hoverColorForced then
+            rlzMenu.SetHoverColor(childMenu.id, hoverColor)
         end
     end
 

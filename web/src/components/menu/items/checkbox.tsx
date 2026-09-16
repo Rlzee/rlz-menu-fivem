@@ -10,6 +10,7 @@ type MenuCheckboxProps = {
   disabled?: boolean;
   itemColor?: string;
   menuColor?: string;
+  hoverColor?: string;
 };
 
 export function MenuCheckbox({
@@ -19,6 +20,7 @@ export function MenuCheckbox({
   disabled,
   itemColor,
   menuColor,
+  hoverColor,
 }: MenuCheckboxProps) {
   const color = useRainbowColor(itemColor, menuColor);
 
@@ -28,6 +30,7 @@ export function MenuCheckbox({
       disabled={disabled}
       color={color}
       alwaysColor={Boolean(itemColor)}
+      hoverColor={hoverColor}
     >
       <span>{label}</span>
       {isChecked && !disabled ? (

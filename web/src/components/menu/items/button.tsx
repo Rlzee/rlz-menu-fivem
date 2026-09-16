@@ -11,6 +11,7 @@ type MenuButtonProps = {
   disabled?: boolean;
   buttonColor?: string;
   menuColor?: string;
+  hoverColor?: string;
 };
 
 export function MenuButton({
@@ -22,6 +23,7 @@ export function MenuButton({
   disabled,
   buttonColor,
   menuColor,
+  hoverColor,
 }: MenuButtonProps) {
   const effectiveColor = useRainbowColor(buttonColor, menuColor);
   const effectiveAnchorColor = useRainbowColor(anchorColor);
@@ -32,6 +34,7 @@ export function MenuButton({
       disabled={disabled}
       color={effectiveColor}
       alwaysColor={Boolean(buttonColor)}
+      hoverColor={hoverColor}
     >
       <span>{label}</span>
       <span style={effectiveAnchorColor ? { color: effectiveAnchorColor } : undefined}>

@@ -10,6 +10,7 @@ MENU_COUNTER = 0
 ---@field options.command? string Command used to toggle the menu.
 ---@field options.key? string Key used to toggle the menu.
 ---@field options.color? string Menu color or "rainbow" for an animated color.
+---@field options.hoverColor? string Item hover color.
 ---@field options.position? "left"|"right" Menu position.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
@@ -21,6 +22,7 @@ rlzMenu.Create = function(options)
     assert(options.command == nil or type(options.command) == "string", "rlzMenu.Create: command must be a string or nil")
     assert(options.key == nil or type(options.key) == "string", "rlzMenu.Create: key must be a string or nil")
     assert(options.color == nil or type(options.color) == "string", "rlzMenu.Create: color must be a string or nil")
+    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.Create: hoverColor must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
@@ -32,6 +34,7 @@ rlzMenu.Create = function(options)
     self.subtitle = options.subtitle or ""
     self.visible = false
     self.color = options.color or "default"
+    self.hoverColor = options.hoverColor
     self.position = options.position or "left"
     self.positionForced = options.position ~= nil
     self.command = options.command
@@ -58,6 +61,7 @@ end
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
 ---@field options.color? string Submenu color or "rainbow" for an animated color. Inherits the parent color if not specified.
+---@field options.hoverColor? string Submenu item hover color. Inherits the parent hover color if not specified.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --
@@ -69,6 +73,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.CreateSubMenu: subtitle must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
     assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
+    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.CreateSubMenu: hoverColor must be a string or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
     local parent = MENUS[parentId]
@@ -82,6 +87,8 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     self.visible = false
     self.color = options.color or parent.color or "default"
     self.colorForced = options.color ~= nil
+    self.hoverColor = options.hoverColor or parent.hoverColor
+    self.hoverColorForced = options.hoverColor ~= nil
     self.position = options.position or parent.position or "left"
     self.positionForced = options.position ~= nil
     self.parent = parentId
@@ -135,6 +142,7 @@ rlzMenu.SetVisible = function(menuId, state)
             title = menu.title,
             subtitle = menu.subtitle,
             color = menu.color,
+            hoverColor = menu.hoverColor,
             position = menu.position,
             items = PrepareNuiItems(ITEMS),
         })

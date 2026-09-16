@@ -5,7 +5,6 @@ local testMenu = rlzMenu.Create({
     subtitle = "Test Menu",
     command = "toggleMenu",
     key = "F1",
-    -- color = "rainbow",
     position = "left",
 })
 
