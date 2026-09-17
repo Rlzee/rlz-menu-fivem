@@ -114,6 +114,12 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     return self.id
 end
 
+--- Sets the items of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param builder function A function that builds the menu items. This function will be called when the menu is opened.
+---@return boolean True if the items were set successfully, false if the menu does not exist.
+--
 rlzMenu.SetItems = function(menuId, builder)
     assert(type(menuId) == "string", "rlzMenu.SetItems: menuId must be a string")
     assert(type(builder) == "function", "rlzMenu.SetItems: builder must be a function")
@@ -130,6 +136,12 @@ rlzMenu.SetItems = function(menuId, builder)
     return true
 end
 
+--- Sets the visibility of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param state boolean The visibility state of the menu.
+---@return boolean True if the visibility was set successfully, false if the menu does not exist.
+--
 rlzMenu.SetVisible = function(menuId, state)
     assert(type(menuId) == "string", "Menu ID must be a string")
     assert(type(state) == "boolean", "State must be a boolean")
@@ -180,6 +192,12 @@ rlzMenu.SetVisible = function(menuId, state)
     return true
 end
 
+--- Gets a property of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param property string The property to get. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@return any The value of the property, or nil if the menu does not exist.
+--
 rlzMenu.GetMenuProperty = function(menuId, property)
     assert(type(menuId) == "string", "rlzMenu.GetMenuProperty: menuId must be a string")
     assert(type(property) == "string", "rlzMenu.GetMenuProperty: property must be a string")
@@ -228,7 +246,14 @@ local function setMenuProperty(menuId, property, value, forced)
     return true
 end
 
+--- Sets a property of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@param value any The value to set for the property.
 ---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true.
+---@return boolean True if the property was set successfully, false if the menu does not exist.
+--
 rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
     assert(type(menuId) == "string", "rlzMenu.SetMenuProperty: menuId must be a string")
     assert(type(property) == "string", "rlzMenu.SetMenuProperty: property must be a string")
@@ -250,4 +275,42 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
     end
 
     return setMenuProperty(menuId, property, value, applyToSubmenus ~= false)
+end
+
+--- Destroys a submenu and all its descendant submenus.
+---
+---@param menuId string The ID of the menu to destroy.
+---@param destroyChildren? boolean Whether to also destroy descendant submenus. Defaults to true.
+---@return boolean True if the menu was destroyed, false if it did not exist.
+--
+rlzMenu.DestroySubMenu = function(menuId, destroyChildren)
+    assert(type(menuId) == "string", "rlzMenu.DestroySubMenu: menuId must be a string")
+    assert(type(destroyChildren) == "boolean" or destroyChildren == true, "rlzMenu.DestroySubMenu: destroyChildren must be a boolean or nil")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    if not menu.parent then
+        error("rlzMenu.DestroySubMenu: cannot destroy a root menu")
+    end
+
+    if destroyChildren then
+        for childId, childMenu in pairs(MENUS) do
+            if childMenu.parent == menuId then
+                rlzMenu.DestroySubMenu(childId)
+            end
+        end
+    end
+
+    if CURRENT_MENU == menuId then
+        rlzMenu.GoBack()
+    end
+
+    MENUS[menuId] = nil
+
+    return true
 end
