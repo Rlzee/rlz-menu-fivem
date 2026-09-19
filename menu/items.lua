@@ -74,6 +74,12 @@ local function findItemById(itemId)
     return nil
 end
 
+--- Gets a property of an item.
+---
+---@param itemId string The ID of the item.
+---@param property string The property to get. Supported properties depend on the item type.
+---@return any The value of the property, or nil if the item does not exist.
+--
 rlzMenu.GetItemProperty = function(itemId, property)
     assert(type(itemId) == "string", "rlzMenu.GetItemProperty: itemId must be a string")
     assert(type(property) == "string", "rlzMenu.GetItemProperty: property must be a string")
@@ -95,6 +101,13 @@ rlzMenu.GetItemProperty = function(itemId, property)
     return item[property]
 end
 
+--- Sets a property of an item.
+---
+---@param itemId string The ID of the item.
+---@param property string The property to set. Supported properties depend on the item type.
+---@param value any The value to set for the property.
+---@return boolean True if the property was set successfully, false if the item does not exist.
+--
 rlzMenu.SetItemProperty = function(itemId, property, value)
     assert(type(itemId) == "string", "rlzMenu.SetItemProperty: itemId must be a string")
     assert(type(property) == "string", "rlzMenu.SetItemProperty: property must be a string")

@@ -17,6 +17,24 @@ local INHERITED_MENU_PROPERTIES = {
     hoverColor = "hoverColorForced",
 }
 
+local function isColor(value)
+    if type(value) == "string" then
+        return true
+    end
+
+    if type(value) ~= "table" or #value == 0 then
+        return false
+    end
+
+    for _, color in ipairs(value) do
+        if type(color) ~= "string" then
+            return false
+        end
+    end
+
+    return true
+end
+
 --- Creates a new menu.
 ---
 ---@param options table
@@ -24,8 +42,8 @@ local INHERITED_MENU_PROPERTIES = {
 ---@field options.subtitle? string Menu subtitle.
 ---@field options.command? string Command used to toggle the menu.
 ---@field options.key? string Key used to toggle the menu.
----@field options.color? string Menu color or "rainbow" for an animated color.
----@field options.hoverColor? string Item hover color.
+---@field options.color? string|string[] Menu color or a list of colors for a gradient. Use "rainbow" for an animated color.
+---@field options.hoverColor? string|string[] Item hover color or a list of colors for a gradient. Use "rainbow" for an animated color.
 ---@field options.position? "left"|"right" Menu position.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
@@ -36,8 +54,8 @@ rlzMenu.Create = function(options)
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.Create: subtitle must be a string or nil")
     assert(options.command == nil or type(options.command) == "string", "rlzMenu.Create: command must be a string or nil")
     assert(options.key == nil or type(options.key) == "string", "rlzMenu.Create: key must be a string or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Create: color must be a string or nil")
-    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.Create: hoverColor must be a string or nil")
+    assert(options.color == nil or isColor(options.color), "rlzMenu.Create: color must be a string or a non-empty array of strings")
+    assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.Create: hoverColor must be a string or a non-empty array of strings")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
@@ -75,8 +93,8 @@ end
 ---@field options.title? string Submenu title.
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
----@field options.color? string Submenu color or "rainbow" for an animated color. Inherits the parent color if not specified.
----@field options.hoverColor? string Submenu item hover color. Inherits the parent hover color if not specified.
+---@field options.color? string|string[] Submenu color or a list of colors for a gradient. Inherits the parent color if not specified.
+---@field options.hoverColor? string|string[] Submenu item hover color or a list of colors for a gradient. Inherits the parent hover color if not specified.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --
@@ -87,8 +105,8 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.title == nil or type(options.title) == "string", "rlzMenu.CreateSubMenu: title must be a string or nil")
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.CreateSubMenu: subtitle must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
-    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.CreateSubMenu: hoverColor must be a string or nil")
+    assert(options.color == nil or isColor(options.color), "rlzMenu.CreateSubMenu: color must be a string or a non-empty array of strings")
+    assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.CreateSubMenu: hoverColor must be a string or a non-empty array of strings")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.CreateSubMenu: enabled must be a boolean or nil")
 
     local parent = MENUS[parentId]
@@ -114,6 +132,12 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     return self.id
 end
 
+--- Sets the items of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param builder function A function that builds the menu items. This function will be called when the menu is opened.
+---@return boolean True if the items were set successfully, false if the menu does not exist.
+--
 rlzMenu.SetItems = function(menuId, builder)
     assert(type(menuId) == "string", "rlzMenu.SetItems: menuId must be a string")
     assert(type(builder) == "function", "rlzMenu.SetItems: builder must be a function")
@@ -130,6 +154,12 @@ rlzMenu.SetItems = function(menuId, builder)
     return true
 end
 
+--- Sets the visibility of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param state boolean The visibility state of the menu.
+---@return boolean True if the visibility was set successfully, false if the menu does not exist.
+--
 rlzMenu.SetVisible = function(menuId, state)
     assert(type(menuId) == "string", "Menu ID must be a string")
     assert(type(state) == "boolean", "State must be a boolean")
@@ -180,6 +210,12 @@ rlzMenu.SetVisible = function(menuId, state)
     return true
 end
 
+--- Gets a property of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param property string The property to get. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@return any The value of the property, or nil if the menu does not exist.
+--
 rlzMenu.GetMenuProperty = function(menuId, property)
     assert(type(menuId) == "string", "rlzMenu.GetMenuProperty: menuId must be a string")
     assert(type(property) == "string", "rlzMenu.GetMenuProperty: property must be a string")
@@ -228,7 +264,14 @@ local function setMenuProperty(menuId, property, value, forced)
     return true
 end
 
+--- Sets a property of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@param value any The value to set for the property.
 ---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true.
+---@return boolean True if the property was set successfully, false if the menu does not exist.
+--
 rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
     assert(type(menuId) == "string", "rlzMenu.SetMenuProperty: menuId must be a string")
     assert(type(property) == "string", "rlzMenu.SetMenuProperty: property must be a string")
@@ -239,7 +282,11 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
         error(("Property '%s' is not supported for menus"):format(property))
     end
 
-    if type(value) ~= expectedType then
+    if (property == "color" or property == "hoverColor") and not isColor(value) then
+        error((
+            "Property '%s' must be a string or a non-empty array of strings"
+        ):format(property))
+    elseif property ~= "color" and property ~= "hoverColor" and type(value) ~= expectedType then
         error((
             "Property '%s' must be a %s, got %s"
         ):format(property, expectedType, type(value)))
@@ -250,4 +297,42 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
     end
 
     return setMenuProperty(menuId, property, value, applyToSubmenus ~= false)
+end
+
+--- Destroys a submenu and all its descendant submenus.
+---
+---@param menuId string The ID of the menu to destroy.
+---@param destroyChildren? boolean Whether to also destroy descendant submenus. Defaults to true.
+---@return boolean True if the menu was destroyed, false if it did not exist.
+--
+rlzMenu.DestroySubMenu = function(menuId, destroyChildren)
+    assert(type(menuId) == "string", "rlzMenu.DestroySubMenu: menuId must be a string")
+    assert(type(destroyChildren) == "boolean" or destroyChildren == true, "rlzMenu.DestroySubMenu: destroyChildren must be a boolean or nil")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    if not menu.parent then
+        error("rlzMenu.DestroySubMenu: cannot destroy a root menu")
+    end
+
+    if destroyChildren then
+        for childId, childMenu in pairs(MENUS) do
+            if childMenu.parent == menuId then
+                rlzMenu.DestroySubMenu(childId)
+            end
+        end
+    end
+
+    if CURRENT_MENU == menuId then
+        rlzMenu.GoBack()
+    end
+
+    MENUS[menuId] = nil
+
+    return true
 end

@@ -1,4 +1,5 @@
 import { useRainbowColor } from "../../../hooks/useRainbowColor";
+import type { Color } from "../../../utils/color";
 import { Item } from "../../item";
 import { ChevronRight, Lock } from "lucide-react";
 
@@ -9,9 +10,9 @@ type MenuButtonProps = {
   selected?: boolean;
   submenu?: boolean;
   disabled?: boolean;
-  buttonColor?: string;
-  menuColor?: string;
-  hoverColor?: string;
+  buttonColor?: Color;
+  menuColor?: Color;
+  hoverColor?: Color;
 };
 
 export function MenuButton({

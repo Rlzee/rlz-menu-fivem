@@ -1,3 +1,5 @@
+export type Color = string | string[];
+
 export function getRainbowColor(hue: number): string {
   const saturation = 1;
   const lightness = 0.5;
@@ -38,4 +40,18 @@ export function withOpacity(color: string, opacity: number): string {
   const blue = Number.parseInt(normalizedHex.slice(4, 6), 16);
 
   return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
+}
+
+export function linearGradient(colors: string[], opacity?: number): string {
+  const colorStops = opacity === undefined
+    ? colors
+    : colors.map((color) => withOpacity(color, opacity));
+
+  return `linear-gradient(to right, ${colorStops.join(", ")})`;
+}
+
+export function toColorValue(color: Color, opacity: number): string {
+  return Array.isArray(color)
+    ? linearGradient(color, opacity)
+    : withOpacity(color, opacity);
 }

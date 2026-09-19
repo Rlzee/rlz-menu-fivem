@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useMenuNavigation } from "../../hooks/useMenuNavigation";
 import { useMenuSelection } from "../../hooks/useMenuSelection";
 import { useRainbowColor } from "../../hooks/useRainbowColor";
+import type { Color } from "../../utils/color";
 
 import { isSelectableItem } from "./items/isSelectableItem";
 import { Menu } from "./exports";
@@ -11,8 +12,8 @@ export type MenuData = {
   menuId?: string;
   title: string;
   subtitle: string;
-  color?: string;
-  hoverColor?: string;
+  color?: Color;
+  hoverColor?: Color;
   position: "left" | "right";
   items: MenuItem[];
 };

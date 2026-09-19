@@ -1,4 +1,5 @@
 import { useRainbowColor } from "../../../hooks/useRainbowColor";
+import type { Color } from "../../../utils/color";
 import { Item } from "../../item";
 import { Check, Lock } from "lucide-react";
 import { cn } from "cn";
@@ -8,9 +9,9 @@ type MenuCheckboxProps = {
   isChecked?: boolean;
   selected?: boolean;
   disabled?: boolean;
-  itemColor?: string;
-  menuColor?: string;
-  hoverColor?: string;
+  itemColor?: Color;
+  menuColor?: Color;
+  hoverColor?: Color;
 };
 
 export function MenuCheckbox({
