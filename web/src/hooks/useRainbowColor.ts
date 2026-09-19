@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { getRainbowColor } from "../utils/color";
+import type { Color } from "../utils/color";
 
-export function useRainbowColor(color?: string, fallback?: string) {
+type RainbowColorResult<T> = T extends string[] ? Color : string | undefined;
+
+export function useRainbowColor<T extends Color | undefined>(
+  color?: T,
+  fallback?: T,
+): RainbowColorResult<T> {
   const [rainbowHue, setRainbowHue] = useState(0);
 
   useEffect(() => {
@@ -15,5 +21,5 @@ export function useRainbowColor(color?: string, fallback?: string) {
     return () => window.clearInterval(interval);
   }, [color]);
 
-  return color === "rainbow" ? getRainbowColor(rainbowHue) : color || fallback;
+  return (color === "rainbow" ? getRainbowColor(rainbowHue) : color || fallback) as RainbowColorResult<T>;
 }

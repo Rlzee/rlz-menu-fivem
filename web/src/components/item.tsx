@@ -1,13 +1,13 @@
 import { cn } from "cn";
-import { withOpacity } from "../utils/color";
+import { toColorValue, type Color } from "../utils/color";
 
 type itemProps = {
   children: React.ReactNode;
   className?: string;
   selected?: boolean;
   disabled?: boolean;
-  color?: string;
-  hoverColor?: string;
+  color?: Color;
+  hoverColor?: Color;
   alwaysColor?: boolean;
 };
 
@@ -22,10 +22,10 @@ export function Item({
 }: itemProps) {
   const hasCustomColor = color && color !== "default";
   const customColorStyle = hasCustomColor
-    ? { backgroundColor: withOpacity(color, 0.4) }
+    ? { background: toColorValue(color, 0.55) }
     : undefined;
   const hoverColorStyle = hoverColor
-    ? { backgroundColor: withOpacity(hoverColor, 0.4) }
+    ? { background: toColorValue(hoverColor, 0.55) }
     : undefined;
 
   return (

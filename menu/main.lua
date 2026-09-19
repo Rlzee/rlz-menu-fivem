@@ -17,6 +17,24 @@ local INHERITED_MENU_PROPERTIES = {
     hoverColor = "hoverColorForced",
 }
 
+local function isColor(value)
+    if type(value) == "string" then
+        return true
+    end
+
+    if type(value) ~= "table" or #value == 0 then
+        return false
+    end
+
+    for _, color in ipairs(value) do
+        if type(color) ~= "string" then
+            return false
+        end
+    end
+
+    return true
+end
+
 --- Creates a new menu.
 ---
 ---@param options table
@@ -24,8 +42,8 @@ local INHERITED_MENU_PROPERTIES = {
 ---@field options.subtitle? string Menu subtitle.
 ---@field options.command? string Command used to toggle the menu.
 ---@field options.key? string Key used to toggle the menu.
----@field options.color? string Menu color or "rainbow" for an animated color.
----@field options.hoverColor? string Item hover color.
+---@field options.color? string|string[] Menu color or a list of colors for a gradient. Use "rainbow" for an animated color.
+---@field options.hoverColor? string|string[] Item hover color or a list of colors for a gradient. Use "rainbow" for an animated color.
 ---@field options.position? "left"|"right" Menu position.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
@@ -36,8 +54,8 @@ rlzMenu.Create = function(options)
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.Create: subtitle must be a string or nil")
     assert(options.command == nil or type(options.command) == "string", "rlzMenu.Create: command must be a string or nil")
     assert(options.key == nil or type(options.key) == "string", "rlzMenu.Create: key must be a string or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Create: color must be a string or nil")
-    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.Create: hoverColor must be a string or nil")
+    assert(options.color == nil or isColor(options.color), "rlzMenu.Create: color must be a string or a non-empty array of strings")
+    assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.Create: hoverColor must be a string or a non-empty array of strings")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
 
@@ -75,8 +93,8 @@ end
 ---@field options.title? string Submenu title.
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
----@field options.color? string Submenu color or "rainbow" for an animated color. Inherits the parent color if not specified.
----@field options.hoverColor? string Submenu item hover color. Inherits the parent hover color if not specified.
+---@field options.color? string|string[] Submenu color or a list of colors for a gradient. Inherits the parent color if not specified.
+---@field options.hoverColor? string|string[] Submenu item hover color or a list of colors for a gradient. Inherits the parent hover color if not specified.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@return string menuId
 --
@@ -87,8 +105,8 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.title == nil or type(options.title) == "string", "rlzMenu.CreateSubMenu: title must be a string or nil")
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.CreateSubMenu: subtitle must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
-    assert(options.hoverColor == nil or type(options.hoverColor) == "string", "rlzMenu.CreateSubMenu: hoverColor must be a string or nil")
+    assert(options.color == nil or isColor(options.color), "rlzMenu.CreateSubMenu: color must be a string or a non-empty array of strings")
+    assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.CreateSubMenu: hoverColor must be a string or a non-empty array of strings")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.CreateSubMenu: enabled must be a boolean or nil")
 
     local parent = MENUS[parentId]
@@ -264,7 +282,11 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
         error(("Property '%s' is not supported for menus"):format(property))
     end
 
-    if type(value) ~= expectedType then
+    if (property == "color" or property == "hoverColor") and not isColor(value) then
+        error((
+            "Property '%s' must be a string or a non-empty array of strings"
+        ):format(property))
+    elseif property ~= "color" and property ~= "hoverColor" and type(value) ~= expectedType then
         error((
             "Property '%s' must be a %s, got %s"
         ):format(property, expectedType, type(value)))

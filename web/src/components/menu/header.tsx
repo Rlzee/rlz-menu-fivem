@@ -1,12 +1,12 @@
 import { cn } from "cn";
-import { withOpacity } from "../../utils/color";
+import { toColorValue, type Color } from "../../utils/color";
 
 type MenuHeaderProps = {
   title: string;
   subtitle?: string;
   current: number;
   total: number;
-  color?: string;
+  color?: Color;
 };
 
 export function MenuHeader({
@@ -26,7 +26,7 @@ export function MenuHeader({
         )}
         style={
           color && color !== "default"
-            ? { backgroundColor: withOpacity(color, 0.8) }
+            ? { background: toColorValue(color, 0.8) }
             : undefined
         }
       >
