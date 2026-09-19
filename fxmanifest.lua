@@ -26,5 +26,7 @@ client_scripts {
     -- Context
     'context/main.lua',
 
+    -- Test
     'test.lua',
+    'test2.lua',
 }
