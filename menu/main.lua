@@ -186,6 +186,8 @@ rlzMenu.SetVisible = function(menuId, state)
         end
 
         TriggerNuiEvent("rlz_menu:setData", {
+            menuId = menu.id,
+            selectedItemId = menu.selectedItemId,
             title = menu.title,
             subtitle = menu.subtitle,
             color = menu.color,

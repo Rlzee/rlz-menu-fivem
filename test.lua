@@ -152,6 +152,14 @@ end)
 
 rlzMenu.SetItems(optionsMenu, function()
     rlzMenu.Button({
+        label = "Item Menu",
+        description = "Go to the items menu",
+        submenu = itemsMenu,
+    })
+
+    rlzMenu.Separator()
+
+    rlzMenu.Button({
         label = "Change title",
         description = "Modify the main menu title",
 

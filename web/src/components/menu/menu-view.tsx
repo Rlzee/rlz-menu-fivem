@@ -10,6 +10,7 @@ import type { MenuItem } from "./items/type";
 
 export type MenuData = {
   menuId?: string;
+  selectedItemId?: string;
   title: string;
   subtitle: string;
   color?: Color;
@@ -23,12 +24,6 @@ type MenuViewProps = {
 };
 
 export const MenuView = ({ menu }: MenuViewProps) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  const menuColor = useRainbowColor(menu.color);
-  const hoverColor = useRainbowColor(menu.hoverColor);
-
   const selectableIndexes = useMemo(() => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
       if (isSelectableItem(item)) {
@@ -38,6 +33,20 @@ export const MenuView = ({ menu }: MenuViewProps) => {
       return indexes;
     }, []);
   }, [menu.items]);
+
+  const [selectedIndex, setSelectedIndex] = useState(() => {
+    const restoredIndex = menu.items.findIndex(
+      (item) => item.id === menu.selectedItemId,
+    );
+
+    return selectableIndexes.includes(restoredIndex)
+      ? restoredIndex
+      : 0;
+  });
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const menuColor = useRainbowColor(menu.color);
+  const hoverColor = useRainbowColor(menu.hoverColor);
 
   useMenuSelection({
     menuId: menu.menuId,

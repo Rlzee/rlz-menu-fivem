@@ -15,6 +15,8 @@ rlzMenu.Refresh = function(menuId)
     end
 
     TriggerNuiEvent("rlz_menu:setData", {
+        menuId = menu.id,
+        selectedItemId = menu.selectedItemId,
         title = menu.title,
         subtitle = menu.subtitle,
         color = menu.color,
@@ -104,7 +106,11 @@ rlzMenu.GoBack = function()
         return
     end
 
-    local parentId = currentMenu.parent
+    local parentId = currentMenu.previousMenu
+
+    if not parentId or not MENUS[parentId] then
+        parentId = currentMenu.parent
+    end
 
     if not parentId then
         rlzMenu.SetVisible(CURRENT_MENU, false)

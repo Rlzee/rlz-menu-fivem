@@ -36,7 +36,10 @@ const App = () => {
         menu.position === "right" ? "items-end" : "items-start",
       )}
     >
-      <MenuView menu={menu} />
+      <MenuView
+        key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
+        menu={menu}
+      />
       {searchLabel && <SearchBar label={searchLabel} />}
     </div>
   );

@@ -24,6 +24,8 @@ RegisterNUICallback("rlz_menu:selectButton", function(data, cb)
                 local submenu = MENUS[item.submenu]
 
                 if submenu then
+                    MENUS[CURRENT_MENU].selectedItemId = item.id
+                    submenu.previousMenu = CURRENT_MENU
                     rlzMenu.SetVisible(CURRENT_MENU, false)
                     rlzMenu.SetVisible(item.submenu, true)
                 end
