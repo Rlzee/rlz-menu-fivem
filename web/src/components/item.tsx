@@ -1,3 +1,5 @@
+import type * as React from "react";
+import { Slot } from "./ui/slot";
 import { cn } from "cn";
 import { toColorValue, type Color } from "../utils/color";
 
@@ -19,7 +21,7 @@ export function Item({
   color,
   hoverColor,
   alwaysColor,
-}: itemProps) {
+}: itemProps & Omit<React.ComponentProps<typeof Slot>, keyof itemProps>) {
   const hasCustomColor = color && color !== "default";
   const customColorStyle = hasCustomColor
     ? { background: toColorValue(color, 0.55) }
@@ -29,7 +31,7 @@ export function Item({
     : undefined;
 
   return (
-    <div
+    <Slot
       data-slot="menu-item"
       data-selected={selected ? "true" : undefined}
       className={cn(
@@ -42,11 +44,17 @@ export function Item({
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      style={alwaysColor
-        ? (selected ? hoverColorStyle : customColorStyle)
-        : (selected ? hoverColorStyle ?? customColorStyle : undefined)}
+      style={
+        alwaysColor
+          ? selected
+            ? hoverColorStyle
+            : customColorStyle
+          : selected
+            ? (hoverColorStyle ?? customColorStyle)
+            : undefined
+      }
     >
       {children}
-    </div>
+    </Slot>
   );
 }

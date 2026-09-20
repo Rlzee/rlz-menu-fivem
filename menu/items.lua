@@ -19,7 +19,9 @@ local ITEM_PROPERTY_TYPES = {
         label = "string",
     },
 
-    separator = {},
+    separator = {
+        visible = "boolean",
+    },
 
     checkbox = {
         label = "string",
@@ -245,14 +247,21 @@ end
 
 --- Add a separator item.
 ---
+---@param options? table
+---@field options.visible? boolean Whether the separator bar is visible.
 ---@return string itemId
 --
-rlzMenu.Separator = function()
+rlzMenu.Separator = function(options)
+    options = options or {}
+    assert(type(options) == "table", "rlzMenu.Separator: options must be a table")
+    assert(options.visible == nil or type(options.visible) == "boolean", "rlzMenu.Separator: visible must be a boolean or nil")
+
     local self = {}
     ITEM_COUNTER += 1
 
     self.id = getItemId("separator", ITEM_COUNTER)
     self.type = "separator"
+    self.visible = options.visible ~= false
 
     table.insert(ITEMS, self)
 

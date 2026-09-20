@@ -136,7 +136,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           }
 
           if (item.type === "separator") {
-            return <Menu.Item.Separator key={item.id} />;
+            return <Menu.Item.Separator key={item.id} visible={item.visible} />;
           }
 
           if (item.type === "list") {

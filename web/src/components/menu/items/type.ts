@@ -31,6 +31,7 @@ export type LabelItem = {
 export type SeparatorItem = {
   id: string;
   type: "separator";
+  visible: boolean;
 };
 
 export type ListItem = {

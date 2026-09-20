@@ -1,7 +1,8 @@
 import { useRainbowColor } from "../../../hooks/useRainbowColor";
 import type { Color } from "../../../utils/color";
 import { Item } from "../../item";
-import { Check, Lock } from "lucide-react";
+import { Checkbox } from "../../ui/checkbox";
+import { Lock } from "lucide-react";
 import { cn } from "cn";
 
 type MenuCheckboxProps = {
@@ -34,19 +35,14 @@ export function MenuCheckbox({
       hoverColor={hoverColor}
     >
       <span>{label}</span>
-      {isChecked && !disabled ? (
-        <div className="h-4 w-4 rounded-checkbox bg-white">
-          <Check className="h-4 w-4 text-black" />
-        </div>
-      ) : !isChecked && !disabled ? (
-        <div
-          className={cn(
-            "h-4 w-4 rounded-checkbox",
-            selected ? "bg-checkbox-selected" : "bg-checkbox",
-          )}
-        />
-      ) : (
+      {disabled ? (
         <Lock className="h-4 w-4" />
+      ) : (
+        <Checkbox
+          checked={isChecked}
+          aria-label={label}
+          className={cn(selected && !isChecked && "bg-checkbox-selected")}
+        />
       )}
     </Item>
   );
