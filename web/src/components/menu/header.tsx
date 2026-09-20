@@ -33,10 +33,12 @@ export function MenuHeader({
         <h1 className="text-3xl font-bold text-white">{title}</h1>
       </div>
 
-      <div className="flex h-8 items-center justify-between bg-background-menu px-2 text-white">
-        <span>{subtitle}</span>
-        <span>
-          {current}/{total}
+      <div className="flex h-8 text-base items-center justify-between bg-background-menu px-2 text-white">
+        <span className="font-medium">{subtitle}</span>
+        <span className="font-light">
+          {current}
+          <span className="px-0.5">/</span>
+          {total}
         </span>
       </div>
     </div>
