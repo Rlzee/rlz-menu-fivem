@@ -35,7 +35,7 @@ export function Item({
       data-slot="menu-item"
       data-selected={selected ? "true" : undefined}
       className={cn(
-        "flex h-8 items-center justify-between rounded-item px-2 text-white text-[0.900rem]",
+        "flex h-8 items-center justify-between rounded-item px-2 text-white text-[0.900rem] transition-colors duration-200",
         selected
           ? hasCustomColor && !alwaysColor
             ? "bg-transparent"
