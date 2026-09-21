@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { Switch as SwitchPrimitive } from "radix-ui";
+
 import { cn } from "cn";
 
 export function Switch({
@@ -11,7 +12,7 @@ export function Switch({
       data-slot="switch"
       className={cn(
         "bg-checkbox data-[state=checked]:bg-white",
-        "peer group/switch relative inline-flex h-[16px] w-[24px] shrink-0 items-center rounded-full border border-transparent outline-none after:absolute after:-inset-x-3 after:-inset-y-2",
+        "peer group/switch relative inline-flex h-4 w-6 shrink-0 items-center rounded-full outline-none",
         className,
       )}
       {...props}
