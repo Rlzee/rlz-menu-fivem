@@ -7,6 +7,7 @@ import { MenuButton } from "./items/button";
 import { MenuLabel } from "./items/label";
 import { MenuSeparator } from "./items/separator";
 import { MenuCheckbox } from "./items/checkbox";
+import { MenuSwitch } from "./items/switch";
 import { MenuList } from "./items/list";
 
 export const Menu = {
@@ -18,6 +19,7 @@ export const Menu = {
     Button: MenuButton,
     Label: MenuLabel,
     Checkbox: MenuCheckbox,
+    Switch: MenuSwitch,
     Separator: MenuSeparator,
     List: MenuList,
   },

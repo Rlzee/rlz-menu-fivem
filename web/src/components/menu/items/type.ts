@@ -22,6 +22,17 @@ export type CheckboxItem = {
   color?: string;
 };
 
+export type SwitchItem = {
+  id: string;
+  type: "switch";
+  label: string;
+  description?: string;
+  isChecked: boolean;
+  onChange?: (isChecked: boolean) => void;
+  disabled?: boolean;
+  color?: string;
+};
+
 export type LabelItem = {
   id: string;
   type: "label";
@@ -47,4 +58,10 @@ export type ListItem = {
   color?: string;
 };
 
-export type MenuItem = ButtonItem | CheckboxItem | LabelItem | SeparatorItem | ListItem;
+export type MenuItem =
+  | ButtonItem
+  | CheckboxItem
+  | SwitchItem
+  | LabelItem
+  | SeparatorItem
+  | ListItem;

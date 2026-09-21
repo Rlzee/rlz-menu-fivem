@@ -48,7 +48,7 @@ RegisterNUICallback("rlz_menu:toggleCheckbox", function(data, cb)
 
     for _, item in ipairs(ITEMS) do
 
-        if item.id == itemId and item.type == "checkbox" then
+        if item.id == itemId and (item.type == "checkbox" or item.type == "switch") then
 
             if item.disabled then
                 cb({ ok = false, disabled = true })

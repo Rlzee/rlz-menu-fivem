@@ -34,6 +34,17 @@ local ITEM_PROPERTY_TYPES = {
         onLeave = "function",
     },
 
+    switch = {
+        label = "string",
+        description = "string",
+        isChecked = "boolean",
+        onChange = "function",
+        disabled = "boolean",
+        color = "string",
+        onHover = "function",
+        onLeave = "function",
+    },
+
     list = {
         label = "string",
         description = "string",
@@ -297,6 +308,49 @@ rlzMenu.Checkbox = function(options)
 
     self.id = getItemId("checkbox", ITEM_COUNTER)
     self.type = "checkbox"
+    self.label = options.label
+    self.description = options.description or ""
+    self.isChecked = options.isChecked
+    self.color = options.color
+    self.onChange = options.onChange
+    self.disabled = options.disabled or false
+    self.onHover = options.onHover
+    self.onLeave = options.onLeave
+
+    table.insert(ITEMS, self)
+
+    return self.id
+end
+
+--- Add a switch item.
+---
+---@param options table
+---@field options.label string Checkbox label.
+---@field options.description? string Checkbox description.
+---@field options.isChecked boolean Whether the checkbox is checked.
+---@field options.color? string Checkbox color or "rainbow" for an animated color.
+---@field options.onChange? function Function called when the checkbox state changes.
+---@field options.disabled? boolean Whether the checkbox is disabled.
+---@field options.onHover? function Function called when the checkbox is hovered.
+---@field options.onLeave? function Function called when the cursor leaves the checkbox.
+---@return string itemId
+--
+rlzMenu.Switch = function(options)
+    assert(type(options) == "table", "rlzMenu.Switch: options must be a table")
+    assert(type(options.label) == "string", "rlzMenu.Switch: label must be a string")
+    assert(options.description == nil or type(options.description) == "string","rlzMenu.Switch: description must be a string or nil")
+    assert(type(options.isChecked) == "boolean", "rlzMenu.Switch: isChecked must be a boolean")
+    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Switch: color must be a string or nil")
+    assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.Switch: onChange must be a function or nil")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Switch: disabled must be a boolean or nil")
+    assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Switch: onHover must be a function or nil")
+    assert(options.onLeave == nil or type(options.onLeave) == "function", "rlzMenu.Switch: onLeave must be a function or nil")
+
+    local self = {}
+    ITEM_COUNTER += 1
+
+    self.id = getItemId("switch", ITEM_COUNTER)
+    self.type = "switch"
     self.label = options.label
     self.description = options.description or ""
     self.isChecked = options.isChecked

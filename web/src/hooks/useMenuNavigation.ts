@@ -112,7 +112,10 @@ export function useMenuNavigation({
             });
           }
 
-          if (selectedItem.type === "checkbox") {
+          if (
+            selectedItem.type === "checkbox" ||
+            selectedItem.type === "switch"
+          ) {
             fetchNui("rlz_menu:toggleCheckbox", {
               itemId: selectedItem.id,
             });

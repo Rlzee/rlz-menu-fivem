@@ -75,6 +75,7 @@ export const MenuView = ({ menu }: MenuViewProps) => {
   const footerDescription =
     selectedItem?.type === "button" ||
     selectedItem?.type === "checkbox" ||
+    selectedItem?.type === "switch" ||
     selectedItem?.type === "list"
       ? (selectedItem.description ?? "")
       : "";
@@ -119,6 +120,21 @@ export const MenuView = ({ menu }: MenuViewProps) => {
           if (item.type === "checkbox") {
             return (
               <Menu.Item.Checkbox
+                key={item.id}
+                label={item.label}
+                isChecked={item.isChecked}
+                selected={isSelected}
+                disabled={item.disabled}
+                itemColor={item.color}
+                menuColor={menuColor}
+                hoverColor={hoverColor}
+              />
+            );
+          }
+
+          if (item.type === "switch") {
+            return (
+              <Menu.Item.Switch
                 key={item.id}
                 label={item.label}
                 isChecked={item.isChecked}

@@ -80,6 +80,28 @@ rlzMenu.SetItems(testMenu, function()
         end,
     })
 
+    rlzMenu.Switch({
+        label = "God Mode Switch",
+        description = "Enable or disable god mode",
+        isChecked = godMode,
+
+        onChange = function(value)
+            godMode = value
+            print("[rlzMenu] God Mode Switch:", value)
+        end,
+    })
+
+    rlzMenu.Switch({
+        label = "Visibility Switch",
+        description = "Make the player visible",
+        isChecked = playerVisible,
+
+        onChange = function(value)
+            playerVisible = value
+            print("[rlzMenu] Visibility Switch:", value)
+        end,
+    })
+
     rlzMenu.List({
         label = "Game mode",
         description = "Choose the game mode",
