@@ -13,7 +13,7 @@ export function Checkbox({
       data-slot="checkbox"
       className={cn(
         "bg-checkbox data-[state=checked]:bg-white",
-        "peer relative flex size-4 shrink-0 items-center justify-center rounded-menu transition-colors outline-none after:absolute after:-inset-x-3 after:-inset-y-2",
+        "peer relative flex size-4 shrink-0 items-center justify-center rounded-menu outline-none after:absolute after:-inset-x-3 after:-inset-y-2",
         className,
       )}
       {...props}
