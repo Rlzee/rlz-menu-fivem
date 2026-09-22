@@ -191,7 +191,7 @@ end
 ---
 ---@param options table
 ---@field options.label string Button label.
----@field options.anchor? string Button anchor.
+---@field options.anchor? string Button anchor or "loading" for an animated spinner.
 ---@field options.anchorColor? string Button anchor color or "rainbow" for an animated color.
 ---@field options.description? string Button description.
 ---@field options.onSelect? function Function called when the button is selected.

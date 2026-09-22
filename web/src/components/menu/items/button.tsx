@@ -1,6 +1,7 @@
 import { useRainbowColor } from "../../../hooks/useRainbowColor";
 import type { Color } from "../../../utils/color";
 import { Item } from "../../item";
+import { Spinner } from "../../ui/spinner";
 import { ChevronRight, Lock } from "lucide-react";
 
 type MenuButtonProps = {
@@ -38,10 +39,18 @@ export function MenuButton({
       hoverColor={hoverColor}
     >
       <span>{label}</span>
-      <span style={effectiveAnchorColor ? { color: effectiveAnchorColor } : undefined}>
-        {anchor ||
-          (submenu && <ChevronRight className="h-4 w-4" />) ||
-          (disabled && <Lock className="h-4 w-4" />)}
+      <span
+        style={
+          effectiveAnchorColor ? { color: effectiveAnchorColor } : undefined
+        }
+      >
+        {disabled ? (
+          <Lock className="h-4 w-4" />
+        ) : anchor === "loading" ? (
+          <Spinner />
+        ) : (
+          anchor || (submenu && <ChevronRight className="h-4 w-4" />)
+        )}
       </span>
     </Item>
   );
