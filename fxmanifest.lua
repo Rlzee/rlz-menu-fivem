@@ -16,9 +16,17 @@ ui_page 'web/dist/index.html'
 client_scripts {
     'common.lua',
     'utils/*.lua',
+
+    -- Menu
     'menu/main.lua',
     'menu/items.lua',
     'menu/functions.lua',
     'menu/callbacks.lua',
+
+    -- Context
+    'context/main.lua',
+
+    -- Test
     'test.lua',
+    'test2.lua',
 }
