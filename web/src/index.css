@@ -11,12 +11,13 @@
   --menu-width: 20vw;
   --menu-height: 519px;
 
-  --color-background-menu: rgb(0 0 0 / 45%);
+  --color-background-menu: rgba(23, 23, 23, 0.98);
   --color-menu: rgb(16 185 129 / 80%);
 
+  --item-menu-padding: 4px;
   --color-item-menu-background: rgb(0 0 0 / 55%);
   --color-item-menu-background-hover: rgb(16 185 129 / 55%);
-  
+
   --color-checkbox: rgb(255 255 255 / 10%);
   --color-checkbox-selected: rgb(39 39 42 / 60%);
 }
