@@ -6,7 +6,7 @@ type MenuLabelProps = {
 
 export function MenuLabel({ label }: MenuLabelProps) {
   return (
-    <Label data-slot="menu-label" className="pt-2 text-white font-medium text-base">
+    <Label data-slot="menu-label" className="pt-2 pl-(--item-label-padding-left) text-white font-medium text-base">
       {label}
     </Label>
   );
