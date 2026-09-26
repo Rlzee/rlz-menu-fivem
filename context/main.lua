@@ -1,3 +1,4 @@
+CONTEXT_REGISTERED = false
 CONTEXT_ACTIVE = false
 
 CreateThread(function()
@@ -8,7 +9,7 @@ CreateThread(function()
             goto continue
         end
 
-        local contextKeyPressed = IsControlPressed(0, rlzMenu.Context.key)
+        local contextKeyPressed = IsControlPressed(0, rlzMenu.Context.Key)
 
         if contextKeyPressed and not CONTEXT_ACTIVE then
             CONTEXT_ACTIVE = true
@@ -25,6 +26,21 @@ CreateThread(function()
         if CONTEXT_ACTIVE then
             DisableControlAction(0, 1, true) -- Look Left/Right
             DisableControlAction(0, 2, true) -- Look Up/Down
+
+            if IsDisabledControlJustPressed(0, 25) then -- Right Mouse Click
+                local cursorPosition = GetCursorScreenPosition()
+
+                local hit, worldPosition, normalDirection, entity =
+                    ScreenToWorld(cursorPosition, 10.0)
+
+                if hit and entity and DoesEntityExist(entity) then
+                    print("Entity:", entity)
+                    print("Entity Type:", GetEntityType(entity))
+                    print("Model:", GetEntityModel(entity))
+                else
+                    print("No entity")
+                end
+            end
         end
 
         ::continue::
