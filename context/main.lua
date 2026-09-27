@@ -1,49 +1,40 @@
 CONTEXT_REGISTERED = false
 CONTEXT_ACTIVE = false
 
+local RIGHT_CLICK = 25 -- INPUT_AIM
+
 CreateThread(function()
     while true do
         Wait(0)
 
-        if not CONTEXT_REGISTERED then
-            goto continue
-        end
+        if not CONTEXT_REGISTERED then break end
 
-        local contextKeyPressed = IsControlPressed(0, rlzMenu.Context.Key)
-
-        if contextKeyPressed and not CONTEXT_ACTIVE then
-            CONTEXT_ACTIVE = true
-
-            SetNuiFocus(false, true)
-            SetNuiFocusKeepInput(true)
-        elseif not contextKeyPressed and CONTEXT_ACTIVE then
-            CONTEXT_ACTIVE = false
-
-            SetNuiFocus(false, false)
-            SetNuiFocusKeepInput(false)
-        end
-
-        if CONTEXT_ACTIVE then
-            DisableControlAction(0, 1, true) -- Look Left/Right
-            DisableControlAction(0, 2, true) -- Look Up/Down
-
-            if IsDisabledControlJustPressed(0, 25) then -- Right Mouse Click
-                local cursorPosition = GetCursorScreenPosition()
-
-                local hit, worldPosition, normalDirection, entity =
-                    ScreenToWorld(cursorPosition, 10.0)
-
-                if hit and entity and DoesEntityExist(entity) then
-                    print("Entity:", entity)
-                    print("Entity Type:", GetEntityType(entity))
-                    print("Model:", GetEntityModel(entity))
-                else
-                    print("No entity")
-                end
+        if (IsControlPressed(0, rlzMenu.Context.Key)) then
+            if not CONTEXT_ACTIVE then
+                SetCursorLocation(0.5, 0.5)
             end
-        end
 
-        ::continue::
+            CONTEXT_ACTIVE = true
+			SetMouseCursorActiveThisFrame()
+			DisableControlAction(0, RIGHT_CLICK, true) -- INPUT_ATTACK
+			DisableControlAction(0, 1, true)
+			DisableControlAction(0, 2, true)
+
+			if (IsDisabledControlJustPressed(0, RIGHT_CLICK)) then
+				local cursorScreenPosition = GetCursorScreenPosition()
+                local hit, positionImpact, _, entite = ScreenToWorld(cursorScreenPosition, rlzMenu.Context.MaxDistance)
+
+                if not hit or not entite then
+                    CONTEXT_ACTIVE = false
+                    return
+                end
+
+                local entityType = GetEntityType(entite)
+                print("Entity Type: " .. entityType)
+			end
+        else
+            CONTEXT_ACTIVE = false
+		end
     end
 end)
 
