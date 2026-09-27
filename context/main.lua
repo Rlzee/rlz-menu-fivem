@@ -16,7 +16,7 @@ CreateThread(function()
 
             CONTEXT_ACTIVE = true
 			SetMouseCursorActiveThisFrame()
-			DisableControlAction(0, RIGHT_CLICK, true) -- INPUT_ATTACK
+			DisableControlAction(0, RIGHT_CLICK, true)
 			DisableControlAction(0, 1, true)
 			DisableControlAction(0, 2, true)
 
