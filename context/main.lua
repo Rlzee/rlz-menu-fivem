@@ -25,21 +25,11 @@ CreateThread(function()
             DisableControlAction(0, 2, true)
 
             if IsDisabledControlJustPressed(0, RIGHT_CLICK) then
-                local cursorScreenPosition = GetCursorScreenPosition()
+                local target = rlzMenu.Context.GetTarget()
 
-                local hit, positionImpact, _, entity =
-                    ScreenToWorld(
-                        cursorScreenPosition,
-                        rlzMenu.Context.MaxDistance
-                    )
-
-                if not hit or not entity then
-                    CONTEXT_ACTIVE = false
-                    goto continue
+                if target then
+                    print("Target entity type: " .. target.type)
                 end
-
-                local entityType = GetEntityType(entity)
-                print("Entity Type: " .. entityType)
             end
         else
             CONTEXT_ACTIVE = false
