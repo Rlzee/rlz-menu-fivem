@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Slot } from "./ui/slot";
 import { cn } from "cn";
-import { isLightColor, toColorValue, type Color } from "../utils/color";
+import { isWhiteColor, toColorValue, type Color } from "../utils/color";
 
 type itemProps = {
   children: React.ReactNode;
@@ -41,7 +41,7 @@ export function Item({
       data-selected={selected ? "true" : undefined}
       className={cn(
         "flex h-8 items-center justify-between rounded-item px-2 text-[0.905rem]",
-        isLightColor(visibleColor) ? "text-black" : "text-white",
+        isWhiteColor(visibleColor) ? "text-black" : "text-white",
         selected
           ? hasCustomColor && !alwaysColor
             ? "bg-transparent"

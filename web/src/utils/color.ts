@@ -1,37 +1,18 @@
 export type Color = string | string[];
 
-function colorLuminance(color: string): number | undefined {
+function isWhiteColorValue(color: string): boolean {
   const normalizedColor = color.trim().toLowerCase();
-  const hex = normalizedColor.replace("#", "");
-
-  if (/^[0-9a-f]{3}$/.test(hex) || /^[0-9a-f]{6}$/.test(hex)) {
-    const fullHex = hex.length === 3
-      ? hex.split("").map((value) => value + value).join("")
-      : hex;
-    const red = Number.parseInt(fullHex.slice(0, 2), 16) / 255;
-    const green = Number.parseInt(fullHex.slice(2, 4), 16) / 255;
-    const blue = Number.parseInt(fullHex.slice(4, 6), 16) / 255;
-
-    return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
-  }
-
-  if (normalizedColor === "white" || normalizedColor === "rgb(255, 255, 255)") {
-    return 1;
-  }
-
-  return undefined;
+  return normalizedColor === "white"
+    || normalizedColor === "#fff"
+    || normalizedColor === "#ffffff"
+    || normalizedColor === "rgb(255, 255, 255)";
 }
 
-export function isLightColor(color?: Color): boolean {
+export function isWhiteColor(color?: Color): boolean {
   if (!color) return false;
 
   const colors = Array.isArray(color) ? color : [color];
-  const luminances = colors
-    .map(colorLuminance)
-    .filter((luminance): luminance is number => luminance !== undefined);
-
-  return luminances.length > 0
-    && luminances.reduce((sum, luminance) => sum + luminance, 0) / luminances.length >= 0.5;
+  return colors.length > 0 && colors.every(isWhiteColorValue);
 }
 
 export function getRainbowColor(hue: number): string {

@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { isLightColor, toColorValue, type Color } from "../../utils/color";
+import { isWhiteColor, toColorValue, type Color } from "../../utils/color";
 
 type MenuHeaderProps = {
   title: string;
@@ -33,7 +33,7 @@ export function MenuHeader({
         <h1
           className={cn(
             "text-3xl font-bold",
-            isLightColor(color) ? "text-black" : "text-white",
+            isWhiteColor(color) ? "text-black" : "text-white",
           )}
         >
           {title}
