@@ -1,5 +1,5 @@
 import { cn } from "cn";
-import { toColorValue, type Color } from "../../utils/color";
+import { isLightColor, toColorValue, type Color } from "../../utils/color";
 
 type MenuHeaderProps = {
   title: string;
@@ -30,7 +30,14 @@ export function MenuHeader({
             : undefined
         }
       >
-        <h1 className="text-3xl font-bold text-white">{title}</h1>
+        <h1
+          className={cn(
+            "text-3xl font-bold",
+            isLightColor(color) ? "text-black" : "text-white",
+          )}
+        >
+          {title}
+        </h1>
       </div>
 
       <div className="flex h-8 text-base items-center justify-between bg-background-menu px-2 text-white">
