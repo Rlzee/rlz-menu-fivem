@@ -7,34 +7,45 @@ CreateThread(function()
     while true do
         Wait(0)
 
-        if not CONTEXT_REGISTERED then break end
+        if not CONTEXT_REGISTERED then
+            goto continue
+        end
 
-        if (IsControlPressed(0, rlzMenu.Context.Key)) then
+        if IsControlPressed(0, rlzMenu.Context.Key) then
             if not CONTEXT_ACTIVE then
                 SetCursorLocation(0.5, 0.5)
             end
 
             CONTEXT_ACTIVE = true
-			SetMouseCursorActiveThisFrame()
-			DisableControlAction(0, RIGHT_CLICK, true)
-			DisableControlAction(0, 1, true)
-			DisableControlAction(0, 2, true)
 
-			if (IsDisabledControlJustPressed(0, RIGHT_CLICK)) then
-				local cursorScreenPosition = GetCursorScreenPosition()
-                local hit, positionImpact, _, entite = ScreenToWorld(cursorScreenPosition, rlzMenu.Context.MaxDistance)
+            SetMouseCursorActiveThisFrame()
 
-                if not hit or not entite then
+            DisableControlAction(0, RIGHT_CLICK, true)
+            DisableControlAction(0, 1, true)
+            DisableControlAction(0, 2, true)
+
+            if IsDisabledControlJustPressed(0, RIGHT_CLICK) then
+                local cursorScreenPosition = GetCursorScreenPosition()
+
+                local hit, positionImpact, _, entity =
+                    ScreenToWorld(
+                        cursorScreenPosition,
+                        rlzMenu.Context.MaxDistance
+                    )
+
+                if not hit or not entity then
                     CONTEXT_ACTIVE = false
-                    return
+                    goto continue
                 end
 
-                local entityType = GetEntityType(entite)
+                local entityType = GetEntityType(entity)
                 print("Entity Type: " .. entityType)
-			end
+            end
         else
             CONTEXT_ACTIVE = false
-		end
+        end
+
+        ::continue::
     end
 end)
 
