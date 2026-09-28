@@ -1,5 +1,20 @@
 export type Color = string | string[];
 
+function isWhiteColorValue(color: string): boolean {
+  const normalizedColor = color.trim().toLowerCase();
+  return normalizedColor === "white"
+    || normalizedColor === "#fff"
+    || normalizedColor === "#ffffff"
+    || normalizedColor === "rgb(255, 255, 255)";
+}
+
+export function isWhiteColor(color?: Color): boolean {
+  if (!color) return false;
+
+  const colors = Array.isArray(color) ? color : [color];
+  return colors.length > 0 && colors.every(isWhiteColorValue);
+}
+
 export function getRainbowColor(hue: number): string {
   const saturation = 1;
   const lightness = 0.5;

@@ -1,7 +1,7 @@
 import type * as React from "react";
 import { Slot } from "./ui/slot";
 import { cn } from "cn";
-import { toColorValue, type Color } from "../utils/color";
+import { isWhiteColor, toColorValue, type Color } from "../utils/color";
 
 type itemProps = {
   children: React.ReactNode;
@@ -29,13 +29,19 @@ export function Item({
   const hoverColorStyle = hoverColor
     ? { background: toColorValue(hoverColor, 0.55) }
     : undefined;
+  const visibleColor = selected
+    ? (hoverColor ?? color)
+    : alwaysColor
+      ? color
+      : undefined;
 
   return (
     <Slot
       data-slot="menu-item"
       data-selected={selected ? "true" : undefined}
       className={cn(
-        "flex h-8 items-center justify-between rounded-item px-2 text-white text-[0.905rem]",
+        "flex h-8 items-center justify-between rounded-item px-2 text-[0.905rem]",
+        isWhiteColor(visibleColor) ? "text-black" : "text-white",
         selected
           ? hasCustomColor && !alwaysColor
             ? "bg-transparent"
