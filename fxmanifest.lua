@@ -27,6 +27,7 @@ client_scripts {
     'context/main.lua',
     'context/functions.lua',
     'context/items.lua',
+    'context/callbacks.lua',
 
     -- Test
     'test.lua',

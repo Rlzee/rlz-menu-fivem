@@ -25,7 +25,7 @@ export function ContextView({ context }: ContextViewProps) {
       >
         <ContextMenuHeader title={context.title} />
         <ContextMenuItemContent>
-          {context.items.map((item, index) => {
+          {context.items.map((item) => {
             if (item.type === "button") {
               return (
                 <ContextMenuItems.item.Button

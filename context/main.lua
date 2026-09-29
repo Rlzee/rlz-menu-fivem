@@ -102,12 +102,16 @@ rlzMenu.Context.SetVisible = function(state, target)
 
         context.items(target)
 
-        TriggerNuiEvent("rlz_menu:Context:setData", {
+        local screenWidth, screenHeight = GetActiveScreenResolution()
+        local cursorX = GetControlNormal(0, 239) * screenWidth
+        local cursorY = GetControlNormal(0, 240) * screenHeight
+
+        TriggerNuiEvent("rlz_menu:context:setData", {
             type = target.type,
             title = context.title,
             items = PrepareNuiItems(items),
-            x = GetControlNormal(0, 239),
-            y = GetControlNormal(0, 240),
+            x = cursorX,
+            y = cursorY,
         })
 
         playSound("select")
@@ -116,7 +120,10 @@ rlzMenu.Context.SetVisible = function(state, target)
         playSound("back")
     end
 
-    TriggerNuiEvent("rlz_menu:Context:setVisible", {
+    SetNuiFocus(state, false)
+    SetNuiFocusKeepInput(state)
+
+    TriggerNuiEvent("rlz_menu:context:setVisible", {
         state = state
     })
 
