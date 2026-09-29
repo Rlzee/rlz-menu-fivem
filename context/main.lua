@@ -70,6 +70,7 @@ rlzMenu.Context.SetItems = function(entityType, options)
     local self = {}
     self.title = options.title or "Context Menu"
     self.items = options.items
+    self.visible = false
 
     CONTEXT_ITEMS[entityType] = self
 

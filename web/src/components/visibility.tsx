@@ -2,8 +2,10 @@ import React, { createContext, useContext, useState } from "react";
 import { useNuiEvent } from "../hooks/useNuiEvent";
 
 type VisibilityProviderValue = {
-  setVisible: (visible: boolean) => void;
-  visible: boolean;
+  contextVisible: boolean;
+  menuVisible: boolean;
+  setContextVisible: (visible: boolean) => void;
+  setMenuVisible: (visible: boolean) => void;
 };
 
 type VisibilityData = {
@@ -27,14 +29,22 @@ export const VisibilityProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [visible, setVisible] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [contextVisible, setContextVisible] = useState(false);
 
   useNuiEvent<VisibilityData>("rlz_menu:setVisible", (data) => {
-    setVisible(data.state);
+    setMenuVisible(data.state);
   });
 
   return (
-    <VisibilityContext.Provider value={{ visible, setVisible }}>
+    <VisibilityContext.Provider
+      value={{
+        contextVisible,
+        menuVisible,
+        setContextVisible,
+        setMenuVisible,
+      }}
+    >
       {children}
     </VisibilityContext.Provider>
   );

@@ -10,16 +10,16 @@ export type ContextMenuData = {
 };
 
 type ContextViewProps = {
-  Context: ContextMenuData;
+  context: ContextMenuData;
 };
 
-export function ContextView({ Context }: ContextViewProps) {
+export function ContextView({ context }: ContextViewProps) {
   return (
     <ContextMenu>
       <ContextMenuContent
-        style={{ position: "fixed", left: Context.x, top: Context.y }}
+        style={{ position: "fixed", left: context.x, top: context.y }}
       >
-        <ContextHeader title={Context.title} />
+        <ContextHeader title={context.title} />
       </ContextMenuContent>
     </ContextMenu>
   );
