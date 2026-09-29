@@ -1,5 +1,6 @@
 CONTEXT_REGISTERED = false
 CONTEXT_ACTIVE = false
+CONTEXT_CURRENT = nil
 
 local RIGHT_CLICK = 25 -- INPUT_AIM
 
@@ -28,7 +29,7 @@ CreateThread(function()
                 local target = rlzMenu.Context.GetTarget()
 
                 if target then
-                    print("Target entity type: " .. target.type)
+                    rlzMenu.Context.SetVisible(true, target)
                 end
             end
         else
@@ -70,9 +71,56 @@ rlzMenu.Context.SetItems = function(entityType, options)
     local self = {}
     self.title = options.title or "Context Menu"
     self.items = options.items
-    self.visible = false
 
     CONTEXT_ITEMS[entityType] = self
+
+    return true
+end
+
+rlzMenu.Context.SetVisible = function(state, target)
+    assert(type(state) == "boolean", "rlzMenu.Context.SetVisible: state must be a boolean")
+
+    if not target then
+        print("[rlzMenu:Context] Setting context menu visible requires a target")
+        return false
+    end
+
+    if state then
+        local context = CONTEXT_ITEMS[target.type]
+
+        if not context then
+            print("[rlzMenu:Context] No context menu registered for entity type: " .. target.type)
+            return false
+        end
+
+        local items = context.items(target)
+
+        CONTEXT_CURRENT = {
+            target = target,
+            entityType = target.type,
+            coords = target.coords,
+            normal = target.normal,
+            title = context.title,
+            items = items,
+        }
+
+        TriggerNuiEvent("rlz_menu:Context:setData", {
+            type = target.type,
+            title = context.title,
+            -- items = PrepareNuiItems(items),
+            x = GetControlNormal(0, 239),
+            y = GetControlNormal(0, 240),
+        })
+
+        playSound("select")
+    else
+        CONTEXT_CURRENT = nil
+        playSound("back")
+    end
+
+    TriggerNuiEvent("rlz_menu:Context:setVisible", {
+        state = state
+    })
 
     return true
 end

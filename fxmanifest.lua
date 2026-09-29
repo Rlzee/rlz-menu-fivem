@@ -24,8 +24,9 @@ client_scripts {
     'menu/callbacks.lua',
 
     -- Context
-    'context/functions.lua',
     'context/main.lua',
+    'context/functions.lua',
+    'context/items.lua',
 
     -- Test
     'test.lua',

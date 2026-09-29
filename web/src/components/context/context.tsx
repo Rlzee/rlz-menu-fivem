@@ -15,12 +15,12 @@ export function ContextMenu() {
     y: 0,
   });
 
-  useNuiEvent<ContextMenuData>("rlz_menu:Context:setData", (data) => {
+  useNuiEvent<ContextMenuData>("rlz_menu:context:setData", (data) => {
     SetContext(data);
     setContextVisible(true);
   });
   useNuiEvent<{ state: boolean }>(
-    "rlz_menu:Context:setVisible",
+    "rlz_menu:context:setVisible",
     ({ state }) => setContextVisible(state),
   );
 
