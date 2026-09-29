@@ -79,11 +79,7 @@ end
 
 rlzMenu.Context.SetVisible = function(state, target)
     assert(type(state) == "boolean", "rlzMenu.Context.SetVisible: state must be a boolean")
-
-    if not target then
-        print("[rlzMenu:Context] Setting context menu visible requires a target")
-        return false
-    end
+    assert(not state or type(target) == "table", "rlzMenu.Context.SetVisible: target must be a table when opening")
 
     if state then
         local context = CONTEXT_ITEMS[target.type]
@@ -93,21 +89,23 @@ rlzMenu.Context.SetVisible = function(state, target)
             return false
         end
 
-        local items = context.items(target)
+        local items = {}
 
         CONTEXT_CURRENT = {
             target = target,
-            entityType = target.type,
+            type = target.type,
             coords = target.coords,
             normal = target.normal,
             title = context.title,
             items = items,
         }
 
+        context.items(target)
+
         TriggerNuiEvent("rlz_menu:Context:setData", {
             type = target.type,
             title = context.title,
-            -- items = PrepareNuiItems(items),
+            items = PrepareNuiItems(items),
             x = GetControlNormal(0, 239),
             y = GetControlNormal(0, 240),
         })

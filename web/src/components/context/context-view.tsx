@@ -31,7 +31,6 @@ export function ContextView({ context }: ContextViewProps) {
                 <ContextMenuItems.item.Button
                   key={item.id}
                   label={item.label}
-                  selected={item.selected}
                   disabled={item.disabled}
                 />
               );
