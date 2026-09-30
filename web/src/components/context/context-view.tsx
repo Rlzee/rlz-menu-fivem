@@ -36,6 +36,18 @@ export function ContextView({ context }: ContextViewProps) {
                 />
               );
             }
+
+            if (item.type === "checkbox") {
+              return (
+                <ContextMenuItems.item.Checkbox
+                  key={item.id}
+                  id={item.id}
+                  label={item.label}
+                  isChecked={item.isChecked}
+                  disabled={item.disabled}
+                />
+              );
+            }
           })}
         </ContextMenuItemContent>
       </ContextMenuContent>

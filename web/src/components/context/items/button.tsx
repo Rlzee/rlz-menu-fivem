@@ -10,6 +10,7 @@ type ButtonProps = {
 export function ContextMenuButton({ id, label, disabled }: ButtonProps) {
   return (
     <ContextMenuItem
+      id={id}
       disabled={disabled}
       onSelect={() => fetchNui("rlz_menu:context:selectButton", { itemId: id })}
       onPointerEnter={() =>

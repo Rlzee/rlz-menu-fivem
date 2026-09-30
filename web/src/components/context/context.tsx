@@ -17,7 +17,6 @@ export function ContextMenu() {
 
   useNuiEvent<ContextMenuData>("rlz_menu:context:setData", (data) => {
     SetContext(data);
-    setContextVisible(true);
   });
   useNuiEvent<{ state: boolean }>(
     "rlz_menu:context:setVisible",

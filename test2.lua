@@ -41,3 +41,18 @@ rlzMenu.Context.SetItems("object", {
         })
     end
 })
+
+local godmode = false
+rlzMenu.Context.SetItems("player", {
+    title = "Player",
+    items = function(target)
+        rlzMenu.Context.Checkbox({
+            label = "God Mode",
+            isChecked = godmode,
+            onToggle = function(isChecked)
+                print("God Mode: " .. tostring(isChecked))
+                godmode = isChecked
+            end
+        })
+    end
+})
