@@ -30,6 +30,7 @@ export function ContextView({ context }: ContextViewProps) {
               return (
                 <ContextMenuItems.item.Button
                   key={item.id}
+                  id={item.id}
                   label={item.label}
                   disabled={item.disabled}
                 />
