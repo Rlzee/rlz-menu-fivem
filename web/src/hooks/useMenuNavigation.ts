@@ -41,15 +41,22 @@ export function useMenuNavigation({
     };
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (selectableIndexes.length === 0) {
-        return;
-      }
-
-      const currentPosition = selectableIndexes.indexOf(selectedIndex);
-
       switch (event.key) {
-        case "ArrowDown": {
+        case "Escape":
+        case "Backspace": {
           event.preventDefault();
+          fetchNui("rlz_menu:goBack");
+          break;
+        }
+
+        case "ArrowDown": {
+          if (selectableIndexes.length === 0) {
+            return;
+          }
+
+          event.preventDefault();
+
+          const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
           const nextPosition =
             currentPosition >= selectableIndexes.length - 1
@@ -64,7 +71,13 @@ export function useMenuNavigation({
         }
 
         case "ArrowUp": {
+          if (selectableIndexes.length === 0) {
+            return;
+          }
+
           event.preventDefault();
+
+          const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
           const previousPosition =
             currentPosition <= 0
@@ -124,13 +137,6 @@ export function useMenuNavigation({
           break;
         }
 
-        case "Backspace": {
-          event.preventDefault();
-
-          fetchNui("rlz_menu:goBack");
-
-          break;
-        }
       }
     };
 

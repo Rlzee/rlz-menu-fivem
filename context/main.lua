@@ -3,6 +3,7 @@ CONTEXT_ACTIVE = false
 CONTEXT_CURRENT = nil
 
 local RIGHT_CLICK = 25 -- INPUT_AIM
+local LEFT_CLICK = 24 -- INPUT_ATTACK
 
 CreateThread(function()
     while true do
@@ -19,11 +20,11 @@ CreateThread(function()
 
             CONTEXT_ACTIVE = true
 
-            SetMouseCursorActiveThisFrame()
+            SetNuiFocus(CONTEXT_ACTIVE, true)
+            SetNuiFocusKeepInput(CONTEXT_ACTIVE)
 
             DisableControlAction(0, RIGHT_CLICK, true)
-            DisableControlAction(0, 1, true)
-            DisableControlAction(0, 2, true)
+            DisableControlAction(0, LEFT_CLICK, true)
 
             if IsDisabledControlJustPressed(0, RIGHT_CLICK) then
                 local target = rlzMenu.Context.GetTarget()
@@ -33,7 +34,12 @@ CreateThread(function()
                 end
             end
         else
+            local wasContextActive = CONTEXT_ACTIVE
             CONTEXT_ACTIVE = false
+
+            if wasContextActive then
+                rlzMenu.Context.SetVisible(false)
+            end
         end
 
         ::continue::
@@ -117,11 +123,11 @@ rlzMenu.Context.SetVisible = function(state, target)
         playSound("select")
     else
         CONTEXT_CURRENT = nil
+        local menuIsVisible = rlzMenu.GetCurrentMenu() ~= nil
+        SetNuiFocus(menuIsVisible, false)
+        SetNuiFocusKeepInput(menuIsVisible)
         playSound("back")
     end
-
-    SetNuiFocus(state, false)
-    SetNuiFocusKeepInput(state)
 
     TriggerNuiEvent("rlz_menu:context:setVisible", {
         state = state
