@@ -9,7 +9,7 @@ rlzMenu.Context.SetItems("vehicle", {
                 if target.entity then
                     DeleteEntity(target.entity)
                 end
-            end
+            end,
         })
     end
 })

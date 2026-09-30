@@ -12,6 +12,12 @@ export function ContextMenuButton({ id, label, disabled }: ButtonProps) {
     <ContextMenuItem
       disabled={disabled}
       onSelect={() => fetchNui("rlz_menu:context:selectButton", { itemId: id })}
+      onPointerEnter={() =>
+        fetchNui("rlz_menu:context:hoverItem", { itemId: id })
+      }
+      onPointerLeave={() =>
+        fetchNui("rlz_menu:context:leaveItem", { itemId: id })
+      }
     >
       {label}
     </ContextMenuItem>
