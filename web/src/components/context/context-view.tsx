@@ -48,6 +48,18 @@ export function ContextView({ context }: ContextViewProps) {
                 />
               );
             }
+
+            if (item.type === "switch") {
+              return (
+                <ContextMenuItems.item.Switch
+                  key={item.id}
+                  id={item.id}
+                  label={item.label}
+                  isChecked={item.isChecked}
+                  disabled={item.disabled}
+                />
+              );
+            }
           })}
         </ContextMenuItemContent>
       </ContextMenuContent>

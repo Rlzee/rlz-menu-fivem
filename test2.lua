@@ -54,5 +54,13 @@ rlzMenu.Context.SetItems("player", {
                 godmode = isChecked
             end
         })
+        rlzMenu.Context.Switch({
+            label = "Switch",
+            isChecked = godmode,
+            onToggle = function(isChecked)
+                print("Switch: " .. tostring(isChecked))
+                godmode = isChecked
+            end
+        })
     end
 })

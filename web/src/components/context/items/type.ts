@@ -2,7 +2,7 @@ export type ButtonItem = {
   id: string;
   type: "button";
   label: string;
-  disabled?: boolean; 
+  disabled?: boolean;
   onClick?: () => void;
 };
 
@@ -15,4 +15,13 @@ export type CheckboxItem = {
   onToggle?: (checked: boolean) => void;
 };
 
-export type ContextMenuItem = ButtonItem | CheckboxItem;
+export type SwitchItem = {
+  id: string;
+  type: "switch";
+  label: string;
+  isChecked: boolean;
+  disabled?: boolean;
+  onToggle?: (checked: boolean) => void;
+};
+
+export type ContextMenuItem = ButtonItem | CheckboxItem | SwitchItem;

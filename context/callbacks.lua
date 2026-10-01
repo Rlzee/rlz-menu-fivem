@@ -34,7 +34,7 @@ RegisterNUICallback("rlz_menu:context:selectCheckbox", function(data, cb)
 	end
 
 	for _, item in ipairs(CONTEXT_CURRENT.items) do
-		if item.id == itemId and item.type == "checkbox" then
+		if item.id == itemId and item.type == "checkbox" or item.type == "switch" then
 			if item.disabled then
 				cb({ ok = false, disabled = true })
 				return

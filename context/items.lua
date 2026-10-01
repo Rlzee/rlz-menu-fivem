@@ -93,3 +93,40 @@ rlzMenu.Context.Checkbox = function(options)
 
     return self.id
 end
+
+--- Add a Switch item to the context menu
+---
+--- @param options table The options for the switch item
+--- @field options.label string The label for the switch item
+--- @field options.isChecked boolean Whether the switch item is checked
+--- @field options.disabled? boolean Whether the switch item is disabled
+--- @field options.onToggle? function The function to call when the switch item is toggled
+--- @field options.onHover? function Function called when the switch is hovered.
+--- @field options.onLeave? function Function called when the cursor leaves the switch.
+--- @return table The switch item
+--
+rlzMenu.Context.Switch = function(options)
+    assert(type(options) == "table", "rlzMenu.Context.Switch: options must be a table")
+    assert(type(options.label) == "string", "rlzMenu.Context.Switch: label must be a string")
+    assert(type(options.isChecked) == "boolean", "rlzMenu.Context.Switch: isChecked must be a boolean")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Context.Switch: disabled must be a boolean or nil")
+    assert(options.onToggle == nil or type(options.onToggle) == "function", "rlzMenu.Context.Switch: onToggle must be a function or nil")
+    assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Context.Switch: onHover must be a function or nil")
+    assert(options.onLeave == nil or type(options.onLeave) == "function", "rlzMenu.Context.Switch: onLeave must be a function or nil")
+    
+    local self = {}
+    CONTEXT_ITEM_COUNTER += 1
+
+    self.id = getContextItemId("switch", CONTEXT_ITEM_COUNTER)
+    self.type = "switch"
+    self.label = options.label
+    self.isChecked = options.isChecked
+    self.disabled = options.disabled or false
+    self.onToggle = options.onToggle
+    self.onHover = options.onHover
+    self.onLeave = options.onLeave
+
+    table.insert(CONTEXT_CURRENT.items, self)
+
+    return self.id
+end
