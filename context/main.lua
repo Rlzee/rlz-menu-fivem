@@ -27,11 +27,7 @@ CreateThread(function()
             DisableControlAction(0, LEFT_CLICK, true)
 
             if IsDisabledControlJustPressed(0, RIGHT_CLICK) then
-                local target = rlzMenu.Context.GetTarget()
-
-                if target then
-                    rlzMenu.Context.SetVisible(true, target)
-                end
+                rlzMenu.Context.SetVisible(true, target)
             end
         else
             local wasContextActive = CONTEXT_ACTIVE
@@ -83,11 +79,17 @@ rlzMenu.Context.SetItems = function(entityType, options)
     return true
 end
 
-rlzMenu.Context.SetVisible = function(state, target)
+rlzMenu.Context.SetVisible = function(state)
     assert(type(state) == "boolean", "rlzMenu.Context.SetVisible: state must be a boolean")
-    assert(not state or type(target) == "table", "rlzMenu.Context.SetVisible: target must be a table when opening")
 
     if state then
+        local target = rlzMenu.Context.GetTarget()
+
+        if not target or not target.type then
+            print("[rlzMenu:Context] No target found for context menu")
+            return false
+        end
+
         local context = CONTEXT_ITEMS[target.type]
 
         if not context then

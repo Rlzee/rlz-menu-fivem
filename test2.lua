@@ -8,6 +8,7 @@ rlzMenu.Context.SetItems("vehicle", {
             onClick = function()
                 if target.entity then
                     DeleteEntity(target.entity)
+                    rlzMenu.Context.SetVisible(false)
                 end
             end,
         })
