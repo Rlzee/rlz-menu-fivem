@@ -60,6 +60,10 @@ export function ContextView({ context }: ContextViewProps) {
                 />
               );
             }
+
+            if (item.type === "separator") {
+              return <ContextMenuItems.item.Separator key={item.id} id={item.id} />;
+            }
           })}
         </ContextMenuItemContent>
       </ContextMenuContent>

@@ -27,6 +27,24 @@ debugData([
           isChecked: false,
           disabled: false,
         },
+        {
+          id: "3",
+          type: "switch",
+          label: "Lock",
+          isChecked: true,
+          disabled: false,
+        },
+        {
+          id: "4",
+          type: "separator",
+        },
+        {
+          id: "5",
+          type: "button",
+          label: "Close",
+          selected: false,
+          disabled: false,
+        }
       ],
       x: 640,
       y: 360,

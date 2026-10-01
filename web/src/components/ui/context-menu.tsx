@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ContextMenu as ContextMenuPrimitive } from "radix-ui";
+import { Separator } from "./separator";
 
 import { cn } from "cn";
 
@@ -66,5 +67,20 @@ export function ContextMenuItem({
       )}
       {...props}
     />
+  );
+}
+
+export function ContextMenuSeparator({
+  className,
+  ...props
+}: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
+  return (
+    <ContextMenuPrimitive.Separator
+      data-slot="context-menu-separator"
+      className={cn("px-1 w-full", className)}
+      {...props}
+    >
+      <Separator />
+    </ContextMenuPrimitive.Separator>
   );
 }

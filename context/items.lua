@@ -31,7 +31,7 @@ end
 --- @field options.onClick? function The function to call when the button item is clicked
 --- @field options.onHover? function Function called when the button is hovered.
 --- @field options.onLeave? function Function called when the cursor leaves the button.
---- @return table The button item
+--- @return string itemId
 --
 rlzMenu.Context.Button = function(options)
     assert(type(options) == "table", "rlzMenu.Context.Button: options must be a table")
@@ -66,7 +66,7 @@ end
 --- @field options.onToggle? function The function to call when the checkbox item is toggled
 --- @field options.onHover? function Function called when the checkbox is hovered.
 --- @field options.onLeave? function Function called when the cursor leaves the checkbox.
---- @return table The checkbox item
+--- @return string itemId
 --
 rlzMenu.Context.Checkbox = function(options)
     assert(type(options) == "table", "rlzMenu.Context.Checkbox: options must be a table")
@@ -103,7 +103,7 @@ end
 --- @field options.onToggle? function The function to call when the switch item is toggled
 --- @field options.onHover? function Function called when the switch is hovered.
 --- @field options.onLeave? function Function called when the cursor leaves the switch.
---- @return table The switch item
+--- @return string itemId
 --
 rlzMenu.Context.Switch = function(options)
     assert(type(options) == "table", "rlzMenu.Context.Switch: options must be a table")
@@ -125,6 +125,22 @@ rlzMenu.Context.Switch = function(options)
     self.onToggle = options.onToggle
     self.onHover = options.onHover
     self.onLeave = options.onLeave
+
+    table.insert(CONTEXT_CURRENT.items, self)
+
+    return self.id
+end
+
+--- Add a Separator item to the context menu
+---
+--- @return string itemId
+--
+rlzMenu.Context.Separator = function()
+    local self = {}
+    CONTEXT_ITEM_COUNTER += 1
+
+    self.id = getContextItemId("separator", CONTEXT_ITEM_COUNTER)
+    self.type = "separator"
 
     table.insert(CONTEXT_CURRENT.items, self)
 

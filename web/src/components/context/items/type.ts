@@ -24,4 +24,13 @@ export type SwitchItem = {
   onToggle?: (checked: boolean) => void;
 };
 
-export type ContextMenuItem = ButtonItem | CheckboxItem | SwitchItem;
+export type SeparatorItem = {
+  id: string;
+  type: "separator";
+};
+
+export type ContextMenuItem =
+  | ButtonItem
+  | CheckboxItem
+  | SwitchItem
+  | SeparatorItem;
