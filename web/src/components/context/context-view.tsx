@@ -1,6 +1,9 @@
-import { ContextMenu, ContextMenuContent } from "../ui/context-menu";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuGroup,
+} from "../ui/context-menu";
 import { ContextMenuHeader } from "./header";
-import { ContextMenuItemContent } from "./items-content";
 
 import type { ContextMenuItem } from "./items/type";
 import { ContextMenuItems } from "./items/export";
@@ -24,7 +27,7 @@ export function ContextView({ context }: ContextViewProps) {
         style={{ position: "fixed", left: context.x, top: context.y }}
       >
         <ContextMenuHeader title={context.title} />
-        <ContextMenuItemContent>
+        <ContextMenuGroup>
           {context.items.map((item) => {
             if (item.type === "button") {
               return (
@@ -62,10 +65,12 @@ export function ContextView({ context }: ContextViewProps) {
             }
 
             if (item.type === "separator") {
-              return <ContextMenuItems.item.Separator key={item.id} id={item.id} />;
+              return (
+                <ContextMenuItems.item.Separator key={item.id} id={item.id} />
+              );
             }
           })}
-        </ContextMenuItemContent>
+        </ContextMenuGroup>
       </ContextMenuContent>
     </ContextMenu>
   );

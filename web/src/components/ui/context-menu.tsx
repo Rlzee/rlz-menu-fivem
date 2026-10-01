@@ -6,27 +6,9 @@ import { cn } from "cn";
 
 export const ContextMenu: typeof ContextMenuPrimitive.Root =
   ContextMenuPrimitive.Root;
+
 export const ContextMenuPortal: typeof ContextMenuPrimitive.Portal =
   ContextMenuPrimitive.Portal;
-export const ContextMenuGroup: typeof ContextMenuPrimitive.Group =
-  ContextMenuPrimitive.Group;
-export const ContextMenuSub: typeof ContextMenuPrimitive.Sub =
-  ContextMenuPrimitive.Sub;
-export const ContextMenuRadioGroup: typeof ContextMenuPrimitive.RadioGroup =
-  ContextMenuPrimitive.RadioGroup;
-
-export function ContextMenuTrigger({
-  className,
-  ...props
-}: React.ComponentProps<typeof ContextMenuPrimitive.Trigger>) {
-  return (
-    <ContextMenuPrimitive.Trigger
-      data-slot="context-menu-trigger"
-      className={cn("select-none", className)}
-      {...props}
-    />
-  );
-}
 
 export function ContextMenuContent({
   className,
@@ -47,6 +29,25 @@ export function ContextMenuContent({
         {...props}
       />
     </ContextMenuPrimitive.Portal>
+  );
+}
+
+export function ContextMenuGroup({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<typeof ContextMenuPrimitive.Group>) {
+  return (
+    <ContextMenuPrimitive.Group
+      data-slot="context-menu-group"
+      className={cn(
+        "bg-background-menu w-full h-auto rounded-b-menu",
+        className,
+      )}
+      {...props}
+    >
+      <div className="flex flex-col gap-(--item-menu-padding)">{children}</div>
+    </ContextMenuPrimitive.Group>
   );
 }
 
