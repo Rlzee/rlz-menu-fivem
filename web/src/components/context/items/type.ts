@@ -34,7 +34,7 @@ export type SubMenuItem = {
   type: "submenu";
   label: string;
   disabled?: boolean;
-  items: Exclude<ContextMenuItem, SubMenuItem>[];
+  items: ContextMenuItem[];
 };
 
 export type ContextMenuItem =

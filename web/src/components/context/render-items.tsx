@@ -47,6 +47,18 @@ export function ContextMenuRenderItems({
         if (item.type === "separator") {
           return <ContextMenuItems.item.Separator key={item.id} id={item.id} />;
         }
+
+        if (item.type === "submenu") {
+          return (
+            <ContextMenuItems.item.SubMenu
+              key={item.id}
+              id={item.id}
+              label={item.label}
+              disabled={item.disabled}
+              items={item.items}
+            />
+          );
+        }
       })}
     </>
   );

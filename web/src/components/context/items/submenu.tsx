@@ -4,14 +4,14 @@ import {
   ContextMenuSubContent,
   ContextMenuGroup,
 } from "../../ui/context-menu";
-import type { ContextMenuItem, SubMenuItem } from "./type";
+import type { ContextMenuItem } from "./type";
 import { ContextMenuRenderItems } from "../render-items";
 
 type SubMenuProps = {
   id: string;
   label: string;
   disabled?: boolean;
-  items?: Exclude<ContextMenuItem, SubMenuItem>[];
+  items?: ContextMenuItem[];
 };
 
 export function SubMenu({ id, label, disabled, items }: SubMenuProps) {

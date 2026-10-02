@@ -40,6 +40,28 @@ debugData([
         },
         {
           id: "5",
+          type: "submenu",
+          label: "Submenu",
+          disabled: false,
+          items: [
+            {
+              id: "5-1",
+              type: "button",
+              label: "Info",
+              selected: false,
+              disabled: false,
+            },
+            {
+              id: "5-2",
+              type: "button",
+              label: "Settings",
+              selected: false,
+              disabled: false,
+            },
+          ],
+        },
+        {
+          id: "5",
           type: "button",
           label: "Close",
           selected: false,

@@ -1,6 +1,11 @@
 CONTEXT_ITEMS = {}
 CONTEXT_ITEM_COUNTER = 0
 CONTEXT_ITEM_IDS = {}
+CONTEXT_ITEM_LIST = nil
+
+local function getContextItemList()
+    return CONTEXT_ITEM_LIST or CONTEXT_CURRENT.items
+end
 
 local function getContextItemId(itemType, itemIndex)
     assert(type(itemType) == "string", "getContextItemId: itemType must be a string")
@@ -52,7 +57,7 @@ rlzMenu.Context.Button = function(options)
     self.onHover = options.onHover
     self.onLeave = options.onLeave
 
-    table.insert(CONTEXT_CURRENT.items, self)
+    table.insert(getContextItemList(), self)
 
     return self.id
 end
@@ -89,7 +94,7 @@ rlzMenu.Context.Checkbox = function(options)
     self.onHover = options.onHover
     self.onLeave = options.onLeave
 
-    table.insert(CONTEXT_CURRENT.items, self)
+    table.insert(getContextItemList(), self)
 
     return self.id
 end
@@ -126,7 +131,7 @@ rlzMenu.Context.Switch = function(options)
     self.onHover = options.onHover
     self.onLeave = options.onLeave
 
-    table.insert(CONTEXT_CURRENT.items, self)
+    table.insert(getContextItemList(), self)
 
     return self.id
 end
@@ -142,7 +147,40 @@ rlzMenu.Context.Separator = function()
     self.id = getContextItemId("separator", CONTEXT_ITEM_COUNTER)
     self.type = "separator"
 
-    table.insert(CONTEXT_CURRENT.items, self)
+    table.insert(getContextItemList(), self)
+
+    return self.id
+end
+
+--- Add a submenu item to the context menu
+---
+--- @param options table The options for the submenu item
+--- @field options.label string The submenu label
+--- @field options.disabled? boolean Whether the submenu is disabled
+--- @field options.items function Function that adds items to the submenu
+--- @return string itemId
+--
+rlzMenu.Context.SubMenu = function(options)
+    assert(type(options) == "table", "rlzMenu.Context.SubMenu: options must be a table")
+    assert(type(options.label) == "string", "rlzMenu.Context.SubMenu: label must be a string")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Context.SubMenu: disabled must be a boolean or nil")
+    assert(type(options.items) == "function", "rlzMenu.Context.SubMenu: items must be a function")
+
+    local self = {}
+    CONTEXT_ITEM_COUNTER += 1
+
+    self.id = getContextItemId("submenu", CONTEXT_ITEM_COUNTER)
+    self.type = "submenu"
+    self.label = options.label
+    self.disabled = options.disabled or false
+    self.items = {}
+
+    local previousItemList = CONTEXT_ITEM_LIST
+    CONTEXT_ITEM_LIST = self.items
+    options.items(CONTEXT_CURRENT.target)
+    CONTEXT_ITEM_LIST = previousItemList
+
+    table.insert(getContextItemList(), self)
 
     return self.id
 end

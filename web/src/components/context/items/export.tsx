@@ -2,6 +2,7 @@ import { ContextMenuButton } from "./button";
 import { ContextMenuCheckbox } from "./checkbox";
 import { ContextMenuSwitch } from "./switch";
 import { ContextMenuSeparator } from "./separator";
+import { SubMenu } from "./submenu";
 
 export const ContextMenuItems = {
   item: {
@@ -9,5 +10,6 @@ export const ContextMenuItems = {
     Checkbox: ContextMenuCheckbox,
     Switch: ContextMenuSwitch,
     Separator: ContextMenuSeparator,
+    SubMenu,
   },
 };
