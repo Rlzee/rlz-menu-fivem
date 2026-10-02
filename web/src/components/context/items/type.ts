@@ -29,8 +29,17 @@ export type SeparatorItem = {
   type: "separator";
 };
 
+export type SubMenuItem = {
+  id: string;
+  type: "submenu";
+  label: string;
+  disabled?: boolean;
+  items: Exclude<ContextMenuItem, SubMenuItem>[];
+};
+
 export type ContextMenuItem =
   | ButtonItem
   | CheckboxItem
   | SwitchItem
-  | SeparatorItem;
+  | SeparatorItem
+  | SubMenuItem;
