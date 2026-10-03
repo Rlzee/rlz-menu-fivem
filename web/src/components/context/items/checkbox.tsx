@@ -37,7 +37,7 @@ export function ContextMenuCheckbox({
       }
     >
       <span>{label}</span>
-      <Checkbox checked={checked} disabled={disabled} size="sm" />
+      <Checkbox className="group-hover/context-menu-item:bg-checkbox-selected" checked={checked} disabled={disabled} size="sm" />
     </ContextMenuItem>
   );
 }

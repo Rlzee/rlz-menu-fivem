@@ -37,7 +37,7 @@ export function ContextMenuSwitch({
       }
     >
       <span>{label}</span>
-      <Switch checked={checked} disabled={disabled} size="sm" />
+      <Switch className="group-hover/context-menu-item:bg-checkbox-selected" checked={checked} disabled={disabled} size="sm" />
     </ContextMenuItem>
   );
 }
