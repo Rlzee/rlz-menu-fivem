@@ -61,6 +61,25 @@ debugData([
           ],
         },
         {
+          id: "6",
+          type: "radio",
+          isChecked: "6-2",
+          items: [
+            {
+              id: "6-1",
+              label: "Option 1",
+            },
+            {
+              id: "6-2",
+              label: "Option 2",
+            },
+            {
+              id: "6-3",
+              label: "Option 3",
+            },
+          ],
+        },
+        {
           id: "5",
           type: "button",
           label: "Close",

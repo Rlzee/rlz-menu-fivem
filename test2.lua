@@ -74,6 +74,7 @@ rlzMenu.Context.SetItems("object", {
 })
 
 local godmode = false
+local playerMode = "normal"
 rlzMenu.Context.SetItems("player", {
     title = "Player",
     items = function(target)
@@ -92,6 +93,35 @@ rlzMenu.Context.SetItems("player", {
                 print("Switch: " .. tostring(isChecked))
                 godmode = isChecked
             end
+        })
+        rlzMenu.Context.Radio({
+            isChecked = playerMode,
+            items = {
+                {
+                    id = "normal",
+                    label = "Normal",
+                    onSelect = function()
+                        playerMode = "normal"
+                        print("Player mode: " .. playerMode)
+                    end,
+                },
+                {
+                    id = "aggressive",
+                    label = "Aggressive",
+                    onSelect = function()
+                        playerMode = "aggressive"
+                        print("Player mode: " .. playerMode)
+                    end,
+                },
+                {
+                    id = "stealth",
+                    label = "Stealth",
+                    onSelect = function()
+                        playerMode = "stealth"
+                        print("Player mode: " .. playerMode)
+                    end,
+                },
+            },
         })
     end
 })

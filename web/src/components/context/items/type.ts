@@ -37,9 +37,21 @@ export type SubMenuItem = {
   items: ContextMenuItem[];
 };
 
+export type RadioItem = {
+  id: string;
+  type: "radio";
+  isChecked: string;
+  items: {
+    id: string;
+    label: string;
+    disabled?: boolean;
+  }[];
+};
+
 export type ContextMenuItem =
   | ButtonItem
   | CheckboxItem
   | SwitchItem
   | SeparatorItem
-  | SubMenuItem;
+  | SubMenuItem
+  | RadioItem;

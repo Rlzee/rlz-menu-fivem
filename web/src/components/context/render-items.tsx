@@ -59,6 +59,17 @@ export function ContextMenuRenderItems({
             />
           );
         }
+
+        if (item.type === "radio") {
+          return (
+            <ContextMenuItems.item.Radio
+              key={item.id}
+              id={item.id}
+              isChecked={item.isChecked}
+              items={item.items}
+            />
+          );
+        }
       })}
     </>
   );

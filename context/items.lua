@@ -136,6 +136,59 @@ rlzMenu.Context.Switch = function(options)
     return self.id
 end
 
+--- Add a radio group to the context menu
+---
+--- @param options table The options for the radio group
+--- @field options.items table The radio options
+--- @field options.isChecked string The id of the selected radio option
+--- @field options.items[].id string The radio option id
+--- @field options.items[].label string The radio option label
+--- @field options.items[].disabled? boolean Whether the radio option is disabled
+--- @field options.items[].onSelect? function The function to call when the option is selected
+--- @return string itemId
+--
+rlzMenu.Context.Radio = function(options)
+    assert(type(options) == "table", "rlzMenu.Context.Radio: options must be a table")
+    assert(type(options.items) == "table" and #options.items > 0, "rlzMenu.Context.Radio: items must be a non-empty table")
+    assert(type(options.isChecked) == "string", "rlzMenu.Context.Radio: isChecked must be a string")
+
+    local self = {}
+    CONTEXT_ITEM_COUNTER += 1
+
+    self.id = getContextItemId("radio", CONTEXT_ITEM_COUNTER)
+    self.type = "radio"
+    self.isChecked = options.isChecked
+    self.items = {}
+
+    for _, option in ipairs(options.items) do
+        assert(type(option) == "table", "rlzMenu.Context.Radio: each item must be a table")
+        assert(type(option.id) == "string", "rlzMenu.Context.Radio: item id must be a string")
+        assert(type(option.label) == "string", "rlzMenu.Context.Radio: item label must be a string")
+        assert(option.disabled == nil or type(option.disabled) == "boolean", "rlzMenu.Context.Radio: item disabled must be a boolean or nil")
+        assert(option.onSelect == nil or type(option.onSelect) == "function", "rlzMenu.Context.Radio: item onSelect must be a function or nil")
+
+        table.insert(self.items, {
+            id = option.id,
+            label = option.label,
+            disabled = option.disabled or false,
+            onSelect = option.onSelect,
+        })
+    end
+
+    local selectedItem = nil
+    for _, option in ipairs(self.items) do
+        if option.id == self.isChecked then
+            selectedItem = option
+            break
+        end
+    end
+    assert(selectedItem ~= nil, "rlzMenu.Context.Radio: isChecked must match an item id")
+
+    table.insert(getContextItemList(), self)
+
+    return self.id
+end
+
 --- Add a Separator item to the context menu
 ---
 --- @return string itemId
