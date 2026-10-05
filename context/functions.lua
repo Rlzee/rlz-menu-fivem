@@ -69,3 +69,19 @@ rlzMenu.Context.GetTarget = function()
         normal = normalDirection
     }
 end
+
+rlzMenu.Context.Refresh = function()
+    if not CONTEXT_CURRENT then
+        return false
+    end
+
+    TriggerNuiEvent("rlz_menu:context:setData", {
+        type = CONTEXT_CURRENT.type,
+        title = CONTEXT_CURRENT.title,
+        items = PrepareNuiItems(CONTEXT_CURRENT.items),
+        x = CONTEXT_CURRENT.x,
+        y = CONTEXT_CURRENT.y,
+    })
+
+    return true
+end

@@ -3,8 +3,117 @@ CONTEXT_ITEM_COUNTER = 0
 CONTEXT_ITEM_IDS = {}
 CONTEXT_ITEM_LIST = nil
 
+local CONTEXT_ITEM_PROPERTY_TYPES = {
+    button = {
+        label = "string",
+        disabled = "boolean",
+    },
+    checkbox = {
+        label = "string",
+        isChecked = "boolean",
+        disabled = "boolean",
+    },
+    switch = {
+        label = "string",
+        isChecked = "boolean",
+        disabled = "boolean",
+    },
+    radio = {
+        isChecked = "string",
+    },
+    submenu = {
+        label = "string",
+        disabled = "boolean",
+    },
+}
+
 local function getContextItemList()
     return CONTEXT_ITEM_LIST or CONTEXT_CURRENT.items
+end
+
+local function findContextItem(items, itemId)
+    for _, item in ipairs(items) do
+        if item.id == itemId then
+            return item
+        end
+
+        if item.items then
+            local nestedItem = findContextItem(item.items, itemId)
+            if nestedItem then
+                return nestedItem
+            end
+        end
+    end
+
+    return nil
+end
+
+--- Gets a property of a context item.
+---
+---@param itemId string The ID of the item.
+---@param property string The property to get.
+---@return any The value of the property, or nil if the item does not exist.
+--
+rlzMenu.Context.GetItemProperty = function(itemId, property)
+    assert(type(itemId) == "string", "rlzMenu.Context.GetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.Context.GetItemProperty: property must be a string")
+
+    if not CONTEXT_CURRENT then
+        print("[rlzMenu:Context] No context menu is currently active")
+        return nil
+    end
+
+    local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+    if not item then
+        print(("[rlzMenu:Context] Item with ID '%s' does not exist"):format(itemId))
+        return nil
+    end
+
+    local allowedProperties = CONTEXT_ITEM_PROPERTY_TYPES[item.type]
+    if not allowedProperties or not allowedProperties[property] then
+        error(("Property '%s' is not supported for context item type '%s'"):format(property, item.type))
+    end
+
+    return item[property]
+end
+
+--- Sets a property of a context item.
+---
+---@param itemId string The ID of the item.
+---@param property string The property to set.
+---@param value any The value to set for the property.
+---@return boolean True if the property was set successfully, false otherwise.
+--
+rlzMenu.Context.SetItemProperty = function(itemId, property, value)
+    assert(type(itemId) == "string", "rlzMenu.Context.SetItemProperty: itemId must be a string")
+    assert(type(property) == "string", "rlzMenu.Context.SetItemProperty: property must be a string")
+
+    if not CONTEXT_CURRENT then
+        print("[rlzMenu:Context] No context menu is currently active")
+        return false
+    end
+
+    local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+    if not item then
+        print(("[rlzMenu:Context] Item with ID '%s' does not exist"):format(itemId))
+        return false
+    end
+
+    local allowedProperties = CONTEXT_ITEM_PROPERTY_TYPES[item.type]
+    local expectedType = allowedProperties and allowedProperties[property]
+    if not expectedType then
+        error(("Property '%s' is not supported for context item type '%s'"):format(property, item.type))
+    end
+
+    if type(value) ~= expectedType then
+        error(("Property '%s' must be a %s, got %s"):format(property, expectedType, type(value)))
+    end
+
+    item[property] = value
+
+    rlzMenu.Context.Refresh()
+
+    return true
 end
 
 local function getContextItemId(itemType, itemIndex)
