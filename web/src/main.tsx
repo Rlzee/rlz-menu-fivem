@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { VisibilityProvider } from "./components/visibility";
 import { debugData } from "./utils/debugData";
 
 import "./index.css";
@@ -99,8 +98,6 @@ debugData([
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <VisibilityProvider>
-      <App />
-    </VisibilityProvider>
+    <App />
   </StrictMode>,
 );

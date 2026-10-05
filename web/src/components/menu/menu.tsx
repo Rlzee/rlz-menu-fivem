@@ -4,10 +4,9 @@ import { useNuiEvent } from "../../hooks/useNuiEvent";
 
 import { MenuView, type MenuData } from "./menu-view";
 import { cn } from "cn";
-import { useVisibility } from "../visibility";
 
 export function Menu() {
-  const { menuVisible, setMenuVisible } = useVisibility();
+  const [menuVisible, setMenuVisible] = useState(false);
   const [menu, setMenu] = useState<MenuData>({
     title: "",
     subtitle: "",

@@ -3,10 +3,9 @@ import { useState } from "react";
 import { useNuiEvent } from "../../hooks/useNuiEvent";
 
 import { ContextView, type ContextMenuData } from "./context-view";
-import { useVisibility } from "../visibility";
 
 export function ContextMenu() {
-  const { contextVisible, setContextVisible } = useVisibility();
+  const [contextVisible, setContextVisible] = useState(false);
   const [context, SetContext] = useState<ContextMenuData>({
     type: "world",
     title: "",
