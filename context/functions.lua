@@ -1,3 +1,19 @@
+rlzMenu.Context.Refresh = function()
+    if not CONTEXT_CURRENT then
+        return false
+    end
+
+    TriggerNuiEvent("rlz_menu:context:setData", {
+        type = CONTEXT_CURRENT.type,
+        title = CONTEXT_CURRENT.title,
+        items = PrepareNuiItems(CONTEXT_CURRENT.items),
+        x = CONTEXT_CURRENT.x,
+        y = CONTEXT_CURRENT.y,
+    })
+
+    return true
+end
+
 local function GetTargetEntityType(entity)
     if not entity or entity == 0 then
         return nil
@@ -70,18 +86,16 @@ rlzMenu.Context.GetTarget = function()
     }
 end
 
-rlzMenu.Context.Refresh = function()
-    if not CONTEXT_CURRENT then
-        return false
-    end
+rlzMenu.Context.GetCurrent = function()
+    return CONTEXT_CURRENT
+end
 
-    TriggerNuiEvent("rlz_menu:context:setData", {
-        type = CONTEXT_CURRENT.type,
-        title = CONTEXT_CURRENT.title,
-        items = PrepareNuiItems(CONTEXT_CURRENT.items),
-        x = CONTEXT_CURRENT.x,
-        y = CONTEXT_CURRENT.y,
-    })
+rlzMenu.Context.IsVisible = function()
+    return CONTEXT_CURRENT ~= nil
+end
 
-    return true
+rlzMenu.Context.Exists = function(entityType)
+    assert(type(entityType) == "string", "rlzMenu.Context.Exists: entityType must be a string")
+
+    return CONTEXT_ITEMS[entityType] ~= nil
 end
