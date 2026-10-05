@@ -1,19 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchNui } from "../utils/fetchNui";
+import { useNuiEvent } from "../hooks/useNuiEvent";
 
 import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 
-type SearchBarProps = {
-  label: string;
-};
-
-export const SearchBar = ({ label }: SearchBarProps) => {
+export const SearchBar = () => {
   const [value, setValue] = useState("");
+  const [label, setLabel] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  useNuiEvent<{ label: string }>("rlz_menu:openSearch", ({ label }) => {
+    setValue("");
+    setLabel(label);
+  });
+  useNuiEvent("rlz_menu:closeSearch", () => setLabel(null));
+
   useEffect(() => {
+    if (!label) {
+      return;
+    }
+
     inputRef.current?.focus();
-  }, []);
+  }, [label]);
+
+  if (!label) {
+    return null;
+  }
 
   const submit = () => {
     fetchNui("rlz_menu:submitSearch", { value });

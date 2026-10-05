@@ -1,5 +1,3 @@
-SEARCH_BAR = nil
-
 rlzMenu.Refresh = function(menuId)
     assert(type(menuId) == "string", "Menu ID must be a string")
 
@@ -60,24 +58,6 @@ rlzMenu.Exists = function(menuId)
     assert(type(menuId) == "string", "rlzMenu.Exists: The menu ID must be a string")
 
     return MENUS[menuId] ~= nil
-end
-
-rlzMenu.OpenSearchBar = function(label, onSubmit, onCancel)
-    assert(type(label) == "string", "rlzMenu.OpenSearchBar: label must be a string")
-    assert(type(onSubmit) == "function", "rlzMenu.OpenSearchBar: onSubmit must be a function")
-    assert(type(onCancel) == "function", "rlzMenu.OpenSearchBar: onCancel must be a function")
-
-    SEARCH_BAR = {
-        onSubmit = onSubmit,
-        onCancel = onCancel,
-    }
-
-    SetNuiFocus(true, true)
-    SetNuiFocusKeepInput(false)
-
-    TriggerNuiEvent("rlz_menu:openSearch", {
-        label = label,
-    })
 end
 
 rlzMenu.GoTo = function(menuId)

@@ -17,6 +17,10 @@ client_scripts {
     'common.lua',
     'utils/*.lua',
 
+    -- Search
+    'search/main.lua',
+    'search/callbacks.lua',
+
     -- Menu
     'menu/main.lua',
     'menu/items.lua',

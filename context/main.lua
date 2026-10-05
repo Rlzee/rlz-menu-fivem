@@ -13,6 +13,11 @@ CreateThread(function()
             goto continue
         end
 
+        -- The search bar owns NUI focus while it is open.
+        if SEARCH_BAR then
+            goto continue
+        end
+
         if IsControlPressed(0, rlzMenu.Context.Key) then
             if not CONTEXT_ACTIVE then
                 SetCursorLocation(0.5, 0.5)

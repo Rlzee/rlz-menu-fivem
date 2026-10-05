@@ -3,13 +3,11 @@ import { useState } from "react";
 import { useNuiEvent } from "../../hooks/useNuiEvent";
 
 import { MenuView, type MenuData } from "./menu-view";
-import { SearchBar } from "../search-bar";
 import { cn } from "cn";
 import { useVisibility } from "../visibility";
 
 export function Menu() {
   const { menuVisible, setMenuVisible } = useVisibility();
-  const [searchLabel, setSearchLabel] = useState<string | null>(null);
   const [menu, setMenu] = useState<MenuData>({
     title: "",
     subtitle: "",
@@ -22,11 +20,6 @@ export function Menu() {
   useNuiEvent<{ state: boolean }>("rlz_menu:setVisible", ({ state }) => {
     setMenuVisible(state);
   });
-  useNuiEvent<{ label: string }>("rlz_menu:openSearch", ({ label }) => {
-    setSearchLabel(label);
-  });
-  useNuiEvent("rlz_menu:closeSearch", () => setSearchLabel(null));
-
   if (!menuVisible) {
     return null;
   }
@@ -42,7 +35,6 @@ export function Menu() {
         key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
         menu={menu}
       />
-      {searchLabel && <SearchBar label={searchLabel} />}
     </div>
   );
 }
