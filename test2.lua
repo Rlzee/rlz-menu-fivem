@@ -77,6 +77,7 @@ local godmode = false
 local playerMode = "normal"
 rlzMenu.Context.SetItems("player", {
     title = "Player",
+    hoverColor = { "#ff0000", "#0000ff", "#00ff00" },
     items = function(target)
         rlzMenu.Context.Checkbox({
             label = "God Mode",

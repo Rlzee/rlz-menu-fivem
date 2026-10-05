@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { RadioGroup, Radio } from "../../ui/radio";
-import { ContextMenuItem } from "../../ui/context-menu";
+import { ContextItem } from "./context-item";
 import { fetchNui } from "../../../utils/fetchNui";
+import type { Color } from "../../../utils/color";
 
 type ContextMenuRadioProps = {
   id: string;
@@ -11,12 +12,14 @@ type ContextMenuRadioProps = {
     label: string;
     disabled?: boolean;
   }[];
+  hoverColor?: Color;
 };
 
 export function ContextMenuRadio({
   id,
   isChecked,
   items,
+  hoverColor,
 }: ContextMenuRadioProps) {
   const [value, setValue] = useState(isChecked);
 
@@ -36,10 +39,11 @@ export function ContextMenuRadio({
       onValueChange={selectItem}
     >
       {items?.map((item) => (
-        <ContextMenuItem
+        <ContextItem
           key={item.id}
           id={item.id}
           disabled={item.disabled}
+          hoverColor={hoverColor}
           className="flex items-center justify-between"
           onSelect={(event) => {
             event.preventDefault();
@@ -58,7 +62,7 @@ export function ContextMenuRadio({
             disabled={item.disabled}
             className="group-hover/context-menu-item:bg-checkbox-selected"
           />
-        </ContextMenuItem>
+        </ContextItem>
       ))}
     </RadioGroup>
   );

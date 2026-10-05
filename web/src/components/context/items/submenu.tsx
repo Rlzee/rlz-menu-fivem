@@ -1,28 +1,30 @@
 import {
   ContextMenuSub,
-  ContextMenuSubTrigger,
   ContextMenuSubContent,
   ContextMenuGroup,
 } from "../../ui/context-menu";
 import type { ContextMenuItem } from "./type";
 import { ContextMenuRenderItems } from "../render-items";
+import type { Color } from "../../../utils/color";
+import { ContextSubTrigger } from "./context-sub-trigger";
 
 type SubMenuProps = {
   id: string;
   label: string;
   disabled?: boolean;
   items?: ContextMenuItem[];
+  hoverColor?: Color;
 };
 
-export function SubMenu({ id, label, disabled, items }: SubMenuProps) {
+export function SubMenu({ id, label, disabled, items, hoverColor }: SubMenuProps) {
   return (
     <ContextMenuSub>
-      <ContextMenuSubTrigger id={id} disabled={disabled}>
+      <ContextSubTrigger id={id} disabled={disabled} hoverColor={hoverColor}>
         {label}
-      </ContextMenuSubTrigger>
+      </ContextSubTrigger>
       <ContextMenuSubContent>
         <ContextMenuGroup>
-          {items && <ContextMenuRenderItems items={items} />}
+          {items && <ContextMenuRenderItems items={items} hoverColor={hoverColor} />}
         </ContextMenuGroup>
       </ContextMenuSubContent>
     </ContextMenuSub>

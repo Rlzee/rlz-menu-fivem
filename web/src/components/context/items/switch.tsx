@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { ContextMenuItem } from "../../ui/context-menu";
+import { ContextItem } from "./context-item";
 import { Switch } from "../../ui/switch";
 import { fetchNui } from "../../../utils/fetchNui";
+import type { Color } from "../../../utils/color";
 
 type SwitchProps = {
   id: string;
   label: string;
   isChecked: boolean;
   disabled?: boolean;
+  hoverColor?: Color;
 };
 
 export function ContextMenuSwitch({
@@ -15,15 +17,17 @@ export function ContextMenuSwitch({
   label,
   isChecked,
   disabled,
+  hoverColor,
 }: SwitchProps) {
   const [checked, setChecked] = useState(isChecked);
 
   return (
-    <ContextMenuItem
+    <ContextItem
       id={id}
       className="flex items-center justify-between"
       data-checked={checked}
       disabled={disabled}
+      hoverColor={hoverColor}
       onSelect={(event) => {
         event.preventDefault();
         setChecked((current) => !current);
@@ -38,6 +42,6 @@ export function ContextMenuSwitch({
     >
       <span>{label}</span>
       <Switch className="group-hover/context-menu-item:bg-checkbox-selected" checked={checked} disabled={disabled} size="sm" />
-    </ContextMenuItem>
+    </ContextItem>
   );
 }

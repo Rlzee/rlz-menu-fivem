@@ -1,10 +1,13 @@
 import type { ContextMenuItem } from "./items/type";
 import { ContextMenuItems } from "./items/export";
+import type { Color } from "../../utils/color";
 
 export function ContextMenuRenderItems({
   items,
+  hoverColor,
 }: {
   items: ContextMenuItem[];
+  hoverColor?: Color;
 }) {
   return (
     <>
@@ -16,6 +19,7 @@ export function ContextMenuRenderItems({
               id={item.id}
               label={item.label}
               disabled={item.disabled}
+              hoverColor={hoverColor}
             />
           );
         }
@@ -28,6 +32,7 @@ export function ContextMenuRenderItems({
               label={item.label}
               isChecked={item.isChecked}
               disabled={item.disabled}
+              hoverColor={hoverColor}
             />
           );
         }
@@ -40,6 +45,7 @@ export function ContextMenuRenderItems({
               label={item.label}
               isChecked={item.isChecked}
               disabled={item.disabled}
+              hoverColor={hoverColor}
             />
           );
         }
@@ -56,6 +62,7 @@ export function ContextMenuRenderItems({
               label={item.label}
               disabled={item.disabled}
               items={item.items}
+              hoverColor={hoverColor}
             />
           );
         }
@@ -67,6 +74,7 @@ export function ContextMenuRenderItems({
               id={item.id}
               isChecked={item.isChecked}
               items={item.items}
+              hoverColor={hoverColor}
             />
           );
         }

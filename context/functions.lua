@@ -6,6 +6,7 @@ rlzMenu.Context.Refresh = function()
     TriggerNuiEvent("rlz_menu:context:setData", {
         type = CONTEXT_CURRENT.type,
         title = CONTEXT_CURRENT.title,
+        hoverColor = CONTEXT_CURRENT.hoverColor,
         items = PrepareNuiItems(CONTEXT_CURRENT.items),
         x = CONTEXT_CURRENT.x,
         y = CONTEXT_CURRENT.y,
