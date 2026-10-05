@@ -77,16 +77,6 @@ local function getItemId(itemType, itemIndex)
     return itemId
 end
 
-local function findItemById(itemId)
-    for _, item in ipairs(ITEMS) do
-        if item.id == itemId then
-            return item
-        end
-    end
-
-    return nil
-end
-
 --- Gets a property of an item.
 ---
 ---@param itemId string The ID of the item.
@@ -97,7 +87,7 @@ rlzMenu.GetItemProperty = function(itemId, property)
     assert(type(itemId) == "string", "rlzMenu.GetItemProperty: itemId must be a string")
     assert(type(property) == "string", "rlzMenu.GetItemProperty: property must be a string")
 
-    local item = findItemById(itemId)
+    local item = FindItemById(ITEMS, itemId)
 
     if not item then
         print(("[rlzMenu] Item with ID '%s' does not exist"):format(itemId))
@@ -125,7 +115,7 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
     assert(type(itemId) == "string", "rlzMenu.SetItemProperty: itemId must be a string")
     assert(type(property) == "string", "rlzMenu.SetItemProperty: property must be a string")
 
-    local item = findItemById(itemId)
+    local item = FindItemById(ITEMS, itemId)
 
     if not item then
         print(("[rlzMenu] Item with ID '%s' does not exist"):format(itemId))

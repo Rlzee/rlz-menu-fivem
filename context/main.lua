@@ -5,24 +5,6 @@ CONTEXT_CURRENT = nil
 local RIGHT_CLICK = 25 -- INPUT_AIM
 local LEFT_CLICK = 24 -- INPUT_ATTACK
 
-local function isColor(value)
-    if type(value) == "string" then
-        return true
-    end
-
-    if type(value) ~= "table" or #value == 0 then
-        return false
-    end
-
-    for _, color in ipairs(value) do
-        if type(color) ~= "string" then
-            return false
-        end
-    end
-
-    return true
-end
-
 CreateThread(function()
     while true do
         Wait(0)
@@ -92,7 +74,7 @@ rlzMenu.Context.SetItems = function(entityType, options)
     assert(type(entityType) == "string", "rlzMenu.Context.SetItems: entityType must be a string")
     assert(type(options) == "table", "rlzMenu.Context.SetItems: options must be a table")
     assert(options.title == nil or type(options.title) == "string", "rlzMenu.Context.SetItems: title must be a string or nil")
-    assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.Context.SetItems: hoverColor must be a string or a non-empty array of strings")
+    assert(options.hoverColor == nil or IsColor(options.hoverColor), "rlzMenu.Context.SetItems: hoverColor must be a string or a non-empty array of strings")
     assert(type(options.items) == "function", "rlzMenu.Context.SetItems: items must be a function")
 
     local self = {}

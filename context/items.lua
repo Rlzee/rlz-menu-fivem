@@ -31,23 +31,6 @@ local function getContextItemList()
     return CONTEXT_ITEM_LIST or CONTEXT_CURRENT.items
 end
 
-local function findContextItem(items, itemId)
-    for _, item in ipairs(items) do
-        if item.id == itemId then
-            return item
-        end
-
-        if item.items then
-            local nestedItem = findContextItem(item.items, itemId)
-            if nestedItem then
-                return nestedItem
-            end
-        end
-    end
-
-    return nil
-end
-
 --- Gets a property of a context item.
 ---
 ---@param itemId string The ID of the item.
@@ -63,7 +46,7 @@ rlzMenu.Context.GetItemProperty = function(itemId, property)
         return nil
     end
 
-    local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+    local item = FindItemById(CONTEXT_CURRENT.items, itemId)
     if not item then
         print(("[rlzMenu:Context] Item with ID '%s' does not exist"):format(itemId))
         return nil
@@ -93,7 +76,7 @@ rlzMenu.Context.SetItemProperty = function(itemId, property, value)
         return false
     end
 
-    local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+    local item = FindItemById(CONTEXT_CURRENT.items, itemId)
     if not item then
         print(("[rlzMenu:Context] Item with ID '%s' does not exist"):format(itemId))
         return false

@@ -1,20 +1,3 @@
-local function findContextItem(items, itemId)
-	for _, item in ipairs(items) do
-		if item.id == itemId then
-			return item
-		end
-
-		if item.items then
-			local nestedItem = findContextItem(item.items, itemId)
-			if nestedItem then
-				return nestedItem
-			end
-		end
-	end
-
-	return nil
-end
-
 RegisterNUICallback("rlz_menu:context:selectButton", function(data, cb)
 	local itemId = data.itemId
 
@@ -23,7 +6,7 @@ RegisterNUICallback("rlz_menu:context:selectButton", function(data, cb)
 		return
 	end
 
-	local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+	local item = FindItemById(CONTEXT_CURRENT.items, itemId)
 
 	if item and item.type == "button" then
 		if item.disabled then
@@ -50,7 +33,7 @@ RegisterNUICallback("rlz_menu:context:selectCheckbox", function(data, cb)
 		return
 	end
 
-	local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+	local item = FindItemById(CONTEXT_CURRENT.items, itemId)
 
 	if item and (item.type == "checkbox" or item.type == "switch") then
 		if item.disabled then
@@ -72,23 +55,6 @@ RegisterNUICallback("rlz_menu:context:selectCheckbox", function(data, cb)
 	cb({ ok = false })
 end)
 
-local function findContextRadioGroup(items, groupId)
-	for _, item in ipairs(items) do
-		if item.id == groupId and item.type == "radio" then
-			return item
-		end
-
-		if item.items then
-			local nestedGroup = findContextRadioGroup(item.items, groupId)
-			if nestedGroup then
-				return nestedGroup
-			end
-		end
-	end
-
-	return nil
-end
-
 RegisterNUICallback("rlz_menu:context:selectRadio", function(data, cb)
 	local groupId = data.groupId
 	local itemId = data.itemId
@@ -98,9 +64,9 @@ RegisterNUICallback("rlz_menu:context:selectRadio", function(data, cb)
 		return
 	end
 
-	local group = findContextRadioGroup(CONTEXT_CURRENT.items, groupId)
+	local group = FindItemById(CONTEXT_CURRENT.items, groupId)
 
-	if not group then
+	if not group or group.type ~= "radio" then
 		cb({ ok = false })
 		return
 	end
@@ -143,7 +109,7 @@ RegisterNUICallback("rlz_menu:context:hoverItem", function(data, cb)
 		return
 	end
 
-	local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+	local item = FindItemById(CONTEXT_CURRENT.items, itemId)
 
 	if item then
 		if item.disabled then
@@ -170,7 +136,7 @@ RegisterNUICallback("rlz_menu:context:leaveItem", function(data, cb)
 		return
 	end
 
-	local item = findContextItem(CONTEXT_CURRENT.items, itemId)
+	local item = FindItemById(CONTEXT_CURRENT.items, itemId)
 
 	if item then
 		if item.disabled then
