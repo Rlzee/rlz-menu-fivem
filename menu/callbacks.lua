@@ -242,3 +242,58 @@ RegisterNUICallback("rlz_menu:cancelSearch", function(data, cb)
     cb({ ok = true })
 
 end)
+
+
+RegisterNUICallback("rlz_menu:savePosition", function(data, cb)
+
+    local menuId = data.menuId
+    local x = tonumber(data.x)
+    local y = tonumber(data.y)
+
+    if type(menuId) ~= "string" or not x or not y then
+        cb({ ok = false })
+        return
+    end
+
+    if not MENUS[menuId] then
+        cb({ ok = false })
+        return
+    end
+
+    if data.applyToAll then
+        for _, id in ipairs(GetMenuTreeIds(menuId)) do
+            SaveMenuPosition(id, x, y)
+        end
+    else
+        SaveMenuPosition(menuId, x, y)
+    end
+
+    playSound("select")
+
+    cb({ ok = true })
+
+end)
+
+
+RegisterNUICallback("rlz_menu:resetPosition", function(data, cb)
+
+    local menuId = data.menuId
+
+    if type(menuId) ~= "string" or not MENUS[menuId] then
+        cb({ ok = false })
+        return
+    end
+
+    if data.applyToAll then
+        for _, id in ipairs(GetMenuTreeIds(menuId)) do
+            DeleteMenuPosition(id)
+        end
+    else
+        DeleteMenuPosition(menuId)
+    end
+
+    rlzMenu.Refresh(menuId)
+
+    cb({ ok = true })
+
+end)

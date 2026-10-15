@@ -132,6 +132,40 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     return self.id
 end
 
+--- Returns the IDs of every menu in the same tree as the given menu:
+--- the menu itself, its ancestors and all of its descendants.
+---
+---@param menuId string The ID of any menu of the tree.
+---@return string[] menuIds
+--
+function GetMenuTreeIds(menuId)
+    local root = MENUS[menuId]
+
+    if not root then
+        return {}
+    end
+
+    while root.parent and MENUS[root.parent] do
+        root = MENUS[root.parent]
+    end
+
+    local menuIds = {}
+
+    local function collect(menu)
+        menuIds[#menuIds + 1] = menu.id
+
+        for _, other in pairs(MENUS) do
+            if other.parent == menu.id then
+                collect(other)
+            end
+        end
+    end
+
+    collect(root)
+
+    return menuIds
+end
+
 --- Sets the items of a menu.
 ---
 ---@param menuId string The ID of the menu.
@@ -185,16 +219,7 @@ rlzMenu.SetVisible = function(menuId, state)
             menu.items()
         end
 
-        TriggerNuiEvent("rlz_menu:setData", {
-            menuId = menu.id,
-            selectedItemId = menu.selectedItemId,
-            title = menu.title,
-            subtitle = menu.subtitle,
-            color = menu.color,
-            hoverColor = menu.hoverColor,
-            position = menu.position,
-            items = PrepareNuiItems(ITEMS),
-        })
+        TriggerNuiEvent("rlz_menu:setData", BuildMenuData(menu))
 
         playSound("select")
     else
@@ -236,6 +261,22 @@ rlzMenu.GetMenuProperty = function(menuId, property)
     return menu[property]
 end
 
+local function setMenuPositionOffset(menuId, x, y)
+    local menu = MENUS[menuId]
+
+    if not menu then
+        return false
+    end
+
+    SaveMenuPosition(menuId, x, y)
+
+    if CURRENT_MENU == menuId then
+        rlzMenu.Refresh(menuId)
+    end
+
+    return true
+end
+
 local function setMenuProperty(menuId, property, value, forced)
     local menu = MENUS[menuId]
 
@@ -244,6 +285,10 @@ local function setMenuProperty(menuId, property, value, forced)
     end
 
     menu[property] = value
+
+    if property == "position" then
+        DeleteMenuPosition(menuId)
+    end
 
     local forcedProperty = INHERITED_MENU_PROPERTIES[property]
 
@@ -270,8 +315,8 @@ end
 ---
 ---@param menuId string The ID of the menu.
 ---@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
----@param value any The value to set for the property.
----@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true.
+---@param value any The value to set for the property. For "position": "left", "right", or a table { x = number, y = number } with the screen position as ratios between 0 and 1.
+---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true. Ignored for the table form of "position".
 ---@return boolean True if the property was set successfully, false if the menu does not exist.
 --
 rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
@@ -284,7 +329,16 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
         error(("Property '%s' is not supported for menus"):format(property))
     end
 
-    if (property == "color" or property == "hoverColor") and not isColor(value) then
+    if property == "position" then
+        local isAlignment = value == "left" or value == "right"
+        local isOffset = type(value) == "table"
+            and type(value.x) == "number"
+            and type(value.y) == "number"
+
+        if not isAlignment and not isOffset then
+            error("Menu position must be 'left', 'right' or a table { x = number, y = number }")
+        end
+    elseif (property == "color" or property == "hoverColor") and not isColor(value) then
         error((
             "Property '%s' must be a string or a non-empty array of strings"
         ):format(property))
@@ -294,8 +348,8 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
         ):format(property, expectedType, type(value)))
     end
 
-    if property == "position" and value ~= "left" and value ~= "right" then
-        error("Menu position must be 'left' or 'right'")
+    if property == "position" and type(value) == "table" then
+        return setMenuPositionOffset(menuId, value.x, value.y)
     end
 
     return setMenuProperty(menuId, property, value, applyToSubmenus ~= false)

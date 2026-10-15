@@ -14,16 +14,7 @@ rlzMenu.Refresh = function(menuId)
         return false
     end
 
-    TriggerNuiEvent("rlz_menu:setData", {
-        menuId = menu.id,
-        selectedItemId = menu.selectedItemId,
-        title = menu.title,
-        subtitle = menu.subtitle,
-        color = menu.color,
-        hoverColor = menu.hoverColor,
-        position = menu.position,
-        items = PrepareNuiItems(ITEMS),
-    })
+    TriggerNuiEvent("rlz_menu:setData", BuildMenuData(menu))
 
     return true
 end
@@ -126,4 +117,89 @@ rlzMenu.GoBack = function()
 
     rlzMenu.SetVisible(CURRENT_MENU, false)
     rlzMenu.SetVisible(parentId, true)
+end
+
+--- Resets the saved screen position of a menu.
+---
+---@param menuId string The ID of the menu.
+---@param applyToAll? boolean Whether the reset should apply to every menu of the menu tree. Defaults to false.
+---@return boolean True if the position was reset successfully, false if the menu does not exist.
+--
+rlzMenu.ResetPosition = function(menuId, applyToAll)
+    assert(type(menuId) == "string", "rlzMenu.ResetPosition: menuId must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    if applyToAll then
+        for _, id in ipairs(GetMenuTreeIds(menuId)) do
+            DeleteMenuPosition(id)
+        end
+    else
+        DeleteMenuPosition(menuId)
+    end
+
+    if CURRENT_MENU == menuId then
+        rlzMenu.Refresh(menuId)
+    end
+
+    return true
+end
+
+--- Returns the position information of a menu.
+---
+---@param menuId string The ID of the menu.
+---@return string alignment The menu alignment, "left" or "right".
+---@return number|nil x The saved horizontal position as a ratio between 0 and 1, or nil if there is none.
+---@return number|nil y The saved vertical position as a ratio between 0 and 1, or nil if there is none.
+--
+rlzMenu.GetPosition = function(menuId)
+    assert(type(menuId) == "string", "rlzMenu.GetPosition: menuId must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return "left", nil, nil
+    end
+
+    local savedPosition = GetSavedMenuPosition(menuId)
+
+    return menu.position,
+        savedPosition and savedPosition.x or nil,
+        savedPosition and savedPosition.y or nil
+end
+
+--- Opens the position edit mode of a menu: the menu can then be moved
+--- with the arrow keys, Enter saves the position and Backspace cancels.
+---
+---@param menuId string The ID of the menu.
+---@param applyToAll? boolean Whether the saved position should apply to every menu of the menu tree. Defaults to false.
+---@return boolean True if the edit mode was opened, false if the menu does not exist or is not displayed.
+--
+rlzMenu.EditPosition = function(menuId, applyToAll)
+    assert(type(menuId) == "string", "rlzMenu.EditPosition: menuId must be a string")
+
+    local menu = MENUS[menuId]
+
+    if not menu then
+        print(("[rlzMenu] Menu with ID '%s' does not exist"):format(menuId))
+        return false
+    end
+
+    if CURRENT_MENU ~= menuId or not menu.visible then
+        print(("[rlzMenu] Menu with ID '%s' is not displayed and cannot be edited"):format(menuId))
+        return false
+    end
+
+    TriggerNuiEvent("rlz_menu:editPosition", {
+        menuId = menuId,
+        applyToAll = applyToAll == true,
+    })
+
+    return true
 end

@@ -1,4 +1,5 @@
 import { cn } from "cn";
+import type { MouseEventHandler, PointerEventHandler } from "react";
 import { isWhiteColor, toColorValue, type Color } from "../../utils/color";
 
 type MenuHeaderProps = {
@@ -7,6 +8,9 @@ type MenuHeaderProps = {
   current: number;
   total: number;
   color?: Color;
+  dragging?: boolean;
+  onPointerDown?: PointerEventHandler<HTMLDivElement>;
+  onDoubleClick?: MouseEventHandler<HTMLDivElement>;
 };
 
 export function MenuHeader({
@@ -15,9 +19,20 @@ export function MenuHeader({
   current,
   total,
   color,
+  dragging,
+  onPointerDown,
+  onDoubleClick,
 }: MenuHeaderProps) {
   return (
-    <div data-slot="menu-header">
+    <div
+      data-slot="menu-header"
+      className={cn(
+        "select-none touch-none",
+        dragging ? "cursor-grabbing" : "cursor-grab",
+      )}
+      onPointerDown={onPointerDown}
+      onDoubleClick={onDoubleClick}
+    >
       <div
         data-slot="banner"
         className={cn(

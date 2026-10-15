@@ -1,4 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type MouseEventHandler,
+  type PointerEventHandler,
+} from "react";
 import { useMenuNavigation } from "../../hooks/useMenuNavigation";
 import { useMenuSelection } from "../../hooks/useMenuSelection";
 import { useRainbowColor } from "../../hooks/useRainbowColor";
@@ -16,14 +23,25 @@ export type MenuData = {
   color?: Color;
   hoverColor?: Color;
   position: "left" | "right";
+  /** Saved custom position, as ratios between 0 and 1. */
+  x?: number;
+  y?: number;
   items: MenuItem[];
 };
 
 type MenuViewProps = {
   menu: MenuData;
+  dragging?: boolean;
+  onHeaderPointerDown?: PointerEventHandler<HTMLDivElement>;
+  onHeaderDoubleClick?: MouseEventHandler<HTMLDivElement>;
 };
 
-export const MenuView = ({ menu }: MenuViewProps) => {
+export const MenuView = ({
+  menu,
+  dragging,
+  onHeaderPointerDown,
+  onHeaderDoubleClick,
+}: MenuViewProps) => {
   const selectableIndexes = useMemo(() => {
     return menu.items.reduce<number[]>((indexes, item, index) => {
       if (isSelectableItem(item)) {
@@ -94,6 +112,9 @@ export const MenuView = ({ menu }: MenuViewProps) => {
         current={currentPosition >= 0 ? currentPosition + 1 : 0}
         total={selectableIndexes.length}
         color={menuColor}
+        dragging={dragging}
+        onPointerDown={onHeaderPointerDown}
+        onDoubleClick={onHeaderDoubleClick}
       />
 
       <Menu.Content>

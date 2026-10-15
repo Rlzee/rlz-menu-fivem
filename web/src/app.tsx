@@ -1,8 +1,10 @@
 import { useState } from "react";
 
 import { useVisibility } from "./components/visibility";
+import { useMenuDrag } from "./hooks/useMenuDrag";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { MenuView, type MenuData } from "./components/menu/menu-view";
+import { PositionControls } from "./components/position-controls";
 import { SearchBar } from "./components/search-bar";
 
 import { cn } from "cn";
@@ -25,6 +27,26 @@ const App = () => {
   });
   useNuiEvent("rlz_menu:closeSearch", () => setSearchLabel(null));
 
+  const {
+    containerRef,
+    containerStyle,
+    isDragging,
+    isMoveMode,
+    startMoveMode,
+    onHeaderPointerDown,
+    onHeaderDoubleClick,
+  } = useMenuDrag({
+    menuId: menu.menuId,
+    savedX: menu.x,
+    savedY: menu.y,
+    active: visible,
+  });
+
+  useNuiEvent<{ applyToAll?: boolean }>(
+    "rlz_menu:editPosition",
+    ({ applyToAll }) => startMoveMode(applyToAll === true),
+  );
+
   if (!visible) {
     return null;
   }
@@ -36,10 +58,16 @@ const App = () => {
         menu.position === "right" ? "items-end" : "items-start",
       )}
     >
-      <MenuView
-        key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
-        menu={menu}
-      />
+      <div ref={containerRef} style={containerStyle}>
+        <MenuView
+          key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
+          menu={menu}
+          dragging={isDragging || isMoveMode}
+          onHeaderPointerDown={onHeaderPointerDown}
+          onHeaderDoubleClick={onHeaderDoubleClick}
+        />
+        {isMoveMode && <PositionControls />}
+      </div>
       {searchLabel && <SearchBar label={searchLabel} />}
     </div>
   );

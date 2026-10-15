@@ -24,6 +24,11 @@ local dynamicMenu = rlzMenu.CreateSubMenu(testMenu, {
     subtitle = "Test SetItemProperty",
 })
 
+local positionMenu = rlzMenu.CreateSubMenu(testMenu, {
+    title = "Position",
+    subtitle = "Test menu positioning",
+})
+
 -- =========================================================
 -- Developer-managed state
 -- =========================================================
@@ -54,6 +59,12 @@ rlzMenu.SetItems(testMenu, function()
         label = "Dynamic",
         description = "Test item modification",
         submenu = dynamicMenu,
+    })
+
+    rlzMenu.Button({
+        label = "Position",
+        description = "Test the menu positioning",
+        submenu = positionMenu,
     })
 
     rlzMenu.Separator()
@@ -250,78 +261,6 @@ rlzMenu.SetItems(optionsMenu, function()
                 optionsMenu,
                 "subtitle",
                 "Submenu-only settings"
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Submenu left",
-        description = "Move only the options submenu to the left",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                optionsMenu,
-                "position",
-                "left",
-                false
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Submenu right",
-        description = "Move only the options submenu to the right",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                optionsMenu,
-                "position",
-                "right",
-                false
-            )
-        end,
-    })
-
-    rlzMenu.Separator()
-
-    rlzMenu.Button({
-        label = "Left position",
-        description = "Place the main menu and all submenus on the left",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "position",
-                "left",
-                true
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Right position: menu + submenus",
-        description = "Place the main menu and all submenus on the right",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "position",
-                "right",
-                true
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Right position: menu only",
-        description = "Place only the main menu on the right",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "position",
-                "right",
-                false
             )
         end,
     })
@@ -681,6 +620,145 @@ rlzMenu.SetItems(dynamicMenu, function()
                 "disabled",
                 false
             )
+        end,
+    })
+end)
+
+-- =========================================================
+-- POSITION MENU
+-- =========================================================
+
+rlzMenu.SetItems(positionMenu, function()
+    rlzMenu.Label("Edit position")
+
+    rlzMenu.Button({
+        label = "This menu",
+        description = "Move the menu with the arrow keys, Enter to save, Backspace to cancel",
+
+        onSelect = function()
+            rlzMenu.EditPosition(positionMenu, false)
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "All menus",
+        description = "Move with the arrow keys and apply the position to the main menu and all submenus",
+
+        onSelect = function()
+            rlzMenu.EditPosition(positionMenu, true)
+        end,
+    })
+
+    rlzMenu.Separator()
+
+    rlzMenu.Label("Alignment")
+
+    rlzMenu.Button({
+        label = "Left",
+        description = "Align this menu to the left of the screen",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(positionMenu, "position", "left", false)
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Right",
+        description = "Align this menu to the right of the screen",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(positionMenu, "position", "right", false)
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Left (all menus)",
+        description = "Align the main menu and all submenus to the left",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "position", "left", true)
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Right (all menus)",
+        description = "Align the main menu and all submenus to the right",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "position", "right", true)
+        end,
+    })
+
+    rlzMenu.Separator()
+
+    rlzMenu.Label("Custom position")
+
+    rlzMenu.Button({
+        label = "Center",
+        description = "Move this menu to the center of the screen",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                positionMenu,
+                "position",
+                { x = 0.4, y = 0.35 }
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Random position",
+        description = "Move this menu to a random position",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                positionMenu,
+                "position",
+                { x = math.random(), y = math.random() }
+            )
+        end,
+    })
+
+    rlzMenu.Separator()
+
+    rlzMenu.Label("Reset position")
+
+    rlzMenu.Button({
+        label = "This menu",
+        description = "Restore the default alignment of this menu",
+
+        onSelect = function()
+            rlzMenu.ResetPosition(positionMenu, false)
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "All menus",
+        description = "Restore the default alignment of the main menu and all submenus",
+
+        onSelect = function()
+            rlzMenu.ResetPosition(positionMenu, true)
+        end,
+    })
+
+    rlzMenu.Separator()
+
+    rlzMenu.Button({
+        label = "Get position",
+        description = "Print the current position of this menu in the console",
+
+        onSelect = function()
+            local alignment, x, y = rlzMenu.GetPosition(positionMenu)
+
+            if x and y then
+                print((
+                    "[rlzMenu] Position of '%s': alignment '%s', custom position x=%.3f y=%.3f"
+                ):format(positionMenu, alignment, x, y))
+            else
+                print((
+                    "[rlzMenu] Position of '%s': alignment '%s', no custom position"
+                ):format(positionMenu, alignment))
+            end
         end,
     })
 end)
