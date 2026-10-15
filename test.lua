@@ -649,8 +649,6 @@ rlzMenu.SetItems(positionMenu, function()
         end,
     })
 
-    rlzMenu.Separator()
-
     rlzMenu.Label("Alignment")
 
     rlzMenu.Button({
@@ -689,8 +687,6 @@ rlzMenu.SetItems(positionMenu, function()
         end,
     })
 
-    rlzMenu.Separator()
-
     rlzMenu.Label("Custom position")
 
     rlzMenu.Button({
@@ -718,8 +714,6 @@ rlzMenu.SetItems(positionMenu, function()
             )
         end,
     })
-
-    rlzMenu.Separator()
 
     rlzMenu.Label("Reset position")
 
