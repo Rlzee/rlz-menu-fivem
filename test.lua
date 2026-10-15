@@ -7,6 +7,7 @@ local testMenu = rlzMenu.Create({
     key = "F1",
     position = "left",
     color = { "#ff0000", "#0000ff", "#00ff00" },
+    controls = true,
 })
 
 local optionsMenu = rlzMenu.CreateSubMenu(testMenu, {
@@ -238,6 +239,19 @@ rlzMenu.SetItems(optionsMenu, function()
     })
 
     rlzMenu.Label("Submenu options")
+
+    rlzMenu.Button({
+        label = "Toggle controls",
+        description = "Show or hide the navigation controls of the menu",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "controls",
+                not rlzMenu.GetMenuProperty(testMenu, "controls")
+            )
+        end,
+    })
 
     rlzMenu.Button({
         label = "Change submenu title",

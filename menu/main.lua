@@ -9,6 +9,7 @@ local MENU_PROPERTY_TYPES = {
     color = "string",
     hoverColor = "string",
     enabled = "boolean",
+    controls = "boolean",
 }
 
 local INHERITED_MENU_PROPERTIES = {
@@ -46,6 +47,7 @@ end
 ---@field options.hoverColor? string|string[] Item hover color or a list of colors for a gradient. Use "rainbow" for an animated color.
 ---@field options.position? "left"|"right" Menu position.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
+---@field options.controls? boolean Whether to display the menu navigation controls. Defaults to false.
 ---@return string menuId
 --
 rlzMenu.Create = function(options)
@@ -58,6 +60,7 @@ rlzMenu.Create = function(options)
     assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.Create: hoverColor must be a string or a non-empty array of strings")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
+    assert(options.controls == nil or type(options.controls) == "boolean", "rlzMenu.Create: controls must be a boolean or nil")
 
     local self = {}
     MENU_COUNTER += 1
@@ -73,6 +76,7 @@ rlzMenu.Create = function(options)
     self.command = options.command
     self.key = options.key
     self.enabled = options.enabled ~= false
+    self.controls = options.controls == true
 
     MENUS[self.id] = self
 
@@ -96,6 +100,7 @@ end
 ---@field options.color? string|string[] Submenu color or a list of colors for a gradient. Inherits the parent color if not specified.
 ---@field options.hoverColor? string|string[] Submenu item hover color or a list of colors for a gradient. Inherits the parent hover color if not specified.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
+---@field options.controls? boolean Whether to display the submenu navigation controls. Inherits the parent value if not specified.
 ---@return string menuId
 --
 rlzMenu.CreateSubMenu = function(parentId, options)
@@ -108,6 +113,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.color == nil or isColor(options.color), "rlzMenu.CreateSubMenu: color must be a string or a non-empty array of strings")
     assert(options.hoverColor == nil or isColor(options.hoverColor), "rlzMenu.CreateSubMenu: hoverColor must be a string or a non-empty array of strings")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.CreateSubMenu: enabled must be a boolean or nil")
+    assert(options.controls == nil or type(options.controls) == "boolean", "rlzMenu.CreateSubMenu: controls must be a boolean or nil")
 
     local parent = MENUS[parentId]
 
@@ -126,6 +132,12 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     self.positionForced = options.position ~= nil
     self.parent = parentId
     self.enabled = options.enabled ~= false
+
+    if options.controls == nil then
+        self.controls = parent.controls
+    else
+        self.controls = options.controls
+    end
 
     MENUS[self.id] = self
 
@@ -240,7 +252,7 @@ end
 --- Gets a property of a menu.
 ---
 ---@param menuId string The ID of the menu.
----@param property string The property to get. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@param property string The property to get. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled", "controls".
 ---@return any The value of the property, or nil if the menu does not exist.
 --
 rlzMenu.GetMenuProperty = function(menuId, property)
@@ -314,7 +326,7 @@ end
 --- Sets a property of a menu.
 ---
 ---@param menuId string The ID of the menu.
----@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled".
+---@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "hoverColor", "enabled", "controls".
 ---@param value any The value to set for the property. For "position": "left", "right", or a table { x = number, y = number } with the screen position as ratios between 0 and 1.
 ---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true. Ignored for the table form of "position".
 ---@return boolean True if the property was set successfully, false if the menu does not exist.

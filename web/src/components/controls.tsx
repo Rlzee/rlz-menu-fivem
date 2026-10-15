@@ -1,21 +1,25 @@
-type PositionControl = {
+import { cn } from "cn";
+
+export type ControlItem = {
   keys: string[];
   label: string;
 };
 
-const controls: PositionControl[] = [
-  { keys: ["←", "↑", "↓", "→"], label: "Move" },
-  { keys: ["Enter"], label: "Save" },
-  { keys: ["Backspace"], label: "Cancel" },
-];
+type ControlsProps = {
+  items: ControlItem[];
+};
 
-export function PositionControls() {
+/** A keycap bar displayed under the menu to describe the available controls. */
+export function Controls({ items }: ControlsProps) {
   return (
     <div
-      data-slot="position-controls"
-      className="mt-(--menu-gap) flex items-center justify-center gap-3 rounded-b-menu bg-background-menu px-2 py-1 text-xs text-white"
+      data-slot="controls"
+      className={cn(
+        "mt-(--menu-gap) flex items-center justify-center gap-3",
+        "rounded-b-menu bg-background-menu px-2 py-1 text-xs text-white",
+      )}
     >
-      {controls.map(({ keys, label }) => (
+      {items.map(({ keys, label }) => (
         <span key={label} className="flex items-center gap-1">
           {keys.map((key) => (
             <kbd

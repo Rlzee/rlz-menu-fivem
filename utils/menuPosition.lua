@@ -80,6 +80,7 @@ function BuildMenuData(menu)
         color = menu.color,
         hoverColor = menu.hoverColor,
         position = menu.position,
+        controls = menu.controls,
         x = savedPosition and savedPosition.x or nil,
         y = savedPosition and savedPosition.y or nil,
         items = PrepareNuiItems(ITEMS),

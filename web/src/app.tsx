@@ -4,10 +4,20 @@ import { useVisibility } from "./components/visibility";
 import { useMenuDrag } from "./hooks/useMenuDrag";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { MenuView, type MenuData } from "./components/menu/menu-view";
-import { PositionControls } from "./components/position-controls";
+import {
+  Controls,
+  type ControlItem,
+} from "./components/controls";
 import { SearchBar } from "./components/search-bar";
 
 import { cn } from "cn";
+
+/** Controls displayed while the keyboard position edit mode is active. */
+const POSITION_CONTROLS: ControlItem[] = [
+  { keys: ["←", "↑", "↓", "→"], label: "Move" },
+  { keys: ["Enter"], label: "Save" },
+  { keys: ["Backspace"], label: "Cancel" },
+];
 
 const App = () => {
   const { visible } = useVisibility();
@@ -51,6 +61,15 @@ const App = () => {
     return null;
   }
 
+  const hasList = menu.items.some((item) => item.type === "list");
+
+  const menuControls: ControlItem[] = [
+    { keys: ["↑", "↓"], label: "Navigate" },
+    ...(hasList ? [{ keys: ["←", "→"], label: "Change" }] : []),
+    { keys: ["Enter"], label: "Select" },
+    { keys: ["Backspace"], label: "Back" },
+  ];
+
   return (
     <div
       className={cn(
@@ -66,7 +85,11 @@ const App = () => {
           onHeaderPointerDown={onHeaderPointerDown}
           onHeaderDoubleClick={onHeaderDoubleClick}
         />
-        {isMoveMode && <PositionControls />}
+        {isMoveMode ? (
+          <Controls items={POSITION_CONTROLS} />
+        ) : (
+          menu.controls && <Controls items={menuControls} />
+        )}
       </div>
       {searchLabel && <SearchBar label={searchLabel} />}
     </div>

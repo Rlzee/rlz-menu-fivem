@@ -23,6 +23,8 @@ export type MenuData = {
   color?: Color;
   hoverColor?: Color;
   position: "left" | "right";
+  /** Whether the menu navigation controls are displayed. */
+  controls?: boolean;
   /** Saved custom position, as ratios between 0 and 1. */
   x?: number;
   y?: number;
