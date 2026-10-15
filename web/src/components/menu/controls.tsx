@@ -15,7 +15,7 @@ export function Controls({ items }: ControlsProps) {
     <div
       data-slot="controls"
       className={cn(
-        "mt-(--menu-gap) flex items-center justify-center gap-3",
+        "flex items-center justify-center gap-3",
         "rounded-b-menu bg-background-menu px-2 py-1 text-xs text-white",
       )}
     >

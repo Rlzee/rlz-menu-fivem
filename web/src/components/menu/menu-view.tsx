@@ -13,6 +13,7 @@ import type { Color } from "../../utils/color";
 
 import { isSelectableItem } from "./items/isSelectableItem";
 import { Menu } from "./exports";
+import { Controls, type ControlItem } from "./controls";
 import type { MenuItem } from "./items/type";
 
 export type MenuData = {
@@ -31,9 +32,17 @@ export type MenuData = {
   items: MenuItem[];
 };
 
+/** Controls displayed while the keyboard position edit mode is active. */
+const POSITION_CONTROLS: ControlItem[] = [
+  { keys: ["←", "↑", "↓", "→"], label: "Move" },
+  { keys: ["Enter"], label: "Save" },
+  { keys: ["Backspace"], label: "Cancel" },
+];
+
 type MenuViewProps = {
   menu: MenuData;
   dragging?: boolean;
+  moveMode?: boolean;
   onHeaderPointerDown?: PointerEventHandler<HTMLDivElement>;
   onHeaderDoubleClick?: MouseEventHandler<HTMLDivElement>;
 };
@@ -41,6 +50,7 @@ type MenuViewProps = {
 export const MenuView = ({
   menu,
   dragging,
+  moveMode,
   onHeaderPointerDown,
   onHeaderDoubleClick,
 }: MenuViewProps) => {
@@ -67,6 +77,19 @@ export const MenuView = ({
 
   const menuColor = useRainbowColor(menu.color);
   const hoverColor = useRainbowColor(menu.hoverColor);
+
+  const navControls = useMemo<ControlItem[]>(() => {
+    const items: ControlItem[] = [{ keys: ["↑", "↓"], label: "Navigate" }];
+
+    if (menu.items.some((item) => item.type === "list")) {
+      items.push({ keys: ["←", "→"], label: "Change" });
+    }
+
+    items.push({ keys: ["Enter"], label: "Select" });
+    items.push({ keys: ["Backspace"], label: "Back" });
+
+    return items;
+  }, [menu.items]);
 
   useMenuSelection({
     menuId: menu.menuId,
@@ -114,7 +137,7 @@ export const MenuView = ({
         current={currentPosition >= 0 ? currentPosition + 1 : 0}
         total={selectableIndexes.length}
         color={menuColor}
-        dragging={dragging}
+        dragging={dragging || moveMode}
         onPointerDown={onHeaderPointerDown}
         onDoubleClick={onHeaderDoubleClick}
       />
@@ -200,6 +223,12 @@ export const MenuView = ({
       </Menu.Content>
 
       {footerDescription && <Menu.Footer description={footerDescription} />}
+
+      {moveMode ? (
+        <Controls items={POSITION_CONTROLS} />
+      ) : (
+        menu.controls && <Controls items={navControls} />
+      )}
     </div>
   );
 };
