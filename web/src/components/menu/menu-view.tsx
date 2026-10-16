@@ -125,6 +125,8 @@ export const MenuView = ({
 
   const currentPosition = selectableIndexes.indexOf(selectedIndex);
 
+  const showControls = Boolean(moveMode) || Boolean(menu.controls);
+
   return (
     <div
       ref={menuRef}
@@ -222,7 +224,12 @@ export const MenuView = ({
         })}
       </Menu.Content>
 
-      {footerDescription && <Menu.Footer description={footerDescription} />}
+      {footerDescription && (
+        <Menu.Footer
+          description={footerDescription}
+          roundedBottom={!showControls}
+        />
+      )}
 
       {moveMode ? (
         <Controls items={POSITION_CONTROLS} />
