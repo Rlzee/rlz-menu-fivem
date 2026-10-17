@@ -20,7 +20,7 @@ export function Item({
       data-slot="menu-item"
       data-selected={selected ? "true" : undefined}
       className={cn(
-        "flex h-8 items-center justify-between rounded-item px-2 text-body font-body text-white",
+        "flex h-8 items-center justify-between rounded-item px-2 text-body font-body text-white transition-colors",
         selected ? "bg-item-selected" : "bg-item",
         disabled && "opacity-50 cursor-not-allowed",
         className,

@@ -12,7 +12,7 @@ export function Checkbox({
     <CheckboxPrimitive.Root
       data-slot="checkbox"
       className={cn(
-        "bg-control data-[state=checked]:bg-accent",
+        "bg-control data-[state=checked]:bg-accent transition-colors",
         "peer relative flex size-4 shrink-0 items-center justify-center rounded-control outline-none",
         className,
       )}
@@ -20,7 +20,7 @@ export function Checkbox({
     >
       <CheckboxPrimitive.Indicator
         data-slot="checkbox-indicator"
-        className="grid place-content-center text-current transition-none [&>svg]:size-4"
+        className="grid place-content-center text-current animate-in zoom-in-50 [&>svg]:size-4"
       >
         <CheckIcon className="h-4 w-4 text-white" />
       </CheckboxPrimitive.Indicator>

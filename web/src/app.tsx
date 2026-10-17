@@ -56,7 +56,7 @@ const App = () => {
         menu.position === "right" ? "items-end" : "items-start",
       )}
     >
-      <div ref={containerRef} style={containerStyle}>
+      <div ref={containerRef} style={containerStyle} className="animate-menu-open">
         <MenuView
           key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
           menu={menu}

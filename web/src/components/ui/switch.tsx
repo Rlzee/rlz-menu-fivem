@@ -11,7 +11,7 @@ export function Switch({
     <SwitchPrimitive.Root
       data-slot="switch"
       className={cn(
-        "bg-control data-[state=checked]:bg-accent",
+        "bg-control data-[state=checked]:bg-accent transition-colors",
         "peer group/switch relative inline-flex h-4 w-6 shrink-0 items-center rounded-control outline-none px-0.5",
         className,
       )}
