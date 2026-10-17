@@ -6,7 +6,7 @@ import { useNuiEvent } from "./hooks/useNuiEvent";
 import { MenuView, type MenuData } from "./components/menu/menu-view";
 import { SearchBar } from "./components/search-bar";
 
-import { cn } from "cn";
+import { cn } from "./utils/cn";
 
 const App = () => {
   const { visible } = useVisibility();
@@ -15,7 +15,6 @@ const App = () => {
   const [menu, setMenu] = useState<MenuData>({
     title: "",
     subtitle: "",
-    color: "default",
     position: "left",
     items: [],
   });

@@ -1,13 +1,11 @@
-import { cn } from "cn";
+import { cn } from "../../utils/cn";
 import type { MouseEventHandler, PointerEventHandler } from "react";
-import { isWhiteColor, toColorValue, type Color } from "../../utils/color";
 
 type MenuHeaderProps = {
   title: string;
   subtitle?: string;
   current: number;
   total: number;
-  color?: Color;
   dragging?: boolean;
   onPointerDown?: PointerEventHandler<HTMLDivElement>;
   onDoubleClick?: MouseEventHandler<HTMLDivElement>;
@@ -18,7 +16,6 @@ export function MenuHeader({
   subtitle,
   current,
   total,
-  color,
   dragging,
   onPointerDown,
   onDoubleClick,
@@ -35,29 +32,16 @@ export function MenuHeader({
     >
       <div
         data-slot="banner"
-        className={cn(
-          "flex h-16 items-center justify-center rounded-t-menu",
-          !color || color === "default" ? "bg-menu" : "bg-transparent",
-        )}
-        style={
-          color && color !== "default"
-            ? { background: toColorValue(color, 0.8) }
-            : undefined
-        }
+        className="flex h-16 items-center justify-center rounded-t-menu bg-accent"
       >
-        <h1
-          className={cn(
-            "text-3xl font-bold",
-            isWhiteColor(color) ? "text-black" : "text-white",
-          )}
-        >
+        <h1 className="text-title font-title text-white">
           {title}
         </h1>
       </div>
 
-      <div className="flex h-8 text-base items-center justify-between bg-background-menu px-2 text-white">
-        <span className="font-medium">{subtitle}</span>
-        <span className="font-light">
+      <div className="flex h-8 text-body items-center justify-between bg-surface px-2 font-body text-white">
+        <span className="uppercase">{subtitle}</span>
+        <span>
           {current}
           <span className="px-0.5">/</span>
           {total}

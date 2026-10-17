@@ -6,7 +6,6 @@ local testMenu = rlzMenu.Create({
     command = "toggleMenu",
     key = "F1",
     position = "left",
-    color = { "#ff0000", "#0000ff", "#00ff00" },
     controls = true,
 })
 
@@ -170,13 +169,11 @@ rlzMenu.SetItems(testMenu, function()
         label = "Anchor test",
         description = "Test button with anchor",
         anchor = "TEST",
-        anchorColor = "#facc15",
     })
     rlzMenu.Button({
         label = "Anchor test",
         description = "Test button with anchor",
         anchor = "TEST",
-        anchorColor = "rainbow",
     })
 end)
 
@@ -275,64 +272,6 @@ rlzMenu.SetItems(optionsMenu, function()
                 optionsMenu,
                 "subtitle",
                 "Submenu-only settings"
-            )
-        end,
-    })
-
-    rlzMenu.Label("Menu scope")
-
-    rlzMenu.Button({
-        label = "Green: menu + submenus",
-        description = "Apply the color to this menu and every submenu",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "color",
-                "#10b981",
-                true
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Red: menu only",
-        description = "Apply the color only to the main menu",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "color",
-                "#ef4444",
-                false
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Blue: options submenu only",
-        description = "Apply the color only to this submenu",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                optionsMenu,
-                "color",
-                "#3b82f6",
-                false
-            )
-        end,
-    })
-
-    rlzMenu.Button({
-        label = "Rainbow: menu + submenus",
-        description = "Apply the animated color to all menus",
-
-        onSelect = function()
-            rlzMenu.SetMenuProperty(
-                testMenu,
-                "color",
-                "rainbow",
-                true
             )
         end,
     })

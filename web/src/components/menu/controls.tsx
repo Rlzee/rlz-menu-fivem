@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "../../utils/cn";
 
 export type ControlItem = {
   keys: string[];
@@ -15,8 +15,8 @@ export function Controls({ items }: ControlsProps) {
     <div
       data-slot="controls"
       className={cn(
-        "flex items-center justify-center gap-3",
-        "rounded-b-menu bg-background-menu px-2 py-1 text-xs text-white",
+        "flex flex-wrap items-center justify-center gap-x-3 gap-y-1",
+        "rounded-b-menu bg-surface px-2 py-1 text-caption text-white",
       )}
     >
       {items.map(({ keys, label }) => (
@@ -24,13 +24,13 @@ export function Controls({ items }: ControlsProps) {
           {keys.map((key) => (
             <kbd
               key={key}
-              className="inline-flex items-center justify-center rounded-[2px] bg-white/10 px-1 py-0.5 font-mono text-[10px] leading-none"
+              className="inline-flex items-center justify-center rounded-[2px] bg-key px-1 py-0.5 font-mono text-micro leading-none"
             >
               {key}
             </kbd>
           ))}
 
-          <span className="text-white/70">{label}</span>
+          <span className="text-text-muted">{label}</span>
         </span>
       ))}
     </div>

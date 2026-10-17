@@ -1,16 +1,12 @@
 import type * as React from "react";
 import { Slot } from "./ui/slot";
-import { cn } from "cn";
-import { isWhiteColor, toColorValue, type Color } from "../utils/color";
+import { cn } from "../utils/cn";
 
 type itemProps = {
   children: React.ReactNode;
   className?: string;
   selected?: boolean;
   disabled?: boolean;
-  color?: Color;
-  hoverColor?: Color;
-  alwaysColor?: boolean;
 };
 
 export function Item({
@@ -18,47 +14,17 @@ export function Item({
   className,
   selected,
   disabled,
-  color,
-  hoverColor,
-  alwaysColor,
 }: itemProps & Omit<React.ComponentProps<typeof Slot>, keyof itemProps>) {
-  const hasCustomColor = color && color !== "default";
-  const customColorStyle = hasCustomColor
-    ? { background: toColorValue(color, 0.55) }
-    : undefined;
-  const hoverColorStyle = hoverColor
-    ? { background: toColorValue(hoverColor, 0.55) }
-    : undefined;
-  const visibleColor = selected
-    ? (hoverColor ?? color)
-    : alwaysColor
-      ? color
-      : undefined;
-
   return (
     <Slot
       data-slot="menu-item"
       data-selected={selected ? "true" : undefined}
       className={cn(
-        "flex h-8 items-center justify-between rounded-item px-2 text-[0.905rem]",
-        isWhiteColor(visibleColor) ? "text-black" : "text-white",
-        selected
-          ? hasCustomColor && !alwaysColor
-            ? "bg-transparent"
-            : "bg-item-menu-background-hover"
-          : "bg-item-menu-background",
+        "flex h-8 items-center justify-between rounded-item px-2 text-body font-body text-white",
+        selected ? "bg-item-selected" : "bg-item",
         disabled && "opacity-50 cursor-not-allowed",
         className,
       )}
-      style={
-        alwaysColor
-          ? selected
-            ? hoverColorStyle
-            : customColorStyle
-          : selected
-            ? (hoverColorStyle ?? customColorStyle)
-            : undefined
-      }
     >
       {children}
     </Slot>

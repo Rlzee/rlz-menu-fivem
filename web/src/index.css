@@ -2,25 +2,48 @@
 @import "tw-animate-css";
 
 @theme {
-  --radius-menu: 2px;
-  --radius-item: 2px;
-  --radius-checkbox: 2px;
+  /* ── Shape ───────────────────────────────────────── */
+  --radius-menu: 2px;      /* outer corners of the menu panels */
+  --radius-item: 0px;      /* selectable item corners */
+  --radius-control: 2px;   /* checkbox + switch corners */
 
-  --menu-gap: 2px;
-  --menu-padding: 8px;
-  --menu-width: 20vw;
-  --menu-height: 519px;
+  /* ── Layout ──────────────────────────────────────── */
+  --menu-width: 20vw;      /* overall menu width */
+  --menu-height: 519px;    /* scroll area max height */
+  --menu-gap: 2px;         /* gap between menu panels */
+  --menu-padding: 8px;     /* content inner padding */
+  --item-gap: 2px;         /* gap between items */
+  --label-indent: 8px;     /* left indent of label items */
 
-  --color-background-menu: rgba(23, 23, 23, 0.98);
-  --color-menu: rgb(16 185 129 / 80%);
+  /* ── Typography ──────────────────────────────────── */
+  --text-title: 1.875rem;            /* h1 */
+  --text-title--line-height: 1.1;
+  --text-body: 0.875rem;           /* items, labels, subtitle, dialog */
+  --text-body--line-height: 1.25rem;
+  --text-caption: 0.75rem;         /* footer, controls, secondary text */
+  --text-caption--line-height: 1rem;
+  --text-micro: 0.625rem;          /* keycaps */
+  --text-micro--line-height: 1rem;
 
-  --item-menu-padding: 4px;
-  --item-label-padding-left: 0px;
-  --color-item-menu-background: rgb(0 0 0 / 55%);
-  --color-item-menu-background-hover: rgb(16 185 129 / 55%);
+  --font-weight-title: 600;        /* font-title */
+  --font-weight-body: 500;         /* font-body */
+  --font-weight-label: 600;        /* font-label */
 
-  --color-checkbox: rgb(255 255 255 / 10%);
-  --color-checkbox-selected: rgb(39 39 42 / 60%);
+  /* ── Surfaces ────────────────────────────────────── */
+  --color-surface: rgba(17, 19, 23, 0.92);         /* menu / header / footer / controls / dialog */
+  --color-item: rgb(255 255 255 / 4%);             /* item, resting */
+  --color-item-selected: rgb(100 116 139 / 22%);   /* item, selected */
+
+  /* ── Accent & controls ───────────────────────────── */
+  --color-accent: #64748b;                         /* brand highlight (banner, checked) */
+  --color-control: rgb(255 255 255 / 10%);         /* checkbox / switch, resting */
+  --color-control-selected: rgb(100 116 139 / 30%); /* checkbox / switch, row selected */
+
+  /* ── Text & details ──────────────────────────────── */
+  --color-text-muted: rgb(203 213 225 / 75%);      /* control labels / secondary text */
+  --color-anchor: #94a3b8;                         /* item anchor text */
+  --color-divider: rgb(255 255 255 / 12%);         /* separator line */
+  --color-key: rgb(255 255 255 / 10%);             /* keycap background */
 }
 
 .menu-scrollbar-hidden {

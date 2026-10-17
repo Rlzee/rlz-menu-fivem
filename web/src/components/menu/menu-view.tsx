@@ -8,8 +8,6 @@ import {
 } from "react";
 import { useMenuNavigation } from "../../hooks/useMenuNavigation";
 import { useMenuSelection } from "../../hooks/useMenuSelection";
-import { useRainbowColor } from "../../hooks/useRainbowColor";
-import type { Color } from "../../utils/color";
 
 import { isSelectableItem } from "./items/isSelectableItem";
 import { Menu } from "./exports";
@@ -21,8 +19,6 @@ export type MenuData = {
   selectedItemId?: string;
   title: string;
   subtitle: string;
-  color?: Color;
-  hoverColor?: Color;
   position: "left" | "right";
   /** Whether the menu navigation controls are displayed. */
   controls?: boolean;
@@ -74,9 +70,6 @@ export const MenuView = ({
       : 0;
   });
   const menuRef = useRef<HTMLDivElement>(null);
-
-  const menuColor = useRainbowColor(menu.color);
-  const hoverColor = useRainbowColor(menu.hoverColor);
 
   const navControls = useMemo<ControlItem[]>(() => {
     const items: ControlItem[] = [{ keys: ["↑", "↓"], label: "Navigate" }];
@@ -131,14 +124,13 @@ export const MenuView = ({
     <div
       ref={menuRef}
       id={menu.menuId}
-      className="w-(--menu-width) grid gap-(--menu-gap)"
+      className="w-(--menu-width) grid grid-cols-[minmax(0,1fr)] gap-(--menu-gap)"
     >
       <Menu.Header
         title={menu.title}
         subtitle={menu.subtitle}
         current={currentPosition >= 0 ? currentPosition + 1 : 0}
         total={selectableIndexes.length}
-        color={menuColor}
         dragging={dragging || moveMode}
         onPointerDown={onHeaderPointerDown}
         onDoubleClick={onHeaderDoubleClick}
@@ -154,13 +146,9 @@ export const MenuView = ({
                 key={item.id}
                 label={item.label}
                 anchor={item.anchor}
-                anchorColor={item.anchorColor}
                 selected={isSelected}
                 submenu={item.submenu}
                 disabled={item.disabled}
-                buttonColor={item.color}
-                menuColor={menuColor}
-                hoverColor={hoverColor}
               />
             );
           }
@@ -173,9 +161,6 @@ export const MenuView = ({
                 isChecked={item.isChecked}
                 selected={isSelected}
                 disabled={item.disabled}
-                itemColor={item.color}
-                menuColor={menuColor}
-                hoverColor={hoverColor}
               />
             );
           }
@@ -188,9 +173,6 @@ export const MenuView = ({
                 isChecked={item.isChecked}
                 selected={isSelected}
                 disabled={item.disabled}
-                itemColor={item.color}
-                menuColor={menuColor}
-                hoverColor={hoverColor}
               />
             );
           }
@@ -213,9 +195,6 @@ export const MenuView = ({
                 value={item.value}
                 selected={isSelected}
                 disabled={item.disabled}
-                itemColor={item.color}
-                menuColor={menuColor}
-                hoverColor={hoverColor}
               />
             );
           }

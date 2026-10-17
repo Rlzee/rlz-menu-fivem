@@ -12,7 +12,7 @@ export function MenuSeparator({ visible }: MenuSeparatorProps) {
     >
       <Separator
         orientation="horizontal"
-        className={visible ? "bg-white/20" : "bg-transparent"}
+        className={visible ? "bg-divider" : "bg-transparent"}
       />
     </div>
   );

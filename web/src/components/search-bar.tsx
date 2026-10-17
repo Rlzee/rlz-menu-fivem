@@ -21,7 +21,7 @@ export const SearchBar = ({ label }: SearchBarProps) => {
 
   return (
     <Dialog open onOpenChange={(open) => !open && fetchNui("rlz_menu:cancelSearch")}>
-      <DialogContent className="top-[35vh] translate-y-0 p-2 max-w-xl">
+      <DialogContent className="top-[35vh] translate-y-0 p-2 max-w-xl sm:max-w-xl">
         <DialogTitle className="sr-only">{label}</DialogTitle>
         <form
           onSubmit={(event) => {
@@ -29,7 +29,7 @@ export const SearchBar = ({ label }: SearchBarProps) => {
             submit();
           }}
         >
-          <label className="mb-1 block text-sm text-white" htmlFor="rlz-search">
+          <label className="mb-1 block text-body font-body text-white" htmlFor="rlz-search">
             {label}
           </label>
           <input

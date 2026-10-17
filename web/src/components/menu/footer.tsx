@@ -1,4 +1,4 @@
-import { cn } from "cn";
+import { cn } from "../../utils/cn";
 
 type MenuFooterProps = {
   description?: string;
@@ -14,7 +14,7 @@ export function MenuFooter({
     <div
       data-slot="menu-footer"
       className={cn(
-        "flex h-auto items-center justify-start bg-background-menu py-1 px-2 text-white text-sm",
+        "flex h-auto items-center justify-start bg-surface py-2 px-2 text-white text-caption",
         roundedBottom && "rounded-b-menu",
       )}
     >

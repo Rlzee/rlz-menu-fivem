@@ -1,7 +1,6 @@
-import { useRainbowColor } from "../../../hooks/useRainbowColor";
-import type { Color } from "../../../utils/color";
 import { Item } from "../../item";
-import { ChevronLeft, ChevronRight, Lock } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { LockIcon } from "../../ui/lock";
 
 type MenuListProps = {
   label: string;
@@ -10,31 +9,23 @@ type MenuListProps = {
   value: string;
   selected?: boolean;
   disabled?: boolean;
-  itemColor?: Color;
-  menuColor?: Color;
-  hoverColor?: Color;
 };
 
-export function MenuList({ label, value, selected, disabled, itemColor, menuColor, hoverColor }: MenuListProps) {
-  const color = useRainbowColor(itemColor, menuColor);
-
+export function MenuList({ label, value, selected, disabled }: MenuListProps) {
   return (
     <Item
       selected={selected}
       disabled={disabled}
-      color={color}
-      alwaysColor={Boolean(itemColor)}
-      hoverColor={hoverColor}
     >
       <span>{label}</span>
       {!disabled ? (
-        <div className="flex items-center gap-2">
-          <ChevronLeft className="h-4 w-4" />
+        <div className="flex items-center gap-2 text-anchor">
+          <ChevronLeftIcon className="h-4 w-4" />
           <span>{value}</span>
-          <ChevronRight className="h-4 w-4" />
+          <ChevronRightIcon className="h-4 w-4" />
         </div>
       ) : (
-        <Lock className="h-4 w-4" />
+        <LockIcon className="h-4 w-4" />
       )}
     </Item>
   );

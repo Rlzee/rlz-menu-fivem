@@ -11,8 +11,6 @@ function BuildMenuData(menu)
         selectedItemId = menu.selectedItemId,
         title = menu.title,
         subtitle = menu.subtitle,
-        color = menu.color,
-        hoverColor = menu.hoverColor,
         position = menu.position,
         controls = menu.controls,
         x = savedPosition and savedPosition.x or nil,
