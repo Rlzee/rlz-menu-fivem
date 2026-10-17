@@ -34,10 +34,16 @@
   --default-transition-duration: 150ms;                       /* micro-interactions */
   --default-transition-timing-function: var(--ease-standard);
   --animate-menu-open: menu-open 220ms var(--ease-standard) both;
+  --animate-menu-sheen: menu-sheen 900ms var(--ease-standard) both;
 
   @keyframes menu-open {
     from { opacity: 0; transform: translateY(-6px) scale(0.985); }
     to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes menu-sheen {
+    from { transform: translateX(-160%) skewX(-12deg); }
+    to   { transform: translateX(360%) skewX(-12deg); }
   }
 
   /* ── Surfaces ────────────────────────────────────── */
@@ -47,6 +53,7 @@
 
   /* ── Accent & controls ───────────────────────────── */
   --color-accent: #64748b;                         /* brand highlight (banner, checked) */
+  --color-accent-deep: #475569;                    /* banner gradient end */
   --color-control: rgb(255 255 255 / 10%);         /* checkbox / switch, resting */
   --color-control-selected: rgb(100 116 139 / 30%); /* checkbox / switch, row selected */
 
@@ -61,6 +68,13 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-padding-block: var(--menu-padding);
+}
+
+/* Menu banner: soft top sheen over a diagonal accent gradient. */
+@utility bg-menu-banner {
+  background-image:
+    linear-gradient(180deg, rgb(255 255 255 / 12%), rgb(255 255 255 / 0%) 55%),
+    linear-gradient(135deg, var(--color-accent), var(--color-accent-deep));
 }
 
 .menu-scrollbar-hidden::-webkit-scrollbar {

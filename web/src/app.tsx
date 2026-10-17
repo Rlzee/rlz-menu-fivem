@@ -56,7 +56,10 @@ const App = () => {
         menu.position === "right" ? "items-end" : "items-start",
       )}
     >
-      <div ref={containerRef} style={containerStyle} className="animate-menu-open">
+      <div ref={containerRef} style={containerStyle} className="animate-menu-open relative">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 overflow-hidden rounded-t-menu">
+          <div className="animate-menu-sheen absolute inset-y-0 -left-1/3 w-1/3 bg-[linear-gradient(to_right,transparent,rgb(255_255_255/28%),transparent)]" />
+        </div>
         <MenuView
           key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
           menu={menu}
