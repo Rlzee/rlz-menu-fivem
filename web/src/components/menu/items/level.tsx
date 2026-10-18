@@ -38,7 +38,7 @@ export function MenuLevel({
                   on
                     ? selected
                       ? "bg-white"
-                      : "bg-anchor"
+                      : "bg-menu-anchor"
                     : "bg-control",
                 )}
               />

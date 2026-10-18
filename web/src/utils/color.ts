@@ -99,50 +99,107 @@ function mix(rgb: Rgb, target: number, amount: number): Rgb {
   };
 }
 
+function toRgbString(rgb: Rgb): string {
+  return `rgb(${rgb.r} ${rgb.g} ${rgb.b})`;
+}
+
+function toAlphaString(rgb: Rgb, alpha: number): string {
+  return `rgb(${rgb.r} ${rgb.g} ${rgb.b} / ${alpha}%)`;
+}
+
 /**
- * Builds the set of accent CSS variables that recolor a whole menu from a
- * single base color, matching the token names declared in the `@theme` block.
- * Returns undefined when no/invalid color is given so the default slate theme
- * is kept.
+ * Builds the set of accent CSS variables that recolor a whole menu from one or
+ * more base colors, matching the token names declared in the `@theme` block.
+ * A single color tints the accent and derives a two-stop banner gradient; an
+ * array of colors spreads them across the banner as a multi-stop gradient while
+ * the accent tokens follow the first color. Returns undefined when no/invalid
+ * color is given so the default slate theme is kept.
  */
 export function buildMenuColorVars(
-  color?: string,
+  color?: Color,
 ): Record<string, string> | undefined {
   if (!color) {
     return undefined;
   }
 
-  const rgb = parseColor(color);
+  const list = (Array.isArray(color) ? color : [color]).filter(
+    (value): value is string => typeof value === "string" && value.trim() !== "",
+  );
 
-  if (!rgb) {
+  const rgbList: Rgb[] = [];
+
+  for (const value of list) {
+    const rgb = parseColor(value);
+
+    if (rgb) {
+      rgbList.push(rgb);
+    }
+  }
+
+  if (rgbList.length === 0) {
     return undefined;
   }
 
-  const { r, g, b } = rgb;
-  const deep = mix(rgb, 0, 0.35);
-  const anchor = mix(rgb, 255, 0.35);
+  const base = rgbList[0];
+  const deep = rgbList.length > 1 ? rgbList[rgbList.length - 1] : mix(base, 0, 0.35);
+  const anchor = mix(base, 255, 0.35);
 
-  return {
-    "--color-accent": `rgb(${r} ${g} ${b})`,
-    "--color-accent-deep": `rgb(${deep.r} ${deep.g} ${deep.b})`,
-    "--color-item-selected": `rgb(${r} ${g} ${b} / 22%)`,
-    "--color-control-selected": `rgb(${r} ${g} ${b} / 30%)`,
-    "--color-anchor": `rgb(${anchor.r} ${anchor.g} ${anchor.b})`,
+  const vars: Record<string, string> = {
+    "--color-accent": toRgbString(base),
+    "--color-accent-deep": toRgbString(deep),
+    "--color-item-selected": toAlphaString(base, 22),
+    "--color-control-selected": toAlphaString(base, 30),
+    "--color-anchor": toRgbString(anchor),
+    "--menu-accent": toRgbString(base),
+    "--menu-item-selected": toAlphaString(base, 22),
+    "--menu-control-selected": toAlphaString(base, 30),
+    "--menu-anchor": toRgbString(anchor),
+    "--menu-banner": `linear-gradient(135deg, ${toRgbString(base)}, ${toRgbString(deep)})`,
   };
+
+  // With several colors, spread the gradient across every accent surface. These
+  // tokens must always be written inline: the `:root` defaults resolve their
+  // nested `var(--color-*)` at `:root`, so an override on the menu element
+  // would otherwise be ignored.
+  if (rgbList.length > 1) {
+    const full = rgbList.map(toRgbString).join(", ");
+    const soft = rgbList.map((rgb) => toAlphaString(rgb, 22)).join(", ");
+    const control = rgbList.map((rgb) => toAlphaString(rgb, 30)).join(", ");
+    const anchorStops = rgbList
+      .map((rgb) => toRgbString(mix(rgb, 255, 0.35)))
+      .join(", ");
+
+    vars["--menu-banner"] = `linear-gradient(135deg, ${full})`;
+    vars["--menu-accent"] = `linear-gradient(135deg, ${full})`;
+    vars["--menu-item-selected"] = `linear-gradient(90deg, ${soft})`;
+    vars["--menu-control-selected"] = `linear-gradient(90deg, ${control})`;
+    vars["--menu-anchor"] = `linear-gradient(90deg, ${anchorStops})`;
+  }
+
+  return vars;
 }
 
-/** Accent CSS variables managed per menu, used to apply and clear them. */
+/**
+ * Accent CSS variables managed per menu, used to apply and clear them. Includes
+ * both the flat color tokens and the gradient-capable surfaces so switching a
+ * menu from a gradient back to a solid color (or none) removes the leftovers.
+ */
 export const ACCENT_COLOR_VARS = [
   "--color-accent",
   "--color-accent-deep",
   "--color-item-selected",
   "--color-control-selected",
   "--color-anchor",
+  "--menu-banner",
+  "--menu-accent",
+  "--menu-item-selected",
+  "--menu-control-selected",
+  "--menu-anchor",
 ] as const;
 
 /** Whether the reserved `"rainbow"` color was requested for a menu. */
-export function isRainbowColor(color?: string): boolean {
-  return color?.trim().toLowerCase() === "rainbow";
+export function isRainbowColor(color?: Color): boolean {
+  return typeof color === "string" && color.trim().toLowerCase() === "rainbow";
 }
 
 /**

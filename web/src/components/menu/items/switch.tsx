@@ -28,7 +28,7 @@ export function MenuSwitch({
         <Switch
           checked={isChecked}
           aria-label={label}
-          className={cn(selected && !isChecked && "bg-control-selected")}
+          className={cn(selected && !isChecked && "bg-menu-control-selected")}
         />
       )}
     </Item>

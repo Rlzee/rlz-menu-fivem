@@ -11,7 +11,7 @@ export function Radio({ className, checked = false, ...props }: RadioProps) {
     <span
       data-slot="radio"
       className={cn(
-        "bg-control data-[state=checked]:bg-accent transition-colors",
+        "bg-control data-[state=checked]:bg-menu-accent transition-colors",
         "relative flex size-4 shrink-0 items-center justify-center rounded-full outline-none",
         className,
       )}

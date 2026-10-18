@@ -15,6 +15,35 @@ local INHERITED_MENU_PROPERTIES = {
     position = "positionForced",
 }
 
+--- Validates a menu color value: a single CSS color string, or a non-empty
+--- array of color strings for a gradient banner.
+---
+---@param value any The color value to validate.
+---@param context string The calling function name, used in error messages.
+---@return boolean always true, errors otherwise
+--
+function ValidateMenuColor(value, context)
+    if value == nil or type(value) == "string" then
+        return true
+    end
+
+    if type(value) == "table" then
+        if #value == 0 then
+            error(("%s: color table must not be empty"):format(context))
+        end
+
+        for _, color in ipairs(value) do
+            if type(color) ~= "string" then
+                error(("%s: color table entries must be strings"):format(context))
+            end
+        end
+
+        return true
+    end
+
+    error(("%s: color must be a string, a table of strings, or nil"):format(context))
+end
+
 --- Creates a new menu.
 ---
 ---@param options table
@@ -23,7 +52,7 @@ local INHERITED_MENU_PROPERTIES = {
 ---@field options.command? string Command used to toggle the menu.
 ---@field options.key? string Key used to toggle the menu.
 ---@field options.position? "left"|"right" Menu position.
----@field options.color? string Base accent color for the menu (hex, rgb() or a named color such as "red").
+---@field options.color? string|string[] Base accent color for the menu: a CSS color (hex, rgb() or a named color such as "red"), the reserved "rainbow", or a table of colors for a gradient banner.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@field options.controls? boolean Whether to display the menu navigation controls. Defaults to false.
 ---@return string menuId
@@ -35,7 +64,7 @@ rlzMenu.Create = function(options)
     assert(options.command == nil or type(options.command) == "string", "rlzMenu.Create: command must be a string or nil")
     assert(options.key == nil or type(options.key) == "string", "rlzMenu.Create: key must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.Create: position must be 'left', 'right' or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.Create: color must be a string or nil")
+    ValidateMenuColor(options.color, "rlzMenu.Create")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.Create: enabled must be a boolean or nil")
     assert(options.controls == nil or type(options.controls) == "boolean", "rlzMenu.Create: controls must be a boolean or nil")
 
@@ -73,7 +102,7 @@ end
 ---@field options.title? string Submenu title.
 ---@field options.subtitle? string Submenu subtitle.
 ---@field options.position? "left"|"right" Submenu position. Inherits the parent position if not specified.
----@field options.color? string Base accent color. Inherits the parent color if not specified.
+---@field options.color? string|string[] Base accent color (a color string, "rainbow", or a table of colors for a gradient). Inherits the parent color if not specified.
 ---@field options.inheritColor? boolean Whether the submenu keeps following the parent color when it changes later. Defaults to true when no color is given, false when an own color is given.
 ---@field options.enabled? boolean Menu enabled state. Defaults to true.
 ---@field options.controls? boolean Whether to display the submenu navigation controls. Inherits the parent value if not specified.
@@ -86,7 +115,7 @@ rlzMenu.CreateSubMenu = function(parentId, options)
     assert(options.title == nil or type(options.title) == "string", "rlzMenu.CreateSubMenu: title must be a string or nil")
     assert(options.subtitle == nil or type(options.subtitle) == "string", "rlzMenu.CreateSubMenu: subtitle must be a string or nil")
     assert(options.position == nil or options.position == "left" or options.position == "right", "rlzMenu.CreateSubMenu: position must be 'left', 'right' or nil")
-    assert(options.color == nil or type(options.color) == "string", "rlzMenu.CreateSubMenu: color must be a string or nil")
+    ValidateMenuColor(options.color, "rlzMenu.CreateSubMenu")
     assert(options.inheritColor == nil or type(options.inheritColor) == "boolean", "rlzMenu.CreateSubMenu: inheritColor must be a boolean or nil")
     assert(options.enabled == nil or type(options.enabled) == "boolean", "rlzMenu.CreateSubMenu: enabled must be a boolean or nil")
     assert(options.controls == nil or type(options.controls) == "boolean", "rlzMenu.CreateSubMenu: controls must be a boolean or nil")
@@ -322,7 +351,7 @@ end
 ---
 ---@param menuId string The ID of the menu.
 ---@param property string The property to set. Supported properties: "title", "subtitle", "position", "color", "enabled", "controls".
----@param value any The value to set for the property. For "position": "left", "right", or a table { x = number, y = number } with the screen position as ratios between 0 and 1.
+---@param value any The value to set for the property. For "position": "left", "right", or a table { x = number, y = number } with the screen position as ratios between 0 and 1. For "color": a color string or a table of color strings (gradient).
 ---@param applyToSubmenus? boolean Whether the property should also be applied to descendant submenus. Defaults to true. Ignored for the table form of "position". For "color", only submenus created with inheritColor follow the change.
 ---@return boolean True if the property was set successfully, false if the menu does not exist.
 --
@@ -345,6 +374,8 @@ rlzMenu.SetMenuProperty = function(menuId, property, value, applyToSubmenus)
         if not isAlignment and not isOffset then
             error("Menu position must be 'left', 'right' or a table { x = number, y = number }")
         end
+    elseif property == "color" then
+        ValidateMenuColor(value, "rlzMenu.SetMenuProperty")
     elseif type(value) ~= expectedType then
         error((
             "Property '%s' must be a %s, got %s"

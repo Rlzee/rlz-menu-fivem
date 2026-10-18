@@ -63,6 +63,15 @@
   --color-value: #a3a3a3;                          /* button / list value text, always neutral gray */
   --color-divider: rgb(255 255 255 / 12%);         /* separator line */
   --color-key: rgb(255 255 255 / 10%);             /* keycap background */
+
+  /* ── Banner ──────────────────────────────────────── */
+  --menu-banner: linear-gradient(135deg, var(--color-accent), var(--color-accent-deep));
+
+  /* ── Themed accent surfaces (solid by default, gradient when overridden) ── */
+  --menu-accent: var(--color-accent);
+  --menu-item-selected: var(--color-item-selected);
+  --menu-control-selected: var(--color-control-selected);
+  --menu-anchor: var(--color-anchor);
 }
 
 .menu-scrollbar-hidden {
@@ -75,9 +84,46 @@
 @utility bg-menu-banner {
   background-image:
     linear-gradient(180deg, rgb(255 255 255 / 12%), rgb(255 255 255 / 0%) 55%),
-    linear-gradient(135deg, var(--color-accent), var(--color-accent-deep));
+    var(--menu-banner);
+}
+
+/* Accent surfaces that accept a solid color or a gradient via `background`:
+   a plain color keeps the background-color transition, a gradient paints it. */
+@utility bg-menu-accent {
+  background: var(--menu-accent);
+}
+
+@utility bg-menu-control-selected {
+  background: var(--menu-control-selected);
+}
+
+@utility bg-menu-anchor {
+  background: var(--menu-anchor);
 }
 
 .menu-scrollbar-hidden::-webkit-scrollbar {
   display: none;
+}
+
+/* Selection highlight is a dedicated overlay so a gradient (a background-image,
+   which cannot be animated) fades in and out smoothly via opacity instead of
+   snapping. `isolation` keeps the overlay behind the item's own text. */
+[data-slot="menu-item"] {
+  position: relative;
+  isolation: isolate;
+}
+
+[data-slot="menu-item"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: var(--radius-item);
+  background: var(--menu-item-selected);
+  opacity: 0;
+  transition: opacity var(--default-transition-duration) var(--default-transition-timing-function);
+}
+
+[data-slot="menu-item"][data-selected="true"]::before {
+  opacity: 1;
 }

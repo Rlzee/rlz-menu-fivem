@@ -42,7 +42,7 @@ export function Slider({
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className={cn("absolute h-full bg-anchor", rangeClassName)}
+          className={cn("absolute h-full bg-menu-anchor", rangeClassName)}
         />
       </SliderPrimitive.Track>
       {value.map((_, index) => (

@@ -19,7 +19,7 @@ local itemsMenu = rlzMenu.CreateSubMenu(testMenu, {
     subtitle = "Test different item types",
     -- Own color with inheritColor = false: this submenu keeps its green accent
     -- even when the parent menu color changes from the Options submenu.
-    color = "green",
+    color = "emerald",
     inheritColor = false,
 })
 
@@ -274,6 +274,15 @@ rlzMenu.SetItems(optionsMenu, function()
 
         onSelect = function()
             rlzMenu.SetMenuProperty(testMenu, "color", "rainbow")
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Gradient",
+        description = "Spread several colors across the banner (sunset)",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", { "#f97316", "#ef4444", "#a855f7" })
         end,
     })
 

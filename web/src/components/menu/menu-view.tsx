@@ -23,8 +23,8 @@ export type MenuData = {
   position: "left" | "right";
   /** Whether the menu navigation controls are displayed. */
   controls?: boolean;
-  /** Base accent color for the whole menu (hex, rgb() or a named color). */
-  color?: string;
+  /** Base accent color for the whole menu: a CSS color, "rainbow", or an array of colors for a gradient banner. */
+  color?: string | string[];
   /** Saved custom position, as ratios between 0 and 1. */
   x?: number;
   y?: number;

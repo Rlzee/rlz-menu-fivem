@@ -4,6 +4,7 @@ import {
   buildMenuColorVars,
   getRainbowColor,
   isRainbowColor,
+  type Color,
 } from "../utils/color";
 
 /** Duration of a full hue cycle, in milliseconds. */
@@ -20,7 +21,7 @@ const RAINBOW_CYCLE_MS = 6000;
  */
 export function useMenuColorVars(
   ref: RefObject<HTMLElement | null>,
-  color?: string,
+  color?: Color,
 ) {
   useLayoutEffect(() => {
     const element = ref.current;
