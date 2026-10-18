@@ -4,8 +4,8 @@ lua54 'yes'
 
 author 'Rlzee'
 description 'A menu system for FiveM'
-repository 'https://github.com/Rlzee/rlz-menu'
-version '1.3.0'
+repository 'https://github.com/Rlzee/rlz-menu-fivem'
+version '2.0.0'
 
 files {
     'web/dist/**/*',
