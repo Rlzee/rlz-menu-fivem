@@ -53,10 +53,25 @@ export type ListItem = {
   disabled?: boolean;
 };
 
+export type SliderItem = {
+  id: string;
+  type: "slider";
+  label: string;
+  description?: string;
+  min: number;
+  max: number;
+  value: number;
+  percent: number;
+  step: number;
+  onChange?: (value: number, percent: number) => void;
+  disabled?: boolean;
+};
+
 export type MenuItem =
   | ButtonItem
   | CheckboxItem
   | SwitchItem
   | LabelItem
   | SeparatorItem
-  | ListItem;
+  | ListItem
+  | SliderItem;

@@ -130,6 +130,65 @@ RegisterNUICallback("rlz_menu:changeList", function(data, cb)
 
 end)
 
+RegisterNUICallback("rlz_menu:changeSlider", function(data, cb)
+
+    local itemId = data.itemId
+    local direction = data.direction
+
+    if direction ~= "left" and direction ~= "right" then
+        cb({ ok = false })
+        return
+    end
+
+    for _, item in ipairs(ITEMS) do
+
+        if item.id == itemId and item.type == "slider" then
+
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
+
+            local delta = item.step or 1
+
+            if direction == "left" then
+                delta = -delta
+            end
+
+            local nextValue = item.value + delta
+
+            if nextValue < item.min then
+                nextValue = item.min
+            elseif nextValue > item.max then
+                nextValue = item.max
+            end
+
+            if nextValue == item.value then
+                cb({ ok = true })
+                return
+            end
+
+            item.value = nextValue
+            item.percent = ComputeSliderPercent(item)
+
+            rlzMenu.Refresh(CURRENT_MENU)
+
+            playSound("navigate")
+
+            if item.onChange then
+                item.onChange(item.value, item.percent)
+            end
+
+            cb({ ok = true })
+            return
+        end
+
+    end
+
+    cb({ ok = false })
+
+end)
+
 RegisterNUICallback("rlz_menu:hoverItem", function(data, cb)
     local itemId = data.itemId
 

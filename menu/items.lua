@@ -52,7 +52,44 @@ local ITEM_PROPERTY_TYPES = {
         onHover = "function",
         onLeave = "function",
     },
+
+    slider = {
+        label = "string",
+        description = "string",
+        min = "number",
+        max = "number",
+        value = "number",
+        step = "number",
+        percent = "number",
+        onChange = "function",
+        disabled = "boolean",
+        onHover = "function",
+        onLeave = "function",
+    },
 }
+
+--- Computes the fill percentage (0-100) of a slider item from its value.
+---
+---@param item table The slider item.
+---@return number percent
+--
+function ComputeSliderPercent(item)
+    local range = item.max - item.min
+
+    if range <= 0 then
+        return 0
+    end
+
+    local ratio = (item.value - item.min) / range
+
+    if ratio < 0 then
+        ratio = 0
+    elseif ratio > 1 then
+        ratio = 1
+    end
+
+    return math.floor(ratio * 100 + 0.5)
+end
 
 local function getItemId(itemType, itemIndex)
     assert(type(itemType) == "string", "itemType must be a string")
@@ -169,6 +206,21 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
         end
 
         item.value = item.values[item.index]
+
+    elseif item.type == "slider" and (property == "value" or property == "min" or property == "max") then
+        item[property] = value
+
+        if item.min > item.max then
+            item.min, item.max = item.max, item.min
+        end
+
+        if item.value < item.min then
+            item.value = item.min
+        elseif item.value > item.max then
+            item.value = item.max
+        end
+
+        item.percent = ComputeSliderPercent(item)
 
     else
         item[property] = value
@@ -394,6 +446,77 @@ rlzMenu.List = function(options)
     self.values = options.values
     self.index = currentIndex
     self.value = options.values[currentIndex]
+    self.onChange = options.onChange
+    self.disabled = options.disabled or false
+    self.onHover = options.onHover
+    self.onLeave = options.onLeave
+
+    table.insert(ITEMS, self)
+
+    return self.id
+end
+
+--- Add a slider item.
+---
+---@param options table
+---@field options.label string Slider label.
+---@field options.description? string Slider description.
+---@field options.min? number Minimum value. Defaults to 0.
+---@field options.max? number Maximum value. Defaults to 100.
+---@field options.value? number Initial value. Defaults to min.
+---@field options.step? number Increment applied with the arrow keys. Defaults to 1.
+---@field options.onChange? function Function called when the value changes, receives (value, percent).
+---@field options.disabled? boolean Whether the slider is disabled.
+---@field options.onHover? function Function called when the slider is hovered.
+---@field options.onLeave? function Function called when the cursor leaves the slider.
+---@return string itemId
+--
+rlzMenu.Slider = function(options)
+    assert(type(options) == "table", "rlzMenu.Slider: options must be a table")
+    assert(type(options.label) == "string", "rlzMenu.Slider: label must be a string")
+    assert(options.description == nil or type(options.description) == "string", "rlzMenu.Slider: description must be a string or nil")
+    assert(options.min == nil or type(options.min) == "number", "rlzMenu.Slider: min must be a number or nil")
+    assert(options.max == nil or type(options.max) == "number", "rlzMenu.Slider: max must be a number or nil")
+    assert(options.value == nil or type(options.value) == "number", "rlzMenu.Slider: value must be a number or nil")
+    assert(options.step == nil or type(options.step) == "number", "rlzMenu.Slider: step must be a number or nil")
+    assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.Slider: onChange must be a function or nil")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Slider: disabled must be a boolean or nil")
+    assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Slider: onHover must be a function or nil")
+    assert(options.onLeave == nil or type(options.onLeave) == "function", "rlzMenu.Slider: onLeave must be a function or nil")
+
+    local self = {}
+    ITEM_COUNTER += 1
+
+    local min = options.min or 0
+    local max = options.max or 100
+
+    if min > max then
+        min, max = max, min
+    end
+
+    local step = options.step or 1
+
+    if step <= 0 then
+        step = 1
+    end
+
+    local value = options.value or min
+
+    if value < min then
+        value = min
+    elseif value > max then
+        value = max
+    end
+
+    self.id = getItemId("slider", ITEM_COUNTER)
+    self.type = "slider"
+    self.label = options.label
+    self.description = options.description or ""
+    self.min = min
+    self.max = max
+    self.step = step
+    self.value = value
+    self.percent = ComputeSliderPercent(self)
     self.onChange = options.onChange
     self.disabled = options.disabled or false
     self.onHover = options.onHover

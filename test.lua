@@ -410,6 +410,51 @@ rlzMenu.SetItems(itemsMenu, function()
 
     rlzMenu.Separator()
 
+    rlzMenu.Slider({
+        label = "Volume",
+        description = "Adjust the volume level",
+        min = 0,
+        max = 100,
+        value = 50,
+
+        onChange = function(value, percent)
+            print(
+                "[rlzMenu] Volume:",
+                value,
+                percent .. "%"
+            )
+        end,
+    })
+
+    rlzMenu.Slider({
+        label = "Brightness",
+        description = "Custom range slider, step of 10",
+        min = 0,
+        max = 200,
+        value = 40,
+        step = 10,
+
+        onChange = function(value, percent)
+            print(
+                "[rlzMenu] Brightness:",
+                value,
+                "(" .. percent .. "%)"
+            )
+        end,
+    })
+
+    rlzMenu.Slider({
+        label = "Disabled slider",
+        description = "This slider is disabled",
+        min = 0,
+        max = 100,
+        value = 25,
+
+        disabled = true,
+    })
+
+    rlzMenu.Separator()
+
     rlzMenu.Button({
         label = "Close",
         description = "Close the menu",

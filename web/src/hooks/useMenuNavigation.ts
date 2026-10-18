@@ -94,6 +94,16 @@ export function useMenuNavigation({
             });
           }
 
+          if (selectedItem?.type === "slider") {
+            fetchNui("rlz_menu:changeSlider", {
+              itemId: selectedItem.id,
+              direction:
+                event.key === "ArrowLeft"
+                  ? "left"
+                  : "right",
+            });
+          }
+
           break;
         }
 

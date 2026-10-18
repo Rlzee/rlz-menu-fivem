@@ -9,6 +9,7 @@ import { MenuSeparator } from "./items/separator";
 import { MenuCheckbox } from "./items/checkbox";
 import { MenuSwitch } from "./items/switch";
 import { MenuList } from "./items/list";
+import { MenuSlider } from "./items/slider";
 
 export const Menu = {
   Header: MenuHeader,
@@ -22,5 +23,6 @@ export const Menu = {
     Switch: MenuSwitch,
     Separator: MenuSeparator,
     List: MenuList,
+    Slider: MenuSlider,
   },
 };
