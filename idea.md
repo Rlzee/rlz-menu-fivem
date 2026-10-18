@@ -3,28 +3,6 @@
 Feature ideas and notes for rlzMenu, so nothing gets forgotten.
 Each idea has its own section with the current thinking and open questions.
 
-## Multi-select item
-
-A new item type that enables **selecting several other items of the menu itself**, instead of
-acting on one item at a time (currently each Enter immediately triggers the item's action).
-
-- New item type placed in the menu like a button, e.g. `rlzMenu.MultiSelect({ ... })`
-- While the mode is active, the player navigates the menu and **checks/unchecks other items**
-  (buttons) without triggering them, then confirms to apply an action to **all checked items
-  at once** — e.g. delete several entries, toggle several options in one pass
-- Suggested API:
-  - `targets` — which items can be checked (item ids, a label/section, or "all buttons")
-  - `onChange(checkedIds)` — called each time the selection changes
-  - `onConfirm(checkedIds)` — called when the player validates the selection
-  - Confirming: pressing Enter on the multi-select item again, or a separate
-    `rlzMenu.ConfirmSelection({ ... })` item placed after (to decide)
-- Open questions:
-  - How does the player check an item — a dedicated key while the mode is active, or does
-    Enter toggle instead of trigger while selecting?
-  - Visual state on checked items: checkmark, checkbox slot, highlight?
-  - Should non-target items (checkbox, list) stay usable while the mode is active?
-  - Does the selection span labels/sections and nested submenus?
-
 ## Global config — menu animations
 
 A **global framework config** where the animations are configured **once** and applied to

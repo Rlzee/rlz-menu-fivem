@@ -38,7 +38,7 @@ export function MenuSlider({
             rangeClassName={selected ? "bg-white" : undefined}
             thumbClassName={selected ? "bg-white" : undefined}
           />
-          <span className="w-9 text-right text-anchor tabular-nums">
+          <span className="w-9 text-right text-value tabular-nums">
             {Math.round(clamped)}%
           </span>
         </div>

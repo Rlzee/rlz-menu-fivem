@@ -60,6 +60,7 @@
   /* ── Text & details ──────────────────────────────── */
   --color-text-muted: rgb(203 213 225 / 75%);      /* control labels / secondary text */
   --color-anchor: #94a3b8;                         /* item anchor text */
+  --color-value: #a3a3a3;                          /* button / list value text, always neutral gray */
   --color-divider: rgb(255 255 255 / 12%);         /* separator line */
   --color-key: rgb(255 255 255 / 10%);             /* keycap background */
 }

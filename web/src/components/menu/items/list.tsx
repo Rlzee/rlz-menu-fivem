@@ -19,7 +19,7 @@ export function MenuList({ label, value, selected, disabled }: MenuListProps) {
     >
       <span>{label}</span>
       {!disabled ? (
-        <div className="flex items-center gap-2 text-anchor">
+        <div className="flex items-center gap-2 text-value">
           <ChevronLeftIcon className="h-4 w-4" />
           <span>{value}</span>
           <ChevronRightIcon className="h-4 w-4" />

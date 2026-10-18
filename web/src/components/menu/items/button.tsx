@@ -24,7 +24,7 @@ export function MenuButton({
       disabled={disabled}
     >
       <span>{label}</span>
-      <span className="text-anchor">
+      <span className="text-value">
         {disabled ? (
           <LockIcon className="h-4 w-4" />
         ) : anchor === "loading" ? (

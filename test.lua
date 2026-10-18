@@ -17,6 +17,10 @@ local optionsMenu = rlzMenu.CreateSubMenu(testMenu, {
 local itemsMenu = rlzMenu.CreateSubMenu(testMenu, {
     title = "Items",
     subtitle = "Test different item types",
+    -- Own color with inheritColor = false: this submenu keeps its green accent
+    -- even when the parent menu color changes from the Options submenu.
+    color = "green",
+    inheritColor = false,
 })
 
 local dynamicMenu = rlzMenu.CreateSubMenu(testMenu, {
@@ -232,6 +236,44 @@ rlzMenu.SetItems(optionsMenu, function()
                 "subtitle",
                 "Test Menu"
             )
+        end,
+    })
+
+    rlzMenu.Label("Accent color")
+
+    rlzMenu.Button({
+        label = "Red",
+        description = "Recolor the menu accent in red (admin style)",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", "red")
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Yellow",
+        description = "Recolor the menu accent in yellow (moderator style)",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", "yellow")
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Custom hex",
+        description = "Recolor the menu accent with an arbitrary hex value",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", "#06b6d4")
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "Default color",
+        description = "Restore the default slate accent",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", "")
         end,
     })
 

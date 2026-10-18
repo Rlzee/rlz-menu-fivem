@@ -13,6 +13,7 @@ function BuildMenuData(menu)
         subtitle = menu.subtitle,
         position = menu.position,
         controls = menu.controls,
+        color = menu.color,
         x = savedPosition and savedPosition.x or nil,
         y = savedPosition and savedPosition.y or nil,
         items = PrepareNuiItems(ITEMS),
