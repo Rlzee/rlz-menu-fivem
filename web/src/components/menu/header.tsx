@@ -34,7 +34,7 @@ export function MenuHeader({
         data-slot="banner"
         className="relative flex h-16 items-center justify-center rounded-t-menu bg-menu-banner"
       >
-        <h1 className="text-title font-title text-white tracking-wide drop-shadow-sm">
+        <h1 className="text-title font-title text-white tracking-wide">
           {title}
         </h1>
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-[linear-gradient(90deg,transparent,var(--color-anchor),transparent)]" />
