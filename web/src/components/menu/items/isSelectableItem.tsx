@@ -6,7 +6,8 @@ export function isSelectableItem(item: MenuItem) {
       item.type === "checkbox" ||
     item.type === "switch" ||
       item.type === "list" ||
-      item.type === "slider") &&
+      item.type === "slider" ||
+      item.type === "radio") &&
     !item.disabled
   );
 }

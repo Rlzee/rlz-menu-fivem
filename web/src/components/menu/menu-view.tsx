@@ -113,7 +113,8 @@ export const MenuView = ({
     selectedItem?.type === "checkbox" ||
     selectedItem?.type === "switch" ||
     selectedItem?.type === "list" ||
-    selectedItem?.type === "slider"
+    selectedItem?.type === "slider" ||
+    selectedItem?.type === "radio"
       ? (selectedItem.description ?? "")
       : "";
 
@@ -209,6 +210,18 @@ export const MenuView = ({
                 min={item.min}
                 max={item.max}
                 value={item.value}
+                selected={isSelected}
+                disabled={item.disabled}
+              />
+            );
+          }
+
+          if (item.type === "radio") {
+            return (
+              <Menu.Item.Radio
+                key={item.id}
+                label={item.label}
+                isChecked={item.isChecked}
                 selected={isSelected}
                 disabled={item.disabled}
               />

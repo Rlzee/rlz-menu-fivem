@@ -1,6 +1,7 @@
 ITEMS = {}
 ITEM_COUNTER = 0
 ITEM_IDS = {}
+RADIO_GROUP_COUNTER = 0
 
 local ITEM_PROPERTY_TYPES = {
     button = {
@@ -66,6 +67,16 @@ local ITEM_PROPERTY_TYPES = {
         onHover = "function",
         onLeave = "function",
     },
+
+    radio = {
+        label = "string",
+        description = "string",
+        index = "number",
+        isChecked = "boolean",
+        disabled = "boolean",
+        onHover = "function",
+        onLeave = "function",
+    },
 }
 
 --- Computes the fill percentage (0-100) of a slider item from its value.
@@ -89,6 +100,36 @@ function ComputeSliderPercent(item)
     end
 
     return math.floor(ratio * 100 + 0.5)
+end
+
+--- Selects one option of a radio group and unchecks the others.
+---
+---@param groupId string The ID of the radio group.
+---@param index number The option index (1-based) to select.
+--
+function SelectRadioGroupIndex(groupId, index)
+    for _, item in ipairs(ITEMS) do
+        if item.type == "radio" and item.group == groupId then
+            item.isChecked = item.index == index
+        end
+    end
+end
+
+--- Returns the number of options of a radio group.
+---
+---@param groupId string The ID of the radio group.
+---@return number size
+--
+function GetRadioGroupSize(groupId)
+    local size = 0
+
+    for _, item in ipairs(ITEMS) do
+        if item.type == "radio" and item.group == groupId then
+            size += 1
+        end
+    end
+
+    return size
 end
 
 local function getItemId(itemType, itemIndex)
@@ -221,6 +262,18 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
         end
 
         item.percent = ComputeSliderPercent(item)
+
+    elseif item.type == "radio" and property == "index" then
+        local size = GetRadioGroupSize(item.group)
+
+        if value < 1 or value > size then
+            error((
+                "Radio index must be between 1 and %s"
+            ):format(size))
+        end
+
+        item.index = value
+        SelectRadioGroupIndex(item.group, value)
 
     else
         item[property] = value
@@ -525,4 +578,63 @@ rlzMenu.Slider = function(options)
     table.insert(ITEMS, self)
 
     return self.id
+end
+
+--- Add a radio group: one selectable row per option, sharing a group ID.
+--- Navigating with the arrow keys moves between the options and Enter selects
+--- the highlighted one, unchecking the other options of the same group.
+---
+---@param options table
+---@field options.label? string Optional header label displayed above the options.
+---@field options.description? string Description displayed for every option.
+---@field options.options table List of option labels.
+---@field options.index? number Initially selected option index (1-based). Defaults to 1.
+---@field options.onChange? function Function called when an option is selected, receives (index, value).
+---@field options.disabled? boolean Whether every option of the group is disabled.
+---@return string groupId
+--
+rlzMenu.RadioGroup = function(options)
+    assert(type(options) == "table", "rlzMenu.RadioGroup: options must be a table")
+    assert(options.label == nil or type(options.label) == "string", "rlzMenu.RadioGroup: label must be a string or nil")
+    assert(options.description == nil or type(options.description) == "string", "rlzMenu.RadioGroup: description must be a string or nil")
+    assert(type(options.options) == "table", "rlzMenu.RadioGroup: options must be a table")
+    assert(#options.options > 0, "rlzMenu.RadioGroup: options must not be empty")
+    assert(options.index == nil or type(options.index) == "number", "rlzMenu.RadioGroup: index must be a number or nil")
+    assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.RadioGroup: onChange must be a function or nil")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.RadioGroup: disabled must be a boolean or nil")
+
+    RADIO_GROUP_COUNTER += 1
+
+    local groupId = generateId("radio-group", RADIO_GROUP_COUNTER)
+
+    if options.label then
+        rlzMenu.Label(options.label)
+    end
+
+    local selectedIndex = options.index or 1
+
+    if selectedIndex < 1 then
+        selectedIndex = 1
+    elseif selectedIndex > #options.options then
+        selectedIndex = #options.options
+    end
+
+    for optionIndex, option in ipairs(options.options) do
+        local self = {}
+        ITEM_COUNTER += 1
+
+        self.id = getItemId("radio", ITEM_COUNTER)
+        self.type = "radio"
+        self.group = groupId
+        self.index = optionIndex
+        self.label = tostring(option)
+        self.description = options.description or ""
+        self.isChecked = optionIndex == selectedIndex
+        self.onChange = options.onChange
+        self.disabled = options.disabled or false
+
+        table.insert(ITEMS, self)
+    end
+
+    return groupId
 end

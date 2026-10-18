@@ -67,6 +67,17 @@ export type SliderItem = {
   disabled?: boolean;
 };
 
+export type RadioItem = {
+  id: string;
+  type: "radio";
+  group: string;
+  label: string;
+  description?: string;
+  index: number;
+  isChecked: boolean;
+  disabled?: boolean;
+};
+
 export type MenuItem =
   | ButtonItem
   | CheckboxItem
@@ -74,4 +85,5 @@ export type MenuItem =
   | LabelItem
   | SeparatorItem
   | ListItem
-  | SliderItem;
+  | SliderItem
+  | RadioItem;

@@ -455,6 +455,27 @@ rlzMenu.SetItems(itemsMenu, function()
 
     rlzMenu.Separator()
 
+    rlzMenu.RadioGroup({
+        label = "Quality",
+        description = "Select a quality preset",
+        options = {
+            "Low",
+            "Medium",
+            "High",
+        },
+        index = 2,
+
+        onChange = function(index, value)
+            print(
+                "[rlzMenu] Quality:",
+                index,
+                value
+            )
+        end,
+    })
+
+    rlzMenu.Separator()
+
     rlzMenu.Button({
         label = "Close",
         description = "Close the menu",

@@ -131,6 +131,12 @@ export function useMenuNavigation({
             });
           }
 
+          if (selectedItem.type === "radio") {
+            fetchNui("rlz_menu:selectRadio", {
+              itemId: selectedItem.id,
+            });
+          }
+
           break;
         }
 

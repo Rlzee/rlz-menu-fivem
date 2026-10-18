@@ -10,6 +10,7 @@ import { MenuCheckbox } from "./items/checkbox";
 import { MenuSwitch } from "./items/switch";
 import { MenuList } from "./items/list";
 import { MenuSlider } from "./items/slider";
+import { MenuRadio } from "./items/radio";
 
 export const Menu = {
   Header: MenuHeader,
@@ -24,5 +25,6 @@ export const Menu = {
     Separator: MenuSeparator,
     List: MenuList,
     Slider: MenuSlider,
+    Radio: MenuRadio,
   },
 };

@@ -189,6 +189,44 @@ RegisterNUICallback("rlz_menu:changeSlider", function(data, cb)
 
 end)
 
+RegisterNUICallback("rlz_menu:selectRadio", function(data, cb)
+
+    local itemId = data.itemId
+    local selectedItem
+
+    for _, item in ipairs(ITEMS) do
+        if item.id == itemId and item.type == "radio" then
+            selectedItem = item
+            break
+        end
+    end
+
+    if not selectedItem then
+        cb({ ok = false })
+        return
+    end
+
+    if selectedItem.disabled then
+        cb({ ok = false, disabled = true })
+        return
+    end
+
+    local wasChecked = selectedItem.isChecked
+
+    SelectRadioGroupIndex(selectedItem.group, selectedItem.index)
+
+    rlzMenu.Refresh(CURRENT_MENU)
+
+    playSound("select")
+
+    if selectedItem.onChange and not wasChecked then
+        selectedItem.onChange(selectedItem.index, selectedItem.label)
+    end
+
+    cb({ ok = true })
+
+end)
+
 RegisterNUICallback("rlz_menu:hoverItem", function(data, cb)
     local itemId = data.itemId
 
