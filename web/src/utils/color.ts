@@ -130,3 +130,50 @@ export function buildMenuColorVars(
     "--color-anchor": `rgb(${anchor.r} ${anchor.g} ${anchor.b})`,
   };
 }
+
+/** Accent CSS variables managed per menu, used to apply and clear them. */
+export const ACCENT_COLOR_VARS = [
+  "--color-accent",
+  "--color-accent-deep",
+  "--color-item-selected",
+  "--color-control-selected",
+  "--color-anchor",
+] as const;
+
+/** Whether the reserved `"rainbow"` color was requested for a menu. */
+export function isRainbowColor(color?: string): boolean {
+  return color?.trim().toLowerCase() === "rainbow";
+}
+
+/**
+ * Converts a hue (0-360) into a fully saturated hex color, used to drive the
+ * animated `"rainbow"` menu accent.
+ */
+export function getRainbowColor(hue: number): string {
+  const saturation = 1;
+  const lightness = 0.5;
+  const chroma = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const section = (((hue % 360) + 360) % 360) / 60;
+  const secondary = chroma * (1 - Math.abs((section % 2) - 1));
+  const match = lightness - chroma / 2;
+  const [red, green, blue] =
+    section < 1
+      ? [chroma, secondary, 0]
+      : section < 2
+        ? [secondary, chroma, 0]
+        : section < 3
+          ? [0, chroma, secondary]
+          : section < 4
+            ? [0, secondary, chroma]
+            : section < 5
+              ? [secondary, 0, chroma]
+              : [chroma, 0, secondary];
+
+  return `#${[red, green, blue]
+    .map((value) =>
+      Math.round((value + match) * 255)
+        .toString(16)
+        .padStart(2, "0"),
+    )
+    .join("")}`;
+}

@@ -269,6 +269,15 @@ rlzMenu.SetItems(optionsMenu, function()
     })
 
     rlzMenu.Button({
+        label = "Rainbow",
+        description = "Animate the menu accent through the full hue cycle",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "color", "rainbow")
+        end,
+    })
+
+    rlzMenu.Button({
         label = "Default color",
         description = "Restore the default slate accent",
 

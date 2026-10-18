@@ -3,7 +3,6 @@ import {
   useMemo,
   useRef,
   useState,
-  type CSSProperties,
   type MouseEventHandler,
   type PointerEventHandler,
 } from "react";
@@ -13,7 +12,7 @@ import { useMenuSelection } from "../../hooks/useMenuSelection";
 import { isSelectableItem } from "./items/isSelectableItem";
 import { Menu } from "./exports";
 import { Controls, type ControlItem } from "./controls";
-import { buildMenuColorVars } from "../../utils/color";
+import { useMenuColorVars } from "../../hooks/useMenuColorVars";
 import type { MenuItem } from "./items/type";
 
 export type MenuData = {
@@ -134,13 +133,12 @@ export const MenuView = ({
 
   const showControls = Boolean(moveMode) || Boolean(menu.controls);
 
-  const colorVars = useMemo(() => buildMenuColorVars(menu.color), [menu.color]);
+  useMenuColorVars(menuRef, menu.color);
 
   return (
     <div
       ref={menuRef}
       id={menu.menuId}
-      style={colorVars as CSSProperties}
       className="w-(--menu-width) grid grid-cols-[minmax(0,1fr)] gap-(--menu-gap)"
     >
       <Menu.Header
