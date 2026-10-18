@@ -14,6 +14,7 @@ function BuildMenuData(menu)
         position = menu.position,
         controls = menu.controls,
         color = menu.color,
+        banner = menu.banner,
         x = savedPosition and savedPosition.x or nil,
         y = savedPosition and savedPosition.y or nil,
         items = PrepareNuiItems(ITEMS),

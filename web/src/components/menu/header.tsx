@@ -1,9 +1,11 @@
 import { cn } from "../../utils/cn";
-import type { MouseEventHandler, PointerEventHandler } from "react";
+import type { CSSProperties, MouseEventHandler, PointerEventHandler } from "react";
 
 type MenuHeaderProps = {
   title: string;
   subtitle?: string;
+  /** Custom banner image path/URL; when set it replaces the colored banner. */
+  banner?: string;
   current: number;
   total: number;
   dragging?: boolean;
@@ -14,12 +16,20 @@ type MenuHeaderProps = {
 export function MenuHeader({
   title,
   subtitle,
+  banner,
   current,
   total,
   dragging,
   onPointerDown,
   onDoubleClick,
 }: MenuHeaderProps) {
+  const hasBanner = Boolean(banner);
+  const bannerStyle: CSSProperties | undefined = hasBanner
+    ? {
+        backgroundImage: `url(${JSON.stringify(banner)})`,
+      }
+    : undefined;
+
   return (
     <div
       data-slot="menu-header"
@@ -32,11 +42,18 @@ export function MenuHeader({
     >
       <div
         data-slot="banner"
-        className="relative flex h-16 items-center justify-center rounded-t-menu bg-menu-banner"
+        style={bannerStyle}
+        className={cn(
+          "relative flex h-16 items-center justify-center rounded-t-menu",
+          hasBanner && "bg-cover bg-center bg-no-repeat",
+          !hasBanner && "bg-menu-banner",
+        )}
       >
-        <h1 className="text-title font-title text-white tracking-wide">
-          {title}
-        </h1>
+        {title ? (
+          <h1 className="text-title font-title text-white tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]">
+            {title}
+          </h1>
+        ) : null}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[2px] bg-[linear-gradient(90deg,transparent,var(--color-anchor),transparent)]" />
       </div>
 

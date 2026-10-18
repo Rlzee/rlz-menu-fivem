@@ -6,7 +6,7 @@ local testMenu = rlzMenu.Create({
     command = "toggleMenu",
     key = "F1",
     position = "left",
-    controls = true,
+    controls = true, 
 })
 
 local optionsMenu = rlzMenu.CreateSubMenu(testMenu, {
@@ -21,6 +21,7 @@ local itemsMenu = rlzMenu.CreateSubMenu(testMenu, {
     -- even when the parent menu color changes from the Options submenu.
     color = "emerald",
     inheritColor = false,
+    inheritBanner = false,
 })
 
 local dynamicMenu = rlzMenu.CreateSubMenu(testMenu, {
@@ -292,6 +293,30 @@ rlzMenu.SetItems(optionsMenu, function()
 
         onSelect = function()
             rlzMenu.SetMenuProperty(testMenu, "color", "")
+        end,
+    })
+
+    rlzMenu.Label("Banner image")
+
+    rlzMenu.Button({
+        label = "Custom banner",
+        description = "Replace the colored banner with a custom image (data URI here, use web/dist path or URL in production)",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(
+                testMenu,
+                "banner",
+                "https://wallpaper-house.com/data/out/10/wallpaper2you_466852.jpg"
+            )
+        end,
+    })
+
+    rlzMenu.Button({
+        label = "No banner",
+        description = "Remove the custom banner and restore the colored banner",
+
+        onSelect = function()
+            rlzMenu.SetMenuProperty(testMenu, "banner", "")
         end,
     })
 

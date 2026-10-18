@@ -62,3 +62,27 @@ Allow the menu header to use a **custom banner image** instead of the colored ba
   - Remote URLs work in NUI but require the player to be online
   - Sizing: fixed banner height (like the current `h-16`), `object-fit: cover` to avoid distortion
   - The subtitle row below the banner stays unchanged
+
+### ✅ Implemented
+
+- `options.banner` on `rlzMenu.Create` / `CreateSubMenu`, also settable via `SetMenuProperty(menuId, "banner", ...)`
+- `banner` is registered in `MENU_PROPERTY_TYPES` and shipped in the NUI payload (`utils/buildMenuData.lua`)
+- Submenus now accept `options.inheritBanner` (mirrors `inheritColor`):
+  - `inheritBanner = true` → submenu keeps following the parent banner when it
+    changes later (recursively, via `setMenuProperty` propagation)
+  - `inheritBanner = false` → submenu keeps its own banner and ignores the parent
+  - Default: `inheritBanner = (options.banner == nil)` — inherit the parent's banner
+    unless an own `banner` is explicitly given
+- `SetMenuProperty(menuId, "banner", ...)` propagates recursively to descendant
+  submenus whose `inheritBanner` is true (same rule as `color`)
+- Web (`web/src/components/menu/header.tsx`) uses the image as `background-image` with
+  `bg-cover bg-center bg-no-repeat` inside the existing `h-16` banner slot
+- When a banner is set AND `title` is non-empty, the title is overlaid on the image with a
+  subtle drop-shadow for readability; if `title` is empty, the image is shown alone
+- Setting `banner` to `""` (empty string) clears it and falls back to the colored banner
+  (`bg-menu-banner`) — unchanged legacy behavior
+- Local files: drop them into `web/dist/**` (already listed in fxmanifest `files`), then reference
+  by relative path (e.g. `banner = "nui://rlz-menu/web/dist/admin.png"` or simply
+  `"admin.png"` if the file sits next to `index.html`).
+- Live demo in `test.lua` → Options → **Banner image** (Custom banner / No banner), using a
+  data-URI SVG so no external asset is required.

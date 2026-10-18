@@ -25,6 +25,8 @@ export type MenuData = {
   controls?: boolean;
   /** Base accent color for the whole menu: a CSS color, "rainbow", or an array of colors for a gradient banner. */
   color?: string | string[];
+  /** Custom banner image path/URL, replaces the colored banner when set. */
+  banner?: string;
   /** Saved custom position, as ratios between 0 and 1. */
   x?: number;
   y?: number;
@@ -144,6 +146,7 @@ export const MenuView = ({
       <Menu.Header
         title={menu.title}
         subtitle={menu.subtitle}
+        banner={menu.banner}
         current={currentPosition >= 0 ? currentPosition + 1 : 0}
         total={selectableIndexes.length}
         dragging={dragging || moveMode}
