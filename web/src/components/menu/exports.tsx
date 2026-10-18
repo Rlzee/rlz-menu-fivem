@@ -11,6 +11,7 @@ import { MenuSwitch } from "./items/switch";
 import { MenuList } from "./items/list";
 import { MenuSlider } from "./items/slider";
 import { MenuRadio } from "./items/radio";
+import { MenuLevel } from "./items/level";
 
 export const Menu = {
   Header: MenuHeader,
@@ -26,5 +27,6 @@ export const Menu = {
     List: MenuList,
     Slider: MenuSlider,
     Radio: MenuRadio,
+    Level: MenuLevel,
   },
 };

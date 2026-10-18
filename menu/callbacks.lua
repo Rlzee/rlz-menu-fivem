@@ -189,6 +189,64 @@ RegisterNUICallback("rlz_menu:changeSlider", function(data, cb)
 
 end)
 
+RegisterNUICallback("rlz_menu:changeLevel", function(data, cb)
+
+    local itemId = data.itemId
+    local direction = data.direction
+
+    if direction ~= "left" and direction ~= "right" then
+        cb({ ok = false })
+        return
+    end
+
+    for _, item in ipairs(ITEMS) do
+
+        if item.id == itemId and item.type == "level" then
+
+            if item.disabled then
+                cb({ ok = false, disabled = true })
+                return
+            end
+
+            local nextValue = item.value
+
+            if direction == "left" then
+                nextValue -= 1
+            else
+                nextValue += 1
+            end
+
+            if nextValue < 0 then
+                nextValue = 0
+            elseif nextValue > item.max then
+                nextValue = item.max
+            end
+
+            if nextValue == item.value then
+                cb({ ok = true })
+                return
+            end
+
+            item.value = nextValue
+
+            rlzMenu.Refresh(CURRENT_MENU)
+
+            playSound("navigate")
+
+            if item.onChange then
+                item.onChange(item.value)
+            end
+
+            cb({ ok = true })
+            return
+        end
+
+    end
+
+    cb({ ok = false })
+
+end)
+
 RegisterNUICallback("rlz_menu:selectRadio", function(data, cb)
 
     local itemId = data.itemId

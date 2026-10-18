@@ -7,7 +7,8 @@ export function isSelectableItem(item: MenuItem) {
     item.type === "switch" ||
       item.type === "list" ||
       item.type === "slider" ||
-      item.type === "radio") &&
+      item.type === "radio" ||
+      item.type === "level") &&
     !item.disabled
   );
 }

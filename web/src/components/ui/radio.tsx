@@ -19,7 +19,7 @@ export function Radio({ className, checked = false, ...props }: RadioProps) {
       {...props}
     >
       {checked && (
-        <span className="size-1.5 animate-in zoom-in-50 rounded-full bg-white" />
+        <span className="size-2 animate-in zoom-in-50 rounded-full bg-white" />
       )}
     </span>
   );

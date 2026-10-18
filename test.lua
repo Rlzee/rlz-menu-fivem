@@ -476,6 +476,31 @@ rlzMenu.SetItems(itemsMenu, function()
 
     rlzMenu.Separator()
 
+    rlzMenu.Level({
+        label = "Level",
+        description = "Raise or lower the level with the arrows",
+        max = 5,
+        value = 2,
+
+        onChange = function(value)
+            print(
+                "[rlzMenu] Level:",
+                value
+            )
+        end,
+    })
+
+    rlzMenu.Level({
+        label = "Disabled level",
+        description = "This level is disabled",
+        max = 4,
+        value = 3,
+
+        disabled = true,
+    })
+
+    rlzMenu.Separator()
+
     rlzMenu.Button({
         label = "Close",
         description = "Close the menu",

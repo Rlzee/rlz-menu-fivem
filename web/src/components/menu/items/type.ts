@@ -78,6 +78,17 @@ export type RadioItem = {
   disabled?: boolean;
 };
 
+export type LevelItem = {
+  id: string;
+  type: "level";
+  label: string;
+  description?: string;
+  value: number;
+  max: number;
+  onChange?: (value: number) => void;
+  disabled?: boolean;
+};
+
 export type MenuItem =
   | ButtonItem
   | CheckboxItem
@@ -86,4 +97,5 @@ export type MenuItem =
   | SeparatorItem
   | ListItem
   | SliderItem
-  | RadioItem;
+  | RadioItem
+  | LevelItem;

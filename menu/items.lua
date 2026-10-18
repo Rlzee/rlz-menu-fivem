@@ -77,6 +77,17 @@ local ITEM_PROPERTY_TYPES = {
         onHover = "function",
         onLeave = "function",
     },
+
+    level = {
+        label = "string",
+        description = "string",
+        value = "number",
+        max = "number",
+        onChange = "function",
+        disabled = "boolean",
+        onHover = "function",
+        onLeave = "function",
+    },
 }
 
 --- Computes the fill percentage (0-100) of a slider item from its value.
@@ -274,6 +285,19 @@ rlzMenu.SetItemProperty = function(itemId, property, value)
 
         item.index = value
         SelectRadioGroupIndex(item.group, value)
+
+    elseif item.type == "level" and (property == "value" or property == "max") then
+        item[property] = value
+
+        if item.max < 1 then
+            item.max = 1
+        end
+
+        if item.value < 0 then
+            item.value = 0
+        elseif item.value > item.max then
+            item.value = item.max
+        end
 
     else
         item[property] = value
@@ -637,4 +661,62 @@ rlzMenu.RadioGroup = function(options)
     end
 
     return groupId
+end
+
+--- Add a level item: a row of small circles where the filled count is the
+--- current level. The level is raised or lowered with the arrow keys.
+---
+---@param options table
+---@field options.label string Level label.
+---@field options.description? string Level description.
+---@field options.max? number Number of circles. Defaults to 5.
+---@field options.value? number Initially filled circles, between 0 and max. Defaults to 0.
+---@field options.onChange? function Function called when the level changes, receives (value).
+---@field options.disabled? boolean Whether the level is disabled.
+---@field options.onHover? function Function called when the level is hovered.
+---@field options.onLeave? function Function called when the cursor leaves the level.
+---@return string itemId
+--
+rlzMenu.Level = function(options)
+    assert(type(options) == "table", "rlzMenu.Level: options must be a table")
+    assert(type(options.label) == "string", "rlzMenu.Level: label must be a string")
+    assert(options.description == nil or type(options.description) == "string", "rlzMenu.Level: description must be a string or nil")
+    assert(options.max == nil or type(options.max) == "number", "rlzMenu.Level: max must be a number or nil")
+    assert(options.value == nil or type(options.value) == "number", "rlzMenu.Level: value must be a number or nil")
+    assert(options.onChange == nil or type(options.onChange) == "function", "rlzMenu.Level: onChange must be a function or nil")
+    assert(options.disabled == nil or type(options.disabled) == "boolean", "rlzMenu.Level: disabled must be a boolean or nil")
+    assert(options.onHover == nil or type(options.onHover) == "function", "rlzMenu.Level: onHover must be a function or nil")
+    assert(options.onLeave == nil or type(options.onLeave) == "function", "rlzMenu.Level: onLeave must be a function or nil")
+
+    local self = {}
+    ITEM_COUNTER += 1
+
+    local max = options.max or 5
+
+    if max < 1 then
+        max = 1
+    end
+
+    local value = options.value or 0
+
+    if value < 0 then
+        value = 0
+    elseif value > max then
+        value = max
+    end
+
+    self.id = getItemId("level", ITEM_COUNTER)
+    self.type = "level"
+    self.label = options.label
+    self.description = options.description or ""
+    self.max = max
+    self.value = value
+    self.onChange = options.onChange
+    self.disabled = options.disabled or false
+    self.onHover = options.onHover
+    self.onLeave = options.onLeave
+
+    table.insert(ITEMS, self)
+
+    return self.id
 end

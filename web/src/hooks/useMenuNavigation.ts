@@ -104,6 +104,16 @@ export function useMenuNavigation({
             });
           }
 
+          if (selectedItem?.type === "level") {
+            fetchNui("rlz_menu:changeLevel", {
+              itemId: selectedItem.id,
+              direction:
+                event.key === "ArrowLeft"
+                  ? "left"
+                  : "right",
+            });
+          }
+
           break;
         }
 

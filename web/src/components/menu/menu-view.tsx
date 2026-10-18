@@ -74,7 +74,14 @@ export const MenuView = ({
   const navControls = useMemo<ControlItem[]>(() => {
     const items: ControlItem[] = [{ keys: ["↑", "↓"], label: "Navigate" }];
 
-    if (menu.items.some((item) => item.type === "list" || item.type === "slider")) {
+    if (
+      menu.items.some(
+        (item) =>
+          item.type === "list" ||
+          item.type === "slider" ||
+          item.type === "level",
+      )
+    ) {
       items.push({ keys: ["←", "→"], label: "Change" });
     }
 
@@ -114,7 +121,8 @@ export const MenuView = ({
     selectedItem?.type === "switch" ||
     selectedItem?.type === "list" ||
     selectedItem?.type === "slider" ||
-    selectedItem?.type === "radio"
+    selectedItem?.type === "radio" ||
+    selectedItem?.type === "level"
       ? (selectedItem.description ?? "")
       : "";
 
@@ -222,6 +230,19 @@ export const MenuView = ({
                 key={item.id}
                 label={item.label}
                 isChecked={item.isChecked}
+                selected={isSelected}
+                disabled={item.disabled}
+              />
+            );
+          }
+
+          if (item.type === "level") {
+            return (
+              <Menu.Item.Level
+                key={item.id}
+                label={item.label}
+                value={item.value}
+                max={item.max}
                 selected={isSelected}
                 disabled={item.disabled}
               />
