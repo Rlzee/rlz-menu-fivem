@@ -9,8 +9,9 @@ import {
 import { useMenuNavigation } from "../../hooks/useMenuNavigation";
 import { useMenuSelection } from "../../hooks/useMenuSelection";
 
-import { isSelectableItem } from "./items/isSelectableItem";
+import { hasAdjustableItem, isSelectableItem } from "./items/config";
 import { Menu } from "./exports";
+import { MenuItemView } from "./menu-item";
 import { Controls, type ControlItem } from "./controls";
 import { useMenuColorVars } from "../../hooks/useMenuColorVars";
 import type { MenuItem } from "./items/type";
@@ -72,21 +73,14 @@ export const MenuView = ({
 
     return selectableIndexes.includes(restoredIndex)
       ? restoredIndex
-      : 0;
+      : selectableIndexes[0] ?? 0;
   });
   const menuRef = useRef<HTMLDivElement>(null);
 
   const navControls = useMemo<ControlItem[]>(() => {
     const items: ControlItem[] = [{ keys: ["↑", "↓"], label: "Navigate" }];
 
-    if (
-      menu.items.some(
-        (item) =>
-          item.type === "list" ||
-          item.type === "slider" ||
-          item.type === "level",
-      )
-    ) {
+    if (hasAdjustableItem(menu.items)) {
       items.push({ keys: ["←", "→"], label: "Change" });
     }
 
@@ -121,13 +115,7 @@ export const MenuView = ({
   const selectedItem = menu.items[selectedIndex];
 
   const footerDescription =
-    selectedItem?.type === "button" ||
-    selectedItem?.type === "checkbox" ||
-    selectedItem?.type === "switch" ||
-    selectedItem?.type === "list" ||
-    selectedItem?.type === "slider" ||
-    selectedItem?.type === "radio" ||
-    selectedItem?.type === "level"
+    selectedItem && "description" in selectedItem
       ? (selectedItem.description ?? "")
       : "";
 
@@ -155,110 +143,13 @@ export const MenuView = ({
       />
 
       <Menu.Content>
-        {menu.items.map((item, index) => {
-          const isSelected = selectedIndex === index;
-
-          if (item.type === "button") {
-            return (
-              <Menu.Item.Button
-                key={item.id}
-                label={item.label}
-                anchor={item.anchor}
-                selected={isSelected}
-                submenu={item.submenu}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "checkbox") {
-            return (
-              <Menu.Item.Checkbox
-                key={item.id}
-                label={item.label}
-                isChecked={item.isChecked}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "switch") {
-            return (
-              <Menu.Item.Switch
-                key={item.id}
-                label={item.label}
-                isChecked={item.isChecked}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "label") {
-            return <Menu.Item.Label key={item.id} label={item.label} />;
-          }
-
-          if (item.type === "separator") {
-            return <Menu.Item.Separator key={item.id} visible={item.visible} />;
-          }
-
-          if (item.type === "list") {
-            return (
-              <Menu.Item.List
-                key={item.id}
-                label={item.label}
-                values={item.values}
-                index={item.index}
-                value={item.value}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "slider") {
-            return (
-              <Menu.Item.Slider
-                key={item.id}
-                label={item.label}
-                percent={item.percent}
-                min={item.min}
-                max={item.max}
-                value={item.value}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "radio") {
-            return (
-              <Menu.Item.Radio
-                key={item.id}
-                label={item.label}
-                isChecked={item.isChecked}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          if (item.type === "level") {
-            return (
-              <Menu.Item.Level
-                key={item.id}
-                label={item.label}
-                value={item.value}
-                max={item.max}
-                selected={isSelected}
-                disabled={item.disabled}
-              />
-            );
-          }
-
-          return null;
-        })}
+        {menu.items.map((item, index) => (
+          <MenuItemView
+            key={item.id}
+            item={item}
+            selected={selectedIndex === index}
+          />
+        ))}
       </Menu.Content>
 
       {footerDescription && (

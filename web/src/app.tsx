@@ -1,11 +1,12 @@
 import { useState } from "react";
 
-import { useVisibility } from "./components/visibility";
+import { useVisibility } from "./components/visibility-context";
 import { useMenuDrag } from "./hooks/useMenuDrag";
 import { useNuiEvent } from "./hooks/useNuiEvent";
 import { MenuView, type MenuData } from "./components/menu/menu-view";
 import { SearchBar } from "./components/search-bar";
 
+import { NUI_EVENT } from "./utils/nuiEvents";
 import { cn } from "./utils/cn";
 
 const App = () => {
@@ -19,11 +20,11 @@ const App = () => {
     items: [],
   });
 
-  useNuiEvent<MenuData>("rlz_menu:setData", setMenu);
-  useNuiEvent<{ label: string }>("rlz_menu:openSearch", ({ label }) => {
+  useNuiEvent<MenuData>(NUI_EVENT.setData, setMenu);
+  useNuiEvent<{ label: string }>(NUI_EVENT.openSearch, ({ label }) => {
     setSearchLabel(label);
   });
-  useNuiEvent("rlz_menu:closeSearch", () => setSearchLabel(null));
+  useNuiEvent(NUI_EVENT.closeSearch, () => setSearchLabel(null));
 
   const {
     containerRef,
@@ -40,9 +41,8 @@ const App = () => {
     active: visible,
   });
 
-  useNuiEvent<{ applyToAll?: boolean }>(
-    "rlz_menu:editPosition",
-    ({ applyToAll }) => startMoveMode(applyToAll === true),
+  useNuiEvent<{ applyToAll?: boolean }>(NUI_EVENT.editPosition, ({ applyToAll }) =>
+    startMoveMode(applyToAll === true),
   );
 
   if (!visible) {
@@ -57,9 +57,6 @@ const App = () => {
       )}
     >
       <div ref={containerRef} style={containerStyle} className="animate-menu-open relative">
-        {/* <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-16 overflow-hidden rounded-t-menu">
-          <div className="animate-menu-sheen absolute inset-y-0 -left-1/3 w-1/3 bg-[linear-gradient(to_right,transparent,rgb(255_255_255/28%),transparent)]" />
-        </div> */}
         <MenuView
           key={`${menu.menuId ?? ""}:${menu.selectedItemId ?? ""}`}
           menu={menu}

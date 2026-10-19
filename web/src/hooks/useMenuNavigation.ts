@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { fetchNui } from "../utils/fetchNui";
-import { isSelectableItem } from "../components/menu/items/isSelectableItem";
+import { NUI_EVENT } from "../utils/nuiEvents";
+import { isSelectableItem } from "../components/menu/items/config";
 import type { MenuItem } from "../components/menu/items/type";
 
 type UseMenuNavigationProps = {
@@ -26,7 +27,7 @@ export function useMenuNavigation({
       const nextItem = items[nextIndex];
 
       if (previousItem && isSelectableItem(previousItem)) {
-        fetchNui("rlz_menu:leaveItem", {
+        fetchNui(NUI_EVENT.leaveItem, {
           itemId: previousItem.id,
         });
       }
@@ -34,7 +35,7 @@ export function useMenuNavigation({
       setSelectedIndex(nextIndex);
 
       if (nextItem && isSelectableItem(nextItem)) {
-        fetchNui("rlz_menu:hoverItem", {
+        fetchNui(NUI_EVENT.hoverItem, {
           itemId: nextItem.id,
         });
       }
@@ -58,7 +59,7 @@ export function useMenuNavigation({
 
           changeSelection(selectableIndexes[nextPosition]);
 
-          fetchNui("rlz_menu:navigate");
+          fetchNui(NUI_EVENT.navigate);
 
           break;
         }
@@ -73,7 +74,7 @@ export function useMenuNavigation({
 
           changeSelection(selectableIndexes[previousPosition]);
 
-          fetchNui("rlz_menu:navigate");
+          fetchNui(NUI_EVENT.navigate);
 
           break;
         }
@@ -82,35 +83,29 @@ export function useMenuNavigation({
         case "ArrowRight": {
           event.preventDefault();
 
+          const direction =
+            event.key === "ArrowLeft" ? "left" : "right";
+
           const selectedItem = items[selectedIndex];
 
           if (selectedItem?.type === "list") {
-            fetchNui("rlz_menu:changeList", {
+            fetchNui(NUI_EVENT.changeList, {
               itemId: selectedItem.id,
-              direction:
-                event.key === "ArrowLeft"
-                  ? "left"
-                  : "right",
+              direction,
             });
           }
 
           if (selectedItem?.type === "slider") {
-            fetchNui("rlz_menu:changeSlider", {
+            fetchNui(NUI_EVENT.changeSlider, {
               itemId: selectedItem.id,
-              direction:
-                event.key === "ArrowLeft"
-                  ? "left"
-                  : "right",
+              direction,
             });
           }
 
           if (selectedItem?.type === "level") {
-            fetchNui("rlz_menu:changeLevel", {
+            fetchNui(NUI_EVENT.changeLevel, {
               itemId: selectedItem.id,
-              direction:
-                event.key === "ArrowLeft"
-                  ? "left"
-                  : "right",
+              direction,
             });
           }
 
@@ -127,7 +122,7 @@ export function useMenuNavigation({
           }
 
           if (selectedItem.type === "button") {
-            fetchNui("rlz_menu:selectButton", {
+            fetchNui(NUI_EVENT.selectButton, {
               itemId: selectedItem.id,
             });
           }
@@ -136,13 +131,13 @@ export function useMenuNavigation({
             selectedItem.type === "checkbox" ||
             selectedItem.type === "switch"
           ) {
-            fetchNui("rlz_menu:toggleCheckbox", {
+            fetchNui(NUI_EVENT.toggleCheckbox, {
               itemId: selectedItem.id,
             });
           }
 
           if (selectedItem.type === "radio") {
-            fetchNui("rlz_menu:selectRadio", {
+            fetchNui(NUI_EVENT.selectRadio, {
               itemId: selectedItem.id,
             });
           }
@@ -153,7 +148,7 @@ export function useMenuNavigation({
         case "Backspace": {
           event.preventDefault();
 
-          fetchNui("rlz_menu:goBack");
+          fetchNui(NUI_EVENT.goBack);
 
           break;
         }
@@ -165,10 +160,5 @@ export function useMenuNavigation({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    items,
-    selectedIndex,
-    selectableIndexes,
-    setSelectedIndex,
-  ]);
+  }, [items, selectedIndex, selectableIndexes, setSelectedIndex]);
 }

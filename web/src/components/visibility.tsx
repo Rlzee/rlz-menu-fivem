@@ -1,35 +1,16 @@
-import React, { createContext, useContext, useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useNuiEvent } from "../hooks/useNuiEvent";
-
-type VisibilityProviderValue = {
-  setVisible: (visible: boolean) => void;
-  visible: boolean;
-};
+import { NUI_EVENT } from "../utils/nuiEvents";
+import { VisibilityContext } from "./visibility-context";
 
 type VisibilityData = {
   state: boolean;
 };
 
-const VisibilityContext = createContext<VisibilityProviderValue | null>(null);
-
-export const useVisibility = (): VisibilityProviderValue => {
-  const ctx = useContext(VisibilityContext);
-
-  if (!ctx) {
-    throw new Error("useVisibility must be used within a VisibilityProvider");
-  }
-
-  return ctx;
-};
-
-export const VisibilityProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const VisibilityProvider = ({ children }: { children: ReactNode }) => {
   const [visible, setVisible] = useState(false);
 
-  useNuiEvent<VisibilityData>("rlz_menu:setVisible", (data) => {
+  useNuiEvent<VisibilityData>(NUI_EVENT.setVisible, (data) => {
     setVisible(data.state);
   });
 

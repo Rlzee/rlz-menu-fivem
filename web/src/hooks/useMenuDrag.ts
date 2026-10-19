@@ -10,6 +10,7 @@ import {
   useState,
 } from "react";
 import { fetchNui } from "../utils/fetchNui";
+import { NUI_EVENT } from "../utils/nuiEvents";
 
 type MenuPosition = {
   x: number;
@@ -101,7 +102,7 @@ export function useMenuDrag({
       return;
     }
 
-    fetchNui("rlz_menu:resetPosition", { menuId });
+    fetchNui(NUI_EVENT.resetPosition, { menuId });
   }, [menuId]);
 
   const startMoveMode = useCallback(
@@ -185,14 +186,14 @@ export function useMenuDrag({
             };
           });
 
-          fetchNui("rlz_menu:navigate");
+          fetchNui(NUI_EVENT.navigate);
 
           break;
         }
 
         case "Enter": {
           if (menuId && position) {
-            fetchNui("rlz_menu:savePosition", {
+            fetchNui(NUI_EVENT.savePosition, {
               menuId,
               applyToAll: applyToAllRef.current,
               x: toRatio(position.x, window.innerWidth),
@@ -297,7 +298,7 @@ export function useMenuDrag({
           return;
         }
 
-        fetchNui("rlz_menu:savePosition", {
+        fetchNui(NUI_EVENT.savePosition, {
           menuId,
           x: toRatio(latestX, window.innerWidth),
           y: toRatio(latestY, window.innerHeight),

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { fetchNui } from "../utils/fetchNui";
+import { NUI_EVENT } from "../utils/nuiEvents";
 
 import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 
@@ -16,11 +17,11 @@ export const SearchBar = ({ label }: SearchBarProps) => {
   }, []);
 
   const submit = () => {
-    fetchNui("rlz_menu:submitSearch", { value });
+    fetchNui(NUI_EVENT.submitSearch, { value });
   };
 
   return (
-    <Dialog open onOpenChange={(open) => !open && fetchNui("rlz_menu:cancelSearch")}>
+    <Dialog open onOpenChange={(open) => !open && fetchNui(NUI_EVENT.cancelSearch)}>
       <DialogContent className="top-[35vh] translate-y-0 p-2 max-w-xl sm:max-w-xl">
         <DialogTitle className="sr-only">{label}</DialogTitle>
         <form
@@ -43,7 +44,7 @@ export const SearchBar = ({ label }: SearchBarProps) => {
 
               if (event.key === "Escape") {
                 event.preventDefault();
-                fetchNui("rlz_menu:cancelSearch");
+                fetchNui(NUI_EVENT.cancelSearch);
               }
             }}
           />

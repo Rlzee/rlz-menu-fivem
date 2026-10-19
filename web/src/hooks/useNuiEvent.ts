@@ -19,7 +19,7 @@ type NuiHandlerSignature<T> = (data: T) => void;
  * })
  *
  **/
-export const useNuiEvent = <T = any>(
+export const useNuiEvent = <T = unknown>(
   action: string,
   handler: (data: T) => void,
 ) => {
