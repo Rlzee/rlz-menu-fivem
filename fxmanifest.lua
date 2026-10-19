@@ -5,7 +5,7 @@ lua54 'yes'
 author 'Rlzee'
 description 'A menu system for FiveM'
 repository 'https://github.com/Rlzee/rlz-menu-fivem'
-version '2.0.1'
+version '2.0.2'
 
 files {
     'web/dist/**/*',
