@@ -427,7 +427,7 @@ end
 --
 rlzMenu.DestroySubMenu = function(menuId, destroyChildren)
     assert(type(menuId) == "string", "rlzMenu.DestroySubMenu: menuId must be a string")
-    assert(type(destroyChildren) == "boolean" or destroyChildren == true, "rlzMenu.DestroySubMenu: destroyChildren must be a boolean or nil")
+    assert(destroyChildren == nil or type(destroyChildren) == "boolean", "rlzMenu.DestroySubMenu: destroyChildren must be a boolean or nil")
 
     local menu = MENUS[menuId]
 
@@ -440,7 +440,7 @@ rlzMenu.DestroySubMenu = function(menuId, destroyChildren)
         error("rlzMenu.DestroySubMenu: cannot destroy a root menu")
     end
 
-    if destroyChildren then
+    if destroyChildren ~= false then
         for childId, childMenu in pairs(MENUS) do
             if childMenu.parent == menuId then
                 rlzMenu.DestroySubMenu(childId)
@@ -453,6 +453,10 @@ rlzMenu.DestroySubMenu = function(menuId, destroyChildren)
     end
 
     MENUS[menuId] = nil
+
+    -- Drop the menu's cached stable item IDs so long-running sessions don't
+    -- accumulate stale entries for destroyed menus.
+    ITEM_IDS[menuId] = nil
 
     return true
 end

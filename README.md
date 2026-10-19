@@ -8,7 +8,6 @@ animated rainbow), custom banner images, and rich interactive item types.
 
 - **Repo**: https://github.com/Rlzee/rlz-menu-fivem
 - **Current version**: see `fxmanifest.lua` (`version '…'`)
-- **Release notes**: [`RELEASE.md`](RELEASE.md)
 - **License**: [`LICENSE.md`](LICENSE.md)
 
 ---
@@ -305,6 +304,5 @@ rlz-menu/
 
 ## Related docs
 
-- [`RELEASE.md`](RELEASE.md) — feature-focused description for the download page.
 - [`LICENSE.md`](LICENSE.md) — license terms.
 - [`test.lua`](test.lua) — live playground of every option.

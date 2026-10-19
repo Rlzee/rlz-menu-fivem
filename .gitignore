@@ -1,0 +1,3 @@
+# Local development playground — not shipped with the resource.
+# Kept out of releases so every server doesn't register the demo menu / keybind.
+test.lua
